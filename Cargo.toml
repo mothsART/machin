@@ -1,0 +1,19 @@
+[package]
+name = "machin"
+version = "0.1.0"
+authors = ["Ferry Jérémie <ferryjeremie@free.fr>"]
+edition = "2018"
+
+[dependencies]
+
+lopdf="0.20.0"
+
+clap="2.33"
+exitcode="1.1.2"
+mime="0.3"
+mime_guess="2.0"
+resvg="0.14"
+usvg="0.14.0"
+tiny-skia="0.5"
+image="0.23"
+md2tex="0.1"
