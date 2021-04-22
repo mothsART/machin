@@ -12,7 +12,6 @@ use std::io::{self, BufRead};
 use std::collections::HashMap;
 
 use clap::{Arg, App};
-use mime_guess::{Mime, MimeGuess};
 use image::io::Reader as ImageReader;
 
 use machin::{VERSION, AUTHOR, AUTHOR_MAIL};
@@ -129,16 +128,6 @@ fn main() {
     .version(VERSION)
     .author(&*format!("{} <{}>", AUTHOR, AUTHOR_MAIL))
     .about("Transform files into another format")
-    /*.arg(Arg::with_name("verbose")
-        .short("v")
-        .long("verbose")
-        .multiple(true)
-        .help("Sets the level of verbosity"))
-    .arg(Arg::with_name("debug")
-        .short("d")
-        .long("debug")
-        .help("print debug information verbosely"))
-    */
     .arg(Arg::with_name("output")
         .short("o")
         .long("output")
@@ -147,28 +136,11 @@ fn main() {
         .takes_value(true))
     .get_matches();
 
-    /*
-    match matches.occurrences_of("v") {
-        0 => println!("No verbose info"),
-        1 => println!("Some verbose info"),
-        2 => println!("Tons of verbose info"),
-        3 | _ => println!("Don't be crazy"),
-    }
-
-    if matches.is_present("debug") {
-        println!("Printing debug info...");
-    } else {
-        println!("Printing normally...");
-    }*/
-    
     if let Some(output_file) = matches.value_of("output") {
         let output_mime = mime_guess::from_path(output_file);
-        match output_mime.first() {
-            Some(i_m) => { },
-            None => {
-                eprintln!("Output file extension \"{}\" doesn't been reconize", output_file);
-                process::exit(exitcode::DATAERR);
-            }
+        if let None = output_mime.first() {
+            eprintln!("Output file extension \"{}\" doesn't been reconize", output_file);
+            process::exit(exitcode::DATAERR);
         }
         for line in io::stdin().lock().lines() {
             match line {
