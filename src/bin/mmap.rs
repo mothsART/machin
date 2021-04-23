@@ -83,11 +83,44 @@ trait IFile<'a> {
     fn mime_map(&self) -> Result<(), Box<dyn Error + 'a>>;
 }
 
-struct SVGInputFile<'a> {
-    input_file: &'a str,
-    output_file: &'a str,
-    map: HashMap<&'a str, Box<dyn SVGTo<'a> +'a>>
+macro_rules! create_input {
+    ($struct_name:ident, $convert_trait:ident) => {
+        struct $struct_name<'a> {
+            input_file: &'a str,
+            output_file: &'a str,
+            map: HashMap<&'a str, Box<dyn $convert_trait<'a> +'a>>
+        }
+        
+        impl<'a> IFile<'a> for $struct_name<'a> {
+            fn mime_map(&self) -> Result<(), Box<dyn Error + 'a>> {
+                let output_mime = mime_guess::from_path(self.output_file);
+                println!("output => {:?}", output_mime.first());
+                let e = UnSupportedError {
+                    input_file: self.input_file,
+                    output_ext: self.output_file
+                };
+                match &output_mime.first_raw() {
+                    Some(i_mime) => {
+                        match self.map.get(i_mime) {
+                            Some(val) => {
+                                val.convert()
+                            },
+                            None => {
+                                Err(Box::new(e))
+                            }
+                        }
+                    },
+                    None => {
+                        Err(Box::new(e))
+                    }
+                }
+            }
+        }
+    }
 }
+
+create_input!(SVGInputFile, SVGTo);
+create_input!(MarkdownInputFile, SVGTo);
 
 impl<'a> SVGInputFile<'a> {
     fn new(input_file: &'a str, output_file: &'a str) -> SVGInputFile<'a> {
@@ -105,45 +138,21 @@ impl<'a> SVGInputFile<'a> {
     }
 }
 
+impl<'a> MarkdownInputFile<'a> {
+    fn new(input_file: &'a str, output_file: &'a str) -> MarkdownInputFile<'a> {
+        let png = SVGToPNG::new(input_file, output_file);
+        let jpg = SVGToJPG::new(input_file, output_file);
 
-impl<'a> IFile<'a> for SVGInputFile<'a> {
-    fn mime_map(&self) -> Result<(), Box<dyn Error + 'a>> {
-        let output_mime = mime_guess::from_path(self.output_file);
-        println!("output => {:?}", output_mime.first());
-        let e = UnSupportedError {
-            input_file: self.input_file,
-            output_ext: self.output_file
-        };
-        match &output_mime.first_raw() {
-            Some(i_mime) => {
-                match self.map.get(i_mime) {
-                    Some(val) => {
-                        val.convert()
-                    },
-                    None => {
-                        Err(Box::new(e))
-                    }
-                }
-            },
-            None => {
-                Err(Box::new(e))
-            }
+        let mut map: HashMap<&'a str, Box<dyn SVGTo<'a> +'a>> = HashMap::new();
+        map.insert("image/png", Box::new(png));
+        map.insert("image/jpeg", Box::new(jpg));
+        MarkdownInputFile {
+            input_file: input_file,
+            output_file: output_file,
+            map: map
         }
     }
 }
-
-
-/*
-struct MarkdownInputFile {
-    
-}
-
-impl IFile for MarkdownInputFile {
-    fn get(&self) {
-        println!("hehe");
-    }
-}
-*/
 
 struct InputsFiles<'a> {
     input_file: &'a str,
@@ -155,9 +164,9 @@ impl<'a> InputsFiles<'a> {
     fn new(input_file: &'a str, output_file: &'a str) -> InputsFiles<'a> {
         let mut map: HashMap<&'a str, Box<dyn IFile +'a>> = HashMap::new();
         let svg = SVGInputFile::new(input_file, output_file);
-        //let markdown = MarkdownInputFile {};
+        let markdown = MarkdownInputFile::new(input_file, output_file);
         map.insert("image/svg+xml", Box::new(svg));
-        //map.insert("text/markdown", Box::new(markdown));
+        map.insert("text/markdown", Box::new(markdown));
         InputsFiles {
             input_file: input_file,
             output_file: output_file,
