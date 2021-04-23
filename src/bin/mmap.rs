@@ -18,48 +18,107 @@ use machin::{VERSION, AUTHOR, AUTHOR_MAIL};
 
 use machin::errors::*;
 
-fn svg_to_png_conversion<'a>(input_file: &'a str, output_file: &'a str) -> Result<(), Box<dyn Error + 'a>> {
-    let opt = usvg::Options::default();
-    
-    let rtree = usvg::Tree::from_file(input_file, &opt)?;
-    /* TODO : gérer proprement les erreurs tel que :
-     * SVG has an invalid size => passer par un autre moteur de rendu ?
-     * SVG data parsing failed cause the document does not have a root node :
-     * Si le SVG n'a pas de xmlns="http://www.w3.org/2000/svg", le créer à la volée
-    */
-    let fit_to = usvg::FitTo::Zoom(1.0);
-    let pixmap_size = fit_to.fit_to(rtree.svg_node().size.to_screen_size()).unwrap();
-    let mut pixmap = tiny_skia::Pixmap::new(pixmap_size.width(), pixmap_size.height()).unwrap();
-    resvg::render(&rtree, usvg::FitTo::Original, pixmap.as_mut()).unwrap();
-    pixmap.save_png("output.png")?;
-    Ok(())
+trait SVGTo<'a> {
+    fn convert(&self) -> Result<(), Box<dyn Error + 'a>>;
+}
+
+struct SVGToPNG<'a> {
+    input_file: &'a str,
+    output_file: &'a str
+}
+
+impl<'a> SVGToPNG<'a> {
+    fn new(input_file: &'a str, output_file: &'a str) -> SVGToPNG<'a> {
+        SVGToPNG {
+            input_file: input_file,
+            output_file: output_file
+        }
+    }
+}
+
+impl<'a> SVGTo<'a> for SVGToPNG<'a> {
+    fn convert(&self) -> Result<(), Box<dyn Error + 'a>> {
+        println!("conversion svg to png");
+        let opt = usvg::Options::default();
+        
+        let rtree = usvg::Tree::from_file(self.input_file, &opt)?;
+        /* TODO : gérer proprement les erreurs tel que :
+         * SVG has an invalid size => passer par un autre moteur de rendu ?
+         * SVG data parsing failed cause the document does not have a root node :
+         * Si le SVG n'a pas de xmlns="http://www.w3.org/2000/svg", le créer à la volée
+        */
+        let fit_to = usvg::FitTo::Zoom(1.0);
+        let pixmap_size = fit_to.fit_to(rtree.svg_node().size.to_screen_size()).unwrap();
+        let mut pixmap = tiny_skia::Pixmap::new(pixmap_size.width(), pixmap_size.height()).unwrap();
+        resvg::render(&rtree, usvg::FitTo::Original, pixmap.as_mut()).unwrap();
+        pixmap.save_png("output.png")?;
+        Ok(())
+    }
+}
+
+struct SVGToJPG<'a> {
+    input_file: &'a str,
+    output_file: &'a str
+}
+
+impl<'a> SVGToJPG<'a> {
+    fn new(input_file: &'a str, output_file: &'a str) -> SVGToJPG<'a> {
+        SVGToJPG {
+            input_file: input_file,
+            output_file: output_file
+        }
+    }
+}
+
+impl<'a> SVGTo<'a> for SVGToJPG<'a> {
+    fn convert(&self) -> Result<(), Box<dyn Error + 'a>> {
+        println!("conversion svg to jpg");
+        Ok(())
+    }
+}
+
+// --------------------
+
+trait IFile<'a> {
+    fn mime_map(&self) -> Result<(), Box<dyn Error + 'a>>;
 }
 
 struct SVGInputFile<'a> {
-    map: HashMap<&'a str, Box<dyn Fn(&'a str, &'a str) -> Result<(), Box<dyn Error + 'a>>>>
+    input_file: &'a str,
+    output_file: &'a str,
+    map: HashMap<&'a str, Box<dyn SVGTo<'a> +'a>>
 }
 
 impl<'a> SVGInputFile<'a> {
-    fn new() -> SVGInputFile<'a> {
-        let mut map: HashMap<&'a str, Box<dyn Fn(&'a str, &'a str) -> Result<(), Box<dyn Error + 'a>>>> = HashMap::new();
-        map.insert("image/png", Box::new(svg_to_png_conversion));
+    fn new(input_file: &'a str, output_file: &'a str) -> SVGInputFile<'a> {
+        let png = SVGToPNG::new(input_file, output_file);
+        let jpg = SVGToJPG::new(input_file, output_file);
+
+        let mut map: HashMap<&'a str, Box<dyn SVGTo<'a> +'a>> = HashMap::new();
+        map.insert("image/png", Box::new(png));
+        map.insert("image/jpeg", Box::new(jpg));
         SVGInputFile {
+            input_file: input_file,
+            output_file: output_file,
             map: map
         }
     }
+}
 
-    fn mime_map(&self, input_file: &'a str, output_file: &'a str) -> Result<(), Box<dyn Error + 'a>> {
-        let output_mime = mime_guess::from_path(output_file);
-        println!("{:?}", output_mime.first());
+
+impl<'a> IFile<'a> for SVGInputFile<'a> {
+    fn mime_map(&self) -> Result<(), Box<dyn Error + 'a>> {
+        let output_mime = mime_guess::from_path(self.output_file);
+        println!("output => {:?}", output_mime.first());
         let e = UnSupportedError {
-            input_file: input_file,
-            output_ext: output_file
+            input_file: self.input_file,
+            output_ext: self.output_file
         };
         match &output_mime.first_raw() {
-            Some(o_mime) => {
-                match self.map.get(o_mime) {
+            Some(i_mime) => {
+                match self.map.get(i_mime) {
                     Some(val) => {
-                        val(input_file, output_file)
+                        val.convert()
                     },
                     None => {
                         Err(Box::new(e))
@@ -73,43 +132,51 @@ impl<'a> SVGInputFile<'a> {
     }
 }
 
-fn svg_convert<'a>(input_file: &'a str, output_file: &'a str) -> Result<(), Box<dyn Error + 'a>> {
-    println!("svg!");
-    let svg_input_file = SVGInputFile::new();
-    svg_input_file.mime_map(input_file, output_file)
+
+/*
+struct MarkdownInputFile {
+    
 }
 
-fn markdown_convert<'a>(input_file: &'a str, output_file: &'a str)-> Result<(), Box<dyn Error + 'a>> {
-    println!("markdown!");
-    Ok(())
+impl IFile for MarkdownInputFile {
+    fn get(&self) {
+        println!("hehe");
+    }
 }
+*/
 
 struct InputsFiles<'a> {
-    map: HashMap<&'a str, Box<dyn Fn(&'a str, &'a str) -> Result<(), Box<dyn Error + 'a>>>>
+    input_file: &'a str,
+    output_file: &'a str,
+    map: HashMap<&'a str, Box<dyn IFile<'a> + 'a>>
 }
 
 impl<'a> InputsFiles<'a> {
-    fn new() -> InputsFiles<'a> {
-        let mut map: HashMap<&'a str, Box<dyn Fn(&'a str, &'a str) -> Result<(), Box<dyn Error + 'a>>>> = HashMap::new();
-        map.insert("image/svg+xml", Box::new(svg_convert));
-        map.insert("text/markdown", Box::new(markdown_convert));
+    fn new(input_file: &'a str, output_file: &'a str) -> InputsFiles<'a> {
+        let mut map: HashMap<&'a str, Box<dyn IFile +'a>> = HashMap::new();
+        let svg = SVGInputFile::new(input_file, output_file);
+        //let markdown = MarkdownInputFile {};
+        map.insert("image/svg+xml", Box::new(svg));
+        //map.insert("text/markdown", Box::new(markdown));
         InputsFiles {
+            input_file: input_file,
+            output_file: output_file,
             map: map
         }
     }
 
-    fn mime_map(&self, input_file: &'a str, output_file: &'a str) -> Result<(), Box<dyn Error + 'a>> {
-        let input_mime = mime_guess::from_path(input_file);
-        println!("{:?}", input_mime.first());
+    fn mime_map(&self) -> Result<(), Box<dyn Error + 'a>> {
+        let input_mime = mime_guess::from_path(self.input_file);
+        println!("input => {:?}", input_mime.first());
         let e = UnSupportedError {
-            input_file: input_file,
-            output_ext: output_file
+            input_file: self.input_file,
+            output_ext: self.output_file
         };
         match &input_mime.first_raw() {
             Some(i_mime) => {
                 match self.map.get(i_mime) {
                     Some(val) => {
-                        val(input_file, output_file)
+                        val.mime_map()
                     },
                     None => {
                         Err(Box::new(e))
@@ -149,8 +216,8 @@ fn main() {
                         println!("Input file \"{}\" doesn't exist", _l);
                         continue;
                     }
-                    let i_f = InputsFiles::new();
-                    if let Err(e) = i_f.mime_map(&_l, output_file) {
+                    let i_f = InputsFiles::new(&_l, output_file);
+                    if let Err(e) = i_f.mime_map() {
                          eprintln!("{}", e);
                     }
                 },
