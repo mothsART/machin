@@ -4,10 +4,9 @@ use std::error::Error;
 use crate::errors::*;
 
 pub mod svg;
-//use crate::mmap::svg::SVGTo;
 
 pub trait IFile<'a> {
-    fn mime_map(&self) -> Result<(), Box<dyn Error + 'a>>;
+    fn mime_map(&self) -> Result<String, Box<dyn Error + 'a>>;
 }
 
 #[macro_export]
@@ -20,9 +19,8 @@ macro_rules! create_input {
         }
         
         impl<'a> IFile<'a> for $struct_name<'a> {
-            fn mime_map(&self) -> Result<(), Box<dyn Error + 'a>> {
+            fn mime_map(&self) -> Result<String, Box<dyn Error + 'a>> {
                 let output_mime = mime_guess::from_path(self.output_file);
-                println!("output => {:?}", output_mime.first());
                 let e = UnSupportedError {
                     input_file: self.input_file,
                     output_ext: self.output_file
@@ -67,9 +65,8 @@ impl<'a> InputsFiles<'a> {
         }
     }
 
-    pub fn mime_map(&self) -> Result<(), Box<dyn Error + 'a>> {
+    pub fn mime_map(&self) -> Result<String, Box<dyn Error + 'a>> {
         let input_mime = mime_guess::from_path(self.input_file);
-        println!("input => {:?}", input_mime.first());
         let e = UnSupportedError {
             input_file: self.input_file,
             output_ext: self.output_file
@@ -93,7 +90,7 @@ impl<'a> InputsFiles<'a> {
 }
 
 trait InputTo<'a> {
-    fn convert(&self) -> Result<(), Box<dyn Error + 'a>>;
+    fn convert(&self) -> Result<String, Box<dyn Error + 'a>>;
 }
 
 create_input!(SVGInputFile, InputTo);

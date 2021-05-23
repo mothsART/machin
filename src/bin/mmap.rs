@@ -4,7 +4,9 @@ extern crate mime;
 extern crate mime_guess;
 extern crate resvg;
 extern crate usvg;
+extern crate colored;
 
+use colored::*;
 use std::process;
 use std::path::Path;
 use std::io::{self, BufRead};
@@ -44,12 +46,20 @@ fn main() {
             match line {
                 Ok(_l) => {
                     if Path::new(&_l).exists() == false {
-                        println!("Input file \"{}\" doesn't exist", _l);
+                        eprintln!("{}",
+                            format!("Input file \"{}\" doesn't exist", _l).black().on_red()
+                        );
                         continue;
                     }
                     let i_f = InputsFiles::new(&_l, output_file);
-                    if let Err(e) = i_f.mime_map() {
-                         eprintln!("{}", e);
+                    match i_f.mime_map() {
+                        Ok(r) => {
+                            println!("{}", r.black().on_green()
+                            );
+                        },
+                        Err(e) => {
+                            eprintln!("{}", e.to_string().black().on_red());
+                        }
                     }
                 },
                 Err(_) => {

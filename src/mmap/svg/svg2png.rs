@@ -17,8 +17,7 @@ impl<'a> SVGToPNG<'a> {
 }
 
 impl<'a> InputTo<'a> for SVGToPNG<'a> {
-    fn convert(&self) -> Result<(), Box<dyn Error + 'a>> {
-        println!("conversion svg to png");
+    fn convert(&self) -> Result<String, Box<dyn Error + 'a>> {
         let opt = usvg::Options::default();
         
         let rtree = usvg::Tree::from_file(self.input_file, &opt)?;
@@ -32,6 +31,10 @@ impl<'a> InputTo<'a> for SVGToPNG<'a> {
         let mut pixmap = tiny_skia::Pixmap::new(pixmap_size.width(), pixmap_size.height()).unwrap();
         resvg::render(&rtree, usvg::FitTo::Original, pixmap.as_mut()).unwrap();
         pixmap.save_png("output.png")?;
-        Ok(())
+        Ok(format!(
+            "convert svg to png : {} -> {}",
+            self.input_file,
+            self.output_file
+        ))
     }
 }
