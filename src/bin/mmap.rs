@@ -35,8 +35,8 @@ fn main() {
 
     if let Some(support_arg) = matches.value_of("support") {
         let fake_path = &format!("fake.{}", support_arg);
-        let test = InputsFiles::new(fake_path, "fake");
-        match test.support() {
+        let i = InputsFiles::new(fake_path, "fake");
+        match i.support() {
             Ok(r) => {
                 println!("The type of file \".{}\" support :", support_arg);
                 println!("{}", r

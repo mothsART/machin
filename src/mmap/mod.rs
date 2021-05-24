@@ -4,6 +4,9 @@ use std::error::Error;
 use crate::errors::*;
 
 pub mod svg;
+pub mod jpg;
+pub mod png;
+pub mod markdown;
 
 pub trait IFile<'a> {
     fn support(&self) -> Result<String, Box<dyn Error + 'a>>;
@@ -64,8 +67,13 @@ impl<'a> InputsFiles<'a> {
     pub fn new(input_file: &'a str, output_file: &'a str) -> InputsFiles<'a> {
         let mut map: HashMap<&'a str, Box<dyn IFile +'a>> = HashMap::new();
         let svg = SVGInputFile::new(input_file, output_file);
+        let jpg = JPGInputFile::new(input_file, output_file);
+        let png = PNGInputFile::new(input_file, output_file);
         //let markdown = MarkdownInputFile::new(input_file, output_file);
+
         map.insert("image/svg+xml", Box::new(svg));
+        map.insert("image/jpeg", Box::new(jpg));
+        map.insert("image/png", Box::new(png));
         //map.insert("text/markdown", Box::new(markdown));
         InputsFiles {
             input_file: input_file,
@@ -126,4 +134,6 @@ trait InputTo<'a> {
 }
 
 create_input!(SVGInputFile, InputTo);
+create_input!(JPGInputFile, InputTo);
+create_input!(PNGInputFile, InputTo);
 create_input!(MarkdownInputFile, InputTo);
