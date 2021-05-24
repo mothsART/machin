@@ -6,6 +6,7 @@ use crate::errors::*;
 pub mod svg;
 
 pub trait IFile<'a> {
+    fn support(&self) -> Result<String, Box<dyn Error + 'a>>;
     fn mime_map(&self) -> Result<String, Box<dyn Error + 'a>>;
 }
 
@@ -17,8 +18,16 @@ macro_rules! create_input {
             output_file: &'a str,
             map: HashMap<&'a str, Box<dyn $convert_trait<'a> +'a>>
         }
-        
+
         impl<'a> IFile<'a> for $struct_name<'a> {
+            fn support(&self) -> Result<String, Box<dyn Error + 'a>> {
+                let mut result = "".to_string();
+                for (key, _) in &self.map {
+                    result = format!("{}{}\n", result, key);
+                }
+                Ok(result)
+            }
+
             fn mime_map(&self) -> Result<String, Box<dyn Error + 'a>> {
                 let output_mime = mime_guess::from_path(self.output_file);
                 let e = UnSupportedError {
@@ -62,6 +71,29 @@ impl<'a> InputsFiles<'a> {
             input_file: input_file,
             output_file: output_file,
             map: map
+        }
+    }
+
+    pub fn support(&self) -> Result<String, Box<dyn Error + 'a>> {
+        let input_mime = mime_guess::from_path(self.input_file);
+        let e = UnSupportedError {
+            input_file: self.input_file,
+            output_ext: self.output_file
+        };
+        match &input_mime.first_raw() {
+            Some(i_mime) => {
+                match self.map.get(i_mime) {
+                    Some(val) => {
+                        val.support()
+                    },
+                    None => {
+                        Err(Box::new(e))
+                    }
+                }
+            },
+            None => {
+                Err(Box::new(e))
+            }
         }
     }
 

@@ -29,11 +29,23 @@ fn main() {
     .arg(Arg::with_name("support")
         .short("s")
         .help("return list of supporting conversion")
-        .takes_value(true))
+        .takes_value(true)
+        )
     .get_matches();
 
-    if let Some(support_arg) = matches.value_of("suport") {
-        println!("{}", support_arg);
+    if let Some(support_arg) = matches.value_of("support") {
+        let fake_path = &format!("fake.{}", support_arg);
+        let test = InputsFiles::new(fake_path, "fake");
+        match test.support() {
+            Ok(r) => {
+                println!("The type of file \".{}\" support :", support_arg);
+                println!("{}", r
+                );
+            },
+            Err(e) => {
+                println!("The type of file \".{}\" is not yet supported.", support_arg);
+            }
+        }
         return;
     }
     if let Some(output_file) = matches.value_of("output") {
