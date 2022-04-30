@@ -10,9 +10,9 @@ impl<'a> PNGInputFile<'a> {
         let mut map: HashMap<&'a str, Box<dyn InputTo<'a> +'a>> = HashMap::new();
         map.insert("image/jpeg", Box::new(jpg));
         PNGInputFile {
-            input_file: input_file,
-            output_file: output_file,
-            map: map
+            input_file,
+            output_file,
+            map
         }
     }
 }

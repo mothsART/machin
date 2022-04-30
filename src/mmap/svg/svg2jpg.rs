@@ -10,8 +10,8 @@ pub struct SVGToJPG<'a> {
 impl<'a> SVGToJPG<'a> {
     pub fn new(input_file: &'a str, output_file: &'a str) -> SVGToJPG<'a> {
         SVGToJPG {
-            input_file: input_file,
-            output_file: output_file
+            input_file,
+            output_file
         }
     }
 }

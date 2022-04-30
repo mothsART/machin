@@ -76,9 +76,9 @@ impl<'a> InputsFiles<'a> {
         map.insert("image/png", Box::new(png));
         //map.insert("text/markdown", Box::new(markdown));
         InputsFiles {
-            input_file: input_file,
-            output_file: output_file,
-            map: map
+            input_file,
+            output_file,
+            map
         }
     }
 
