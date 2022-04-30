@@ -1,12 +1,12 @@
 use std::collections::HashMap;
 
-use std::error::Error;
 use crate::errors::*;
+use std::error::Error;
 
-pub mod svg;
 pub mod jpg;
-pub mod png;
 pub mod markdown;
+pub mod png;
+pub mod svg;
 
 pub trait IFile<'a> {
     fn support(&self) -> Result<String, Box<dyn Error + 'a>>;
@@ -19,7 +19,7 @@ macro_rules! create_input {
         struct $struct_name<'a> {
             input_file: &'a str,
             output_file: &'a str,
-            map: HashMap<&'a str, Box<dyn $convert_trait<'a> +'a>>
+            map: HashMap<&'a str, Box<dyn $convert_trait<'a> + 'a>>,
         }
 
         impl<'a> IFile<'a> for $struct_name<'a> {
@@ -35,37 +35,29 @@ macro_rules! create_input {
                 let output_mime = mime_guess::from_path(self.output_file);
                 let e = UnSupportedError {
                     input_file: self.input_file,
-                    output_ext: self.output_file
+                    output_ext: self.output_file,
                 };
                 match &output_mime.first_raw() {
-                    Some(i_mime) => {
-                        match self.map.get(i_mime) {
-                            Some(val) => {
-                                val.convert()
-                            },
-                            None => {
-                                Err(Box::new(e))
-                            }
-                        }
+                    Some(i_mime) => match self.map.get(i_mime) {
+                        Some(val) => val.convert(),
+                        None => Err(Box::new(e)),
                     },
-                    None => {
-                        Err(Box::new(e))
-                    }
+                    None => Err(Box::new(e)),
                 }
             }
         }
-    }
+    };
 }
 
 pub struct InputsFiles<'a> {
     pub input_file: &'a str,
     pub output_file: &'a str,
-    pub map: HashMap<&'a str, Box<dyn IFile<'a> + 'a>>
+    pub map: HashMap<&'a str, Box<dyn IFile<'a> + 'a>>,
 }
 
 impl<'a> InputsFiles<'a> {
     pub fn new(input_file: &'a str, output_file: &'a str) -> InputsFiles<'a> {
-        let mut map: HashMap<&'a str, Box<dyn IFile +'a>> = HashMap::new();
+        let mut map: HashMap<&'a str, Box<dyn IFile + 'a>> = HashMap::new();
         let svg = SVGInputFile::new(input_file, output_file);
         let jpg = JPGInputFile::new(input_file, output_file);
         let png = PNGInputFile::new(input_file, output_file);
@@ -78,7 +70,7 @@ impl<'a> InputsFiles<'a> {
         InputsFiles {
             input_file,
             output_file,
-            map
+            map,
         }
     }
 
@@ -86,22 +78,14 @@ impl<'a> InputsFiles<'a> {
         let input_mime = mime_guess::from_path(self.input_file);
         let e = UnSupportedError {
             input_file: self.input_file,
-            output_ext: self.output_file
+            output_ext: self.output_file,
         };
         match &input_mime.first_raw() {
-            Some(i_mime) => {
-                match self.map.get(i_mime) {
-                    Some(val) => {
-                        val.support()
-                    },
-                    None => {
-                        Err(Box::new(e))
-                    }
-                }
+            Some(i_mime) => match self.map.get(i_mime) {
+                Some(val) => val.support(),
+                None => Err(Box::new(e)),
             },
-            None => {
-                Err(Box::new(e))
-            }
+            None => Err(Box::new(e)),
         }
     }
 
@@ -109,22 +93,14 @@ impl<'a> InputsFiles<'a> {
         let input_mime = mime_guess::from_path(self.input_file);
         let e = UnSupportedError {
             input_file: self.input_file,
-            output_ext: self.output_file
+            output_ext: self.output_file,
         };
         match &input_mime.first_raw() {
-            Some(i_mime) => {
-                match self.map.get(i_mime) {
-                    Some(val) => {
-                        val.mime_map()
-                    },
-                    None => {
-                        Err(Box::new(e))
-                    }
-                }
+            Some(i_mime) => match self.map.get(i_mime) {
+                Some(val) => val.mime_map(),
+                None => Err(Box::new(e)),
             },
-            None => {
-                Err(Box::new(e))
-            }
+            None => Err(Box::new(e)),
         }
     }
 }

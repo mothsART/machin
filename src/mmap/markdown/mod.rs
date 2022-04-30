@@ -5,13 +5,13 @@ impl<'a> MarkdownInputFile<'a> {
         //let png = SVGToPNG::new(input_file, output_file);
         //let jpg = SVGToJPG::new(input_file, output_file);
 
-        let map: HashMap<&'a str, Box<dyn InputTo<'a> +'a>> = HashMap::new();
+        let map: HashMap<&'a str, Box<dyn InputTo<'a> + 'a>> = HashMap::new();
         //map.insert("image/png", Box::new(png));
         //map.insert("image/jpeg", Box::new(jpg));
         MarkdownInputFile {
             input_file,
             output_file,
-            map
+            map,
         }
     }
 }
