@@ -2,13 +2,15 @@
 name = "machin"
 version = "0.1.0"
 authors = ["Ferry Jérémie <ferryjeremie@free.fr>"]
-edition = "2018"
+keywords = ["app", "cli"]
+categories = ["command-line-utilities"]
+license-file = "LICENSE"
+readme = "README.md"
+edition = "2021"
 
 [dependencies]
-
+clap = { version="3.1", features=['cargo'] }
 lopdf="0.20.0"
-
-clap="2.33"
 exitcode="1.1.2"
 mime="0.3"
 mime_guess="2.0"
@@ -18,3 +20,7 @@ tiny-skia="0.5"
 image="0.23"
 md2tex="0.1"
 colored = "2"
+
+[build-dependencies]
+clap = { version="3.1", features=['cargo']  }
+clap_complete = { version="3.1" }

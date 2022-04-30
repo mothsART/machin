@@ -1,3 +1,4 @@
+#[macro_use]
 extern crate clap;
 extern crate exitcode;
 extern crate mime;
@@ -11,23 +12,21 @@ use std::process;
 use std::path::Path;
 use std::io::{self, BufRead};
 
-use clap::{Arg, App};
-
-use machin::{VERSION, AUTHOR, AUTHOR_MAIL};
+use clap::{Arg, Command};
 
 use machin::mmap::*;
 
 fn main() {
-    let matches = App::new("mmap")
-    .version(VERSION)
-    .author(&*format!("{} <{}>", AUTHOR, AUTHOR_MAIL))
+    let matches = Command::new("mmap")
+    .version(crate_version!())
+    .author(crate_authors!())
     .about("Transform files into another format")
-    .arg(Arg::with_name("output")
-        .short("o")
+    .arg(Arg::new("output")
+        .short('o')
         .help("output to a specific file pattern (like *.png)")
         .takes_value(true))
-    .arg(Arg::with_name("support")
-        .short("s")
+    .arg(Arg::new("support")
+        .short('s')
         .help("return list of supporting conversion")
         .takes_value(true)
         )
@@ -42,22 +41,22 @@ fn main() {
                 println!("{}", r
                 );
             },
-            Err(e) => {
-                println!("The type of file \".{}\" is not yet supported.", support_arg);
+            Err(_e) => {
+                eprintln!("The type of file \".{}\" is not yet supported.", support_arg);
             }
         }
         return;
     }
     if let Some(output_file) = matches.value_of("output") {
         let output_mime = mime_guess::from_path(output_file);
-        if let None = output_mime.first() {
+        if output_mime.first().is_none() {
             eprintln!("Output file extension \"{}\" doesn't been reconize", output_file);
             process::exit(exitcode::DATAERR);
         }
         for line in io::stdin().lock().lines() {
             match line {
                 Ok(_l) => {
-                    if Path::new(&_l).exists() == false {
+                    if !Path::new(&_l).exists() {
                         eprintln!("{}",
                             format!("Input file \"{}\" doesn't exist", _l).black().on_red()
                         );
@@ -66,8 +65,7 @@ fn main() {
                     let i_f = InputsFiles::new(&_l, output_file);
                     match i_f.mime_map() {
                         Ok(r) => {
-                            println!("{}", r.black().on_green()
-                            );
+                            println!("{}", r.black().on_green());
                         },
                         Err(e) => {
                             eprintln!("{}", e.to_string().black().on_red());
