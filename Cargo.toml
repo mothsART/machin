@@ -17,10 +17,10 @@ mime_guess="2.0"
 resvg="0.14"
 usvg="0.14.0"
 tiny-skia="0.5"
-image="0.24"
+image= { version="0.24", features=['avif-encoder'] }
 markdown = "0.3"
 colored = "2"
 
 [build-dependencies]
-clap = { version="3.2", features=['cargo']  }
+clap = { version="3.2", features=['cargo'] }
 clap_complete = { version="3.2" }

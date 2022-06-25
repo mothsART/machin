@@ -56,7 +56,7 @@ fn main() {
         let output_mime = mime_guess::from_path(output_file);
         if output_mime.first().is_none() {
             eprintln!(
-                "Output file extension \"{}\" doesn't been reconize",
+                "Output file extension \"{}\" doesn't been reconize.",
                 output_file
             );
             process::exit(exitcode::DATAERR);

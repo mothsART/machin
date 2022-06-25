@@ -33,6 +33,12 @@ Convert png file to jpg :
 /bin/ls content/essai.png | machmap -o result.jpg
 ```
 
+Convert png file to avif :
+
+```zsh
+/bin/ls content/essai.png | machmap -o result.avif
+```
+
 Convert jpg file to png :
 
 ```zsh
