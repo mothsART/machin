@@ -61,12 +61,12 @@ impl<'a> InputsFiles<'a> {
         let svg = SVGInputFile::new(input_file, output_file);
         let jpg = JPGInputFile::new(input_file, output_file);
         let png = PNGInputFile::new(input_file, output_file);
-        //let markdown = MarkdownInputFile::new(input_file, output_file);
+        let markdown = MarkdownInputFile::new(input_file, output_file);
 
         map.insert("image/svg+xml", Box::new(svg));
         map.insert("image/jpeg", Box::new(jpg));
         map.insert("image/png", Box::new(png));
-        //map.insert("text/markdown", Box::new(markdown));
+        map.insert("text/markdown", Box::new(markdown));
         InputsFiles {
             input_file,
             output_file,

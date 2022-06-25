@@ -1,13 +1,14 @@
-use crate::mmap::*;
+pub mod markdowntohtml;
+
+use crate::mmap::markdown::markdowntohtml::MarkdownToHTML;
+use crate::mmap::{HashMap, InputTo, MarkdownInputFile};
 
 impl<'a> MarkdownInputFile<'a> {
-    fn new(input_file: &'a str, output_file: &'a str) -> MarkdownInputFile<'a> {
-        //let png = SVGToPNG::new(input_file, output_file);
-        //let jpg = SVGToJPG::new(input_file, output_file);
+    pub fn new(input_file: &'a str, output_file: &'a str) -> MarkdownInputFile<'a> {
+        let html = MarkdownToHTML::new(input_file, output_file);
 
-        let map: HashMap<&'a str, Box<dyn InputTo<'a> + 'a>> = HashMap::new();
-        //map.insert("image/png", Box::new(png));
-        //map.insert("image/jpeg", Box::new(jpg));
+        let mut map: HashMap<&'a str, Box<dyn InputTo<'a> + 'a>> = HashMap::new();
+        map.insert("text/html", Box::new(html));
         MarkdownInputFile {
             input_file,
             output_file,
