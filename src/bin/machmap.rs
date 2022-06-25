@@ -17,7 +17,7 @@ use clap::{Arg, Command};
 use machin::mmap::*;
 
 fn main() {
-    let matches = Command::new("mmap")
+    let matches = Command::new("machmap")
         .version(crate_version!())
         .author(crate_authors!())
         .about("Transform files into another format")
