@@ -24,25 +24,31 @@ machmap -s svg
 Convert svg file to png :
 
 ```zsh
-/bin/ls content/clipPath.svg | machmap -o result.png
+ls file.svg | machmap -o result.png
 ```
 
 Convert png file to jpg :
 
 ```zsh
-/bin/ls content/essai.png | machmap -o result.jpg
+ls file.png | machmap -o result.jpg
 ```
 
 Convert png file to avif :
 
 ```zsh
-/bin/ls content/essai.png | machmap -o result.avif
+ls file.png | machmap -o result.avif
 ```
 
 Convert jpg file to png :
 
 ```zsh
-/bin/ls content/essai.jpg | machmap -o result.png
+ls content/essai.jpg | machmap -o result.png
+```
+
+Convert jpg file to avif :
+
+```zsh
+ls file.jpg | machmap -o result.avif
 ```
 
 Convert markdown to 
