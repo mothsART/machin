@@ -1,5 +1,9 @@
 # Machin
 
+[![LICENSE](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Crates.io Version](https://img.shields.io/crates/v/machin.svg)](https://crates.io/crates/machin)
+[![Minimum rustc version](https://img.shields.io/badge/rustc-1.60.0+-lightgray.svg)](#rust-version-requirements)
+
 ## Intro
 
 **Machin** is a cli program that simplifies file conversions and batch processing.
@@ -60,5 +64,15 @@ Convert markdown to
 Apply a 180 degree rotation of photo.jpg to prefix_photo.jpg
 
 ```zsh
-ls photo.jpg | machconvert -r 180 -p 
+ls photo.jpg | machconvert -r 180 -p prefix_
+```
+
+## Dev
+
+Makefile inspire by https://git.sr.ht/~julienxx/castor/tree/master/item/Makefile
+
+## Publish
+
+```zsh
+make cargo-publish
 ```
