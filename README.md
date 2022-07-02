@@ -60,5 +60,15 @@ Convert markdown to
 Apply a 180 degree rotation of photo.jpg to prefix_photo.jpg
 
 ```zsh
-ls photo.jpg | machconvert -r 180 -p 
+ls photo.jpg | machconvert -r 180 -p prefix_
+```
+
+## Dev
+
+Makefile inspire by https://git.sr.ht/~julienxx/castor/tree/master/item/Makefile
+
+## Publish
+
+```zsh
+make cargo-publish
 ```
