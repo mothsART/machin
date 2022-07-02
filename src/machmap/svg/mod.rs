@@ -1,9 +1,9 @@
 pub mod svg2jpg;
 pub mod svg2png;
 
-use crate::mmap::svg::svg2jpg::*;
-use crate::mmap::svg::svg2png::*;
-use crate::mmap::*;
+use crate::machmap::svg::svg2jpg::*;
+use crate::machmap::svg::svg2png::*;
+use crate::machmap::*;
 
 impl<'a> SVGInputFile<'a> {
     pub fn new(input_file: &'a str, output_file: &'a str) -> SVGInputFile<'a> {

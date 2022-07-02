@@ -1,28 +1,30 @@
-use image::io::Reader as ImageReader;
 use std::error::Error;
 
-use crate::mmap::InputTo;
+use image::io::Reader as ImageReader;
 
-pub struct JPGTOAVIF<'a> {
+use crate::machmap::InputTo;
+
+pub struct PNGToAVIF<'a> {
     pub input_file: &'a str,
     pub output_file: &'a str,
 }
 
-impl<'a> JPGTOAVIF<'a> {
-    pub fn new(input_file: &'a str, output_file: &'a str) -> JPGTOAVIF<'a> {
-        JPGTOAVIF {
+impl<'a> PNGToAVIF<'a> {
+    pub fn new(input_file: &'a str, output_file: &'a str) -> PNGToAVIF<'a> {
+        PNGToAVIF {
             input_file,
             output_file,
         }
     }
 }
 
-impl<'a> InputTo<'a> for JPGTOAVIF<'a> {
+impl<'a> InputTo<'a> for PNGToAVIF<'a> {
     fn convert(&self) -> Result<String, Box<dyn Error + 'a>> {
         let img = ImageReader::open(&self.input_file)?.decode()?;
+        println!("{:?}", img.color());
         img.save(&self.output_file)?;
         Ok(format!(
-            "convert jpg to avif : {} -> {}",
+            "convert png to avif : {} -> {}",
             self.input_file, self.output_file
         ))
     }

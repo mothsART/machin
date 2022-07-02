@@ -1,7 +1,7 @@
 pub mod markdowntohtml;
 
-use crate::mmap::markdown::markdowntohtml::MarkdownToHTML;
-use crate::mmap::{HashMap, InputTo, MarkdownInputFile};
+use crate::machmap::markdown::markdowntohtml::MarkdownToHTML;
+use crate::machmap::{HashMap, InputTo, MarkdownInputFile};
 
 impl<'a> MarkdownInputFile<'a> {
     pub fn new(input_file: &'a str, output_file: &'a str) -> MarkdownInputFile<'a> {

@@ -1,7 +1,7 @@
 use std::collections::HashMap;
+use std::error::Error;
 
 use crate::errors::*;
-use std::error::Error;
 
 pub mod jpg;
 pub mod markdown;

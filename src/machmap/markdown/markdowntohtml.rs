@@ -1,11 +1,11 @@
 extern crate markdown;
 
+use std::error::Error;
 use std::fs::File;
 use std::io::Write;
-use std::error::Error;
 use std::path::Path;
 
-use crate::mmap::InputTo;
+use crate::machmap::InputTo;
 
 pub struct MarkdownToHTML<'a> {
     pub input_file: &'a str,

@@ -14,13 +14,14 @@ use std::process;
 
 use clap::{Arg, Command};
 
-use machin::mmap::*;
+use machin::machmap::*;
 
 fn main() {
     let matches = Command::new("machmap")
         .version(crate_version!())
         .author(crate_authors!())
         .about("Transform files into another format")
+        .arg_required_else_help(true)
         .arg(
             Arg::new("output")
                 .short('o')

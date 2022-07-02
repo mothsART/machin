@@ -56,3 +56,9 @@ Convert markdown to
 ```zsh
 /bin/ls README.md | machmap -o result.png
 ```
+
+Apply a 180 degree rotation of photo.jpg to prefix_photo.jpg
+
+```zsh
+ls photo.jpg | machconvert -r 180 -p 
+```

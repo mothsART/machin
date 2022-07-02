@@ -1,7 +1,7 @@
 use image::io::Reader as ImageReader;
 use std::error::Error;
 
-use crate::mmap::InputTo;
+use crate::machmap::InputTo;
 
 pub struct JPGTOPNG<'a> {
     pub input_file: &'a str,

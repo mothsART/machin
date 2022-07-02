@@ -1,6 +1,6 @@
 use std::error::Error;
 
-use crate::mmap::InputTo;
+use crate::machmap::InputTo;
 
 pub struct SVGToPNG<'a> {
     pub input_file: &'a str,
