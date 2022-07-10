@@ -1,12 +1,14 @@
 [package]
 name = "machin"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["Ferry Jérémie <ferryjeremie@free.fr>"]
 description = "Machin is a cli program that simplifies file conversions and batch processing. It's inspired from filter/map/reduce"
 keywords = ["app", "cli", "files", "conversion", "batch"]
 categories = ["command-line-utilities"]
 license-file = "LICENSE"
 readme = "README.md"
+repository = "https://github.com/mothsart/machin"
+homepage = "https://github.com/mothsart/machin"
 edition = "2021"
 
 [dependencies]

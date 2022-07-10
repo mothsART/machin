@@ -17,7 +17,7 @@ clone the projet and install it with :
 cargo install --path .
 ```
 
-# Some examples
+## Some **machmap** examples
 
 Give the list of supported conversion for an entry format :
 
@@ -58,13 +58,23 @@ ls file.jpg | machmap -o result.avif
 Convert markdown to 
 
 ```zsh
-/bin/ls README.md | machmap -o result.png
+ls README.md | machmap -o result.png
 ```
+
+## Some **machconvert** examples
 
 Apply a 180 degree rotation of photo.jpg to prefix_photo.jpg
 
 ```zsh
 ls photo.jpg | machconvert -r 180 -p prefix_
+```
+
+## Some **machreduce** examples
+
+Concatenate images on same file :
+
+```zsh
+ls *.png | machreduce -o result.png
 ```
 
 ## Dev

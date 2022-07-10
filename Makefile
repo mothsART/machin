@@ -12,7 +12,7 @@ INSTALL_DATA=$(INSTALL) -m 644
 bindir=$(DESTDIR)$(PREFIX)/bin
 sharedir=$(DESTDIR)$(PREFIX)/share
 
-.PHONY: clean clean-all install cargo-publish
+.PHONY: clean clean-all install cargo-publish push
 
 # Build the application
 target/release/machin: src
@@ -30,3 +30,6 @@ cargo-publish:
 
 clean:
 	cargo clean
+
+push:
+	cargo clippy && cargo fmt && git push
