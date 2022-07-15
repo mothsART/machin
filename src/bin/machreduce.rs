@@ -32,8 +32,8 @@ fn main() {
         Some(output_file) => {
             let mut i_f = InputsFiles::new(output_file);
             match i_f.reduce() {
-                Ok(r) => println!("{}", r.black().on_green()),
-                Err(e) => eprintln!("{}", e.to_string().black().on_red()),
+                Ok(r) => println!("{}", r.white().on_green()),
+                Err(e) => eprintln!("{}", e.to_string().white().on_red()),
             };
         }
         None => eprintln!("output file is required"),

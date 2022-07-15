@@ -35,10 +35,10 @@ fn convert_files(prefix: Option<&str>, rotate_value: Option<&str>) {
                 let i_f = InputsFiles::new(&l, &output_file);
                 match i_f.convert(rotate_value) {
                     Ok(r) => {
-                        println!("{}", r.black().on_green());
+                        println!("{}", r.white().on_green());
                     }
                     Err(e) => {
-                        eprintln!("{}", e.to_string().black().on_red());
+                        eprintln!("{}", e.to_string().white().on_red());
                     }
                 };
             }

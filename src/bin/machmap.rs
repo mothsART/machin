@@ -77,10 +77,10 @@ fn main() {
                     let i_f = InputsFiles::new(&_l, output_file);
                     match i_f.mime_map() {
                         Ok(r) => {
-                            println!("{}", r.black().on_green());
+                            println!("{}", r.white().on_green());
                         }
                         Err(e) => {
-                            eprintln!("{}", e.to_string().black().on_red());
+                            eprintln!("{}", e.to_string().white().on_red());
                         }
                     }
                 }
