@@ -1,10 +1,14 @@
 use std::error::Error;
 
-pub mod image_reduce;
 pub mod errors;
+pub mod image_reduce;
+pub mod zip_reduce;
 
-use crate::machreduce::image_reduce::InputTo;
 use crate::machreduce::errors::OutputFileUnsupportedError;
+
+pub trait InputTo<'a> {
+    fn reduce(&self) -> Result<String, Box<dyn Error + 'a>>;
+}
 
 #[macro_export]
 macro_rules! create_reduce_input {
@@ -17,38 +21,41 @@ macro_rules! create_reduce_input {
     };
 }
 
-create_reduce_input!(ImageInputFile);
+create_reduce_input!(ImageOutputFile);
+create_reduce_input!(ZipOutputFile);
 
 pub struct InputsFiles<'a> {
-    pub output_file: &'a str
+    pub output_file: &'a str,
 }
 
 impl<'a> InputsFiles<'a> {
     pub fn new(output_file: &'a str) -> InputsFiles<'a> {
-        InputsFiles {
-            output_file
-        }
+        InputsFiles { output_file }
     }
 
     pub fn reduce(&mut self) -> Result<String, Box<dyn Error + 'a>> {
         let output_mime = mime_guess::from_path(self.output_file);
 
-        let input_e = OutputFileUnsupportedError {
+        let output_e = OutputFileUnsupportedError {
             output_file: self.output_file,
         };
 
-        let image_input = ImageInputFile::new(self.output_file);
+        let image_output = ImageOutputFile::new(self.output_file);
+        let zip_output = ZipOutputFile::new(self.output_file);
 
         match &output_mime.first_raw() {
             Some(o_mime) => {
                 println!("{:?}", o_mime);
-                if image_input.output_mime_type.contains(o_mime) {
-                    return image_input.reduce();
+                if image_output.output_mime_type.contains(o_mime) {
+                    return image_output.reduce();
                 }
-                return Err(Box::new(input_e));
+                if zip_output.output_mime_type.contains(o_mime) {
+                    return zip_output.reduce();
+                }
+                return Err(Box::new(output_e));
             }
             None => {
-                return Err(Box::new(input_e));
+                return Err(Box::new(output_e));
             }
         };
     }

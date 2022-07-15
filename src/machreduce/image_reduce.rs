@@ -5,11 +5,12 @@ use colored::*;
 use image::io::Reader as ImageReader;
 use image::{image_dimensions, GenericImage, ImageBuffer, Rgba};
 
-use crate::machreduce::ImageInputFile;
+use crate::machreduce::ImageOutputFile;
+use crate::machreduce::InputTo;
 
-impl<'a> ImageInputFile<'a> {
-    pub fn new(output_file: &'a str) -> ImageInputFile<'a> {
-        ImageInputFile { 
+impl<'a> ImageOutputFile<'a> {
+    pub fn new(output_file: &'a str) -> ImageOutputFile<'a> {
+        ImageOutputFile {
             output_file,
             input_mime_type: vec!["image/png", "image/jpeg"],
             output_mime_type: vec!["image/png", "image/jpeg"],
@@ -22,7 +23,7 @@ struct ImagePath {
     path: String,
 }
 
-impl<'a> InputTo<'a> for ImageInputFile<'a> {
+impl<'a> InputTo<'a> for ImageOutputFile<'a> {
     fn reduce(&self) -> Result<String, Box<dyn Error + 'a>> {
         let lines = std::io::stdin().lines();
         let mut x_size: u32 = 0;
@@ -68,10 +69,6 @@ impl<'a> InputTo<'a> for ImageInputFile<'a> {
             before_pos = _file.pos;
         }
         img_buf.save(self.output_file)?;
-        Ok(format!("images reduce to {}", self.output_file,))
+        Ok(format!("images reduce to {}", self.output_file))
     }
-}
-
-pub trait InputTo<'a> {
-    fn reduce(&self) -> Result<String, Box<dyn Error + 'a>>;
 }
