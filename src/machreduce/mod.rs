@@ -6,8 +6,14 @@ pub mod zip_reduce;
 
 use crate::machreduce::errors::OutputFileUnsupportedError;
 
+#[derive(PartialEq)]
+pub enum Direction {
+    Vertical,
+    Horizontal
+}
+
 pub trait InputTo<'a> {
-    fn reduce(&self) -> Result<String, Box<dyn Error + 'a>>;
+    fn reduce(&self, direction: &Direction) -> Result<String, Box<dyn Error + 'a>>;
 }
 
 #[macro_export]
@@ -36,11 +42,12 @@ create_reduce!(ZipOutputFile);
 
 pub struct InputsFiles<'a> {
     pub output_file: &'a str,
+    pub direction: Direction,
 }
 
 impl<'a> InputsFiles<'a> {
-    pub fn new(output_file: &'a str) -> InputsFiles<'a> {
-        InputsFiles { output_file }
+    pub fn new(output_file: &'a str, direction: Direction) -> InputsFiles<'a> {
+        InputsFiles { output_file, direction }
     }
 
     pub fn reduce(&mut self) -> Result<String, Box<dyn Error + 'a>> {
@@ -56,10 +63,10 @@ impl<'a> InputsFiles<'a> {
         match &output_mime.first_raw() {
             Some(o_mime) => {
                 if image_output.output_mime_type.contains(o_mime) {
-                    return image_output.reduce();
+                    return image_output.reduce(&self.direction);
                 }
                 if zip_output.output_mime_type.contains(o_mime) {
-                    return zip_output.reduce();
+                    return zip_output.reduce(&self.direction);
                 }
                 return Err(Box::new(output_e));
             }

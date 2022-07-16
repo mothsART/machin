@@ -6,7 +6,7 @@ use std::io::Write;
 
 use colored::*;
 
-use crate::machreduce::InputTo;
+use crate::machreduce::{InputTo, Direction};
 use crate::machreduce::ZipOutputFile;
 
 impl<'a> ZipOutputFile<'a> {
@@ -19,7 +19,7 @@ impl<'a> ZipOutputFile<'a> {
 }
 
 impl<'a> InputTo<'a> for ZipOutputFile<'a> {
-    fn reduce(&self) -> Result<String, Box<dyn Error + 'a>> {
+    fn reduce(&self, _direction: &Direction) -> Result<String, Box<dyn Error + 'a>> {
         let lines = std::io::stdin().lines();
 
         let path = std::path::Path::new(&self.output_file);

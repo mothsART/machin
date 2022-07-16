@@ -7,7 +7,7 @@ use image::io::Reader as ImageReader;
 use image::{image_dimensions, GenericImage, ImageBuffer, Rgba};
 
 use crate::machreduce::ImageOutputFile;
-use crate::machreduce::InputTo;
+use crate::machreduce::{InputTo, Direction};
 
 impl<'a> ImageOutputFile<'a> {
     pub fn new(output_file: &'a str) -> ImageOutputFile<'a> {
@@ -25,7 +25,7 @@ struct ImagePath {
 }
 
 impl<'a> InputTo<'a> for ImageOutputFile<'a> {
-    fn reduce(&self) -> Result<String, Box<dyn Error + 'a>> {
+    fn reduce(&self, direction: &Direction) -> Result<String, Box<dyn Error + 'a>> {
         let lines = std::io::stdin().lines();
         let mut x_size: u32 = 0;
         let mut y_size: u32 = 0;
@@ -54,14 +54,26 @@ impl<'a> InputTo<'a> for ImageOutputFile<'a> {
                             continue;
                         }
                         if let Ok(dimensions) = image_dimensions(&_l) {
-                            _files.push(ImagePath {
-                                pos: dimensions.1,
-                                path: _l,
-                            });
-                            if dimensions.0 >= x_size {
-                                x_size = dimensions.0;
+                            if *direction == Direction::Horizontal {
+                                _files.push(ImagePath {
+                                    pos: dimensions.0,
+                                    path: _l,
+                                });
+                                if dimensions.1 >= y_size {
+                                    y_size = dimensions.1;
+                                }
+                                x_size += dimensions.0;
                             }
-                            y_size += dimensions.1;
+                            else {
+                                _files.push(ImagePath {
+                                    pos: dimensions.1,
+                                    path: _l,
+                                });
+                                if dimensions.0 >= x_size {
+                                    x_size = dimensions.0;
+                                }
+                                y_size += dimensions.1;
+                            }
                         }
                     }
                 }
@@ -70,7 +82,7 @@ impl<'a> InputTo<'a> for ImageOutputFile<'a> {
                 }
             }
         }
-        if _files.len() == 0 {
+        if _files.is_empty() {
             return Err(Box::new(NoPicturesFoundError {}));
         }
 
@@ -78,8 +90,15 @@ impl<'a> InputTo<'a> for ImageOutputFile<'a> {
         let mut before_pos = 0;
         for _file in _files.iter() {
             let new_img = ImageReader::open(&_file.path)?.decode()?;
-            if let Err(_e) = img_buf.copy_from(&new_img, 0, before_pos) {
-                continue;
+            if *direction == Direction::Horizontal {
+                if let Err(_e) = img_buf.copy_from(&new_img, before_pos, 0) {
+                    continue;
+                }
+            }
+            else {
+                if let Err(_e) = img_buf.copy_from(&new_img, 0, before_pos) {
+                    continue;
+                }
             }
             before_pos = _file.pos;
         }
