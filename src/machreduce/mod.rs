@@ -11,18 +11,28 @@ pub trait InputTo<'a> {
 }
 
 #[macro_export]
-macro_rules! create_reduce_input {
+macro_rules! create_reduce_check_inputs {
     ($struct_name:ident) => {
         pub struct $struct_name<'a> {
             output_file: &'a str,
             input_mime_type: Vec<&'a str>,
             output_mime_type: Vec<&'a str>,
         }
-    };
+    }
 }
 
-create_reduce_input!(ImageOutputFile);
-create_reduce_input!(ZipOutputFile);
+#[macro_export]
+macro_rules! create_reduce {
+    ($struct_name:ident) => {
+        pub struct $struct_name<'a> {
+            output_file: &'a str,
+            output_mime_type: Vec<&'a str>,
+        }
+    }
+}
+
+create_reduce_check_inputs!(ImageOutputFile);
+create_reduce!(ZipOutputFile);
 
 pub struct InputsFiles<'a> {
     pub output_file: &'a str,
@@ -45,7 +55,6 @@ impl<'a> InputsFiles<'a> {
 
         match &output_mime.first_raw() {
             Some(o_mime) => {
-                println!("{:?}", o_mime);
                 if image_output.output_mime_type.contains(o_mime) {
                     return image_output.reduce();
                 }

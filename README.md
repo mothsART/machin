@@ -77,6 +77,12 @@ Concatenate images on same file :
 ls *.png | machreduce -o result.png
 ```
 
+Create archiv (zip) with files:
+
+```zsh
+ls *.png | machreduce -o archive.zip
+```
+
 ## Dev
 
 Makefile inspire by https://git.sr.ht/~julienxx/castor/tree/master/item/Makefile

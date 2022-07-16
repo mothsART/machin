@@ -1,4 +1,5 @@
 use std::error::Error;
+use std::fmt;
 use std::path::Path;
 
 use colored::*;
@@ -37,26 +38,40 @@ impl<'a> InputTo<'a> for ImageOutputFile<'a> {
                         eprintln!(
                             "{}",
                             format!("Input file \"{}\" doesn't exist", _l)
-                                .black()
+                                .white()
                                 .on_red()
                         );
                         continue;
                     }
-                    if let Ok(dimensions) = image_dimensions(&_l) {
-                        _files.push(ImagePath {
-                            pos: dimensions.1,
-                            path: _l,
-                        });
-                        if dimensions.0 >= x_size {
-                            x_size = dimensions.0;
+                    if let Some(o_mime) = mime_guess::from_path(&_l).first_raw() {
+                        if !self.input_mime_type.contains(&o_mime) {
+                            eprintln!(
+                                "{}",
+                                format!("Input file \"{}\" not supported", _l)
+                                    .white()
+                                    .on_red()
+                            );
+                            continue;
                         }
-                        y_size += dimensions.1;
+                        if let Ok(dimensions) = image_dimensions(&_l) {
+                            _files.push(ImagePath {
+                                pos: dimensions.1,
+                                path: _l,
+                            });
+                            if dimensions.0 >= x_size {
+                                x_size = dimensions.0;
+                            }
+                            y_size += dimensions.1;
+                        }
                     }
                 }
                 Err(_) => {
                     continue;
                 }
             }
+        }
+        if _files.len() == 0 {
+            return Err(Box::new(NoPicturesFoundError {}));
         }
 
         let mut img_buf = <ImageBuffer<Rgba<u8>, _>>::new(x_size, y_size);
@@ -72,3 +87,18 @@ impl<'a> InputTo<'a> for ImageOutputFile<'a> {
         Ok(format!("images reduce to {}", self.output_file))
     }
 }
+
+#[derive(Debug)]
+pub struct NoPicturesFoundError {
+}
+
+impl<'a> fmt::Display for NoPicturesFoundError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "No input pictures found",
+        )
+    }
+}
+
+impl Error for NoPicturesFoundError {}
