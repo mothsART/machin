@@ -2,9 +2,13 @@ use std::error::Error;
 
 pub mod errors;
 pub mod image_reduce;
+pub mod pdf_reduce;
 pub mod zip_reduce;
 
 use crate::machreduce::errors::OutputFileUnsupportedError;
+use crate::machreduce::pdf_reduce::PdfOutputFile;
+use crate::machreduce::image_reduce::ImageOutputFile;
+use crate::machreduce::zip_reduce::ZipOutputFile;
 
 #[derive(PartialEq)]
 pub enum Direction {
@@ -15,30 +19,6 @@ pub enum Direction {
 pub trait InputTo<'a> {
     fn reduce(&self, direction: &Direction) -> Result<String, Box<dyn Error + 'a>>;
 }
-
-#[macro_export]
-macro_rules! create_reduce_check_inputs {
-    ($struct_name:ident) => {
-        pub struct $struct_name<'a> {
-            output_file: &'a str,
-            input_mime_type: Vec<&'a str>,
-            output_mime_type: Vec<&'a str>,
-        }
-    }
-}
-
-#[macro_export]
-macro_rules! create_reduce {
-    ($struct_name:ident) => {
-        pub struct $struct_name<'a> {
-            output_file: &'a str,
-            output_mime_type: Vec<&'a str>,
-        }
-    }
-}
-
-create_reduce_check_inputs!(ImageOutputFile);
-create_reduce!(ZipOutputFile);
 
 pub struct InputsFiles<'a> {
     pub output_file: &'a str,
@@ -58,12 +38,16 @@ impl<'a> InputsFiles<'a> {
         };
 
         let image_output = ImageOutputFile::new(self.output_file);
+        let pdf_output = PdfOutputFile::new(self.output_file);
         let zip_output = ZipOutputFile::new(self.output_file);
 
         match &output_mime.first_raw() {
             Some(o_mime) => {
                 if image_output.output_mime_type.contains(o_mime) {
                     return image_output.reduce(&self.direction);
+                }
+                if pdf_output.output_mime_type == *o_mime {
+                    return pdf_output.reduce(&self.direction);
                 }
                 if zip_output.output_mime_type.contains(o_mime) {
                     return zip_output.reduce(&self.direction);

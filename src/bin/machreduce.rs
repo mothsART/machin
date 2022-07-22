@@ -6,6 +6,7 @@ extern crate mime;
 extern crate mime_guess;
 extern crate resvg;
 extern crate usvg;
+extern crate lopdf;
 
 use colored::*;
 

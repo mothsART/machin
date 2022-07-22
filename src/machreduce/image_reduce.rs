@@ -6,8 +6,13 @@ use colored::*;
 use image::io::Reader as ImageReader;
 use image::{image_dimensions, GenericImage, ImageBuffer, Rgba};
 
-use crate::machreduce::ImageOutputFile;
 use crate::machreduce::{InputTo, Direction};
+
+pub struct ImageOutputFile<'a> {
+    pub output_file: &'a str,
+    pub input_mime_type: Vec<&'a str>,
+    pub output_mime_type: Vec<&'a str>,
+}
 
 impl<'a> ImageOutputFile<'a> {
     pub fn new(output_file: &'a str) -> ImageOutputFile<'a> {
