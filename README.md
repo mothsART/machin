@@ -77,6 +77,12 @@ Concatenate images on same file :
 ls *.png | machreduce -o result.png
 ```
 
+Create pdf with images:
+
+```zsh
+ls *.jpg | machreduce -o result.pdf
+```
+
 Create archiv (zip) with files:
 
 ```zsh
