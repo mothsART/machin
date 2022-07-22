@@ -13,14 +13,14 @@ edition = "2021"
 
 [dependencies]
 clap = { version="3.2", features=['cargo'] }
-lopdf="0.20.0"
+lopdf = { version="0.27", features=["embed_image"] }
 exitcode="1.1.2"
 mime="0.3"
 mime_guess="2.0"
 resvg="0.14"
 usvg="0.14.0"
 tiny-skia="0.5"
-image= { version="0.24", features=['avif-encoder'] }
+image = { version="0.24", features=['avif-encoder'] }
 markdown = "0.3"
 colored = "2"
 zip = "0.6"

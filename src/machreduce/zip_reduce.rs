@@ -7,7 +7,11 @@ use std::io::Write;
 use colored::*;
 
 use crate::machreduce::{InputTo, Direction};
-use crate::machreduce::ZipOutputFile;
+
+pub struct ZipOutputFile<'a> {
+    pub output_file: &'a str,
+    pub output_mime_type: Vec<&'a str>,
+}
 
 impl<'a> ZipOutputFile<'a> {
     pub fn new(output_file: &'a str) -> ZipOutputFile<'a> {
