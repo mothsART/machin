@@ -1,12 +1,12 @@
 use std::error::Error;
 use std::fs::File;
 use std::io::Read;
-use std::path::Path;
 use std::io::Write;
+use std::path::Path;
 
 use colored::*;
 
-use crate::machreduce::{InputTo, Direction};
+use crate::machreduce::{Direction, InputTo};
 
 pub struct ZipOutputFile<'a> {
     pub output_file: &'a str,
@@ -29,7 +29,8 @@ impl<'a> InputTo<'a> for ZipOutputFile<'a> {
         let path = std::path::Path::new(&self.output_file);
         let file = std::fs::File::create(&path).unwrap();
         let mut zip = zip::ZipWriter::new(file);
-        let options = zip::write::FileOptions::default().compression_method(zip::CompressionMethod::Stored);
+        let options =
+            zip::write::FileOptions::default().compression_method(zip::CompressionMethod::Stored);
         let mut buffer = Vec::new();
 
         for line in lines {

@@ -2,11 +2,11 @@
 extern crate clap;
 extern crate colored;
 extern crate exitcode;
+extern crate lopdf;
 extern crate mime;
 extern crate mime_guess;
 extern crate resvg;
 extern crate usvg;
-extern crate lopdf;
 
 use colored::*;
 
@@ -39,10 +39,10 @@ fn main() {
 
     if let Some(direction_value) = matches.value_of("direction") {
         match direction_value {
-            "vertical" => { },
+            "vertical" => {}
             "horizontal" => {
                 direction = Direction::Horizontal;
-            },
+            }
             _e => {
                 eprintln!(
                     "{}",

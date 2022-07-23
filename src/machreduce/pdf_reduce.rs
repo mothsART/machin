@@ -2,12 +2,14 @@ use std::error::Error;
 use std::path::Path;
 
 use colored::*;
-use lopdf::content::{Content};
-use lopdf::{Document, Object, Stream, dictionary};
-use lopdf::xobject;
 use image::image_dimensions;
+use image::io::Reader as ImageReader;
+use lopdf::content::Content;
+use lopdf::xobject;
+use lopdf::{dictionary, Document, Object, Stream};
+use tempfile::tempdir;
 
-use crate::machreduce::{InputTo, Direction};
+use crate::machreduce::{Direction, InputTo};
 
 pub struct PdfOutputFile<'a> {
     pub output_file: &'a str,
@@ -19,7 +21,7 @@ impl<'a> PdfOutputFile<'a> {
     pub fn new(output_file: &'a str) -> PdfOutputFile<'a> {
         PdfOutputFile {
             output_file,
-            input_mime_type: vec!["image/jpeg"],
+            input_mime_type: vec!["image/png", "image/jpeg"],
             output_mime_type: "application/pdf",
         }
     }
@@ -31,10 +33,8 @@ impl<'a> InputTo<'a> for PdfOutputFile<'a> {
 
         let mut doc = Document::with_version("1.5");
         let pages_id = doc.new_object_id();
-        let content = Content {
-            operations: vec![],
-        };
-        
+        let content = Content { operations: vec![] };
+
         let mut pdf_kids = Vec::new();
         let mut _files = Vec::new();
 
@@ -69,27 +69,40 @@ impl<'a> InputTo<'a> for PdfOutputFile<'a> {
             }
         }
 
-        for f in &_files {
+        let tmp_dir = tempdir()?;
+
+        for (i, f) in _files.iter().enumerate() {
             let content_id = doc.add_object(Stream::new(dictionary! {}, content.encode()?));
             let page_id = doc.add_object(dictionary! {
                 "Type" => "Page",
                 "Parent" => pages_id,
                 "Contents" => content_id,
             });
-            if let Ok(img) = xobject::image(f) {
-                if let Ok(dimensions) = image_dimensions(&f) {
+            let new_path;
+            let input_mime = mime_guess::from_path(&f);
+            let mut img_path = f;
+            if let Some(img_mime) = &input_mime.first_raw() {
+                if !img_mime.contains("image/jpeg") {
+                    let img = ImageReader::open(&img_path)?.decode()?;
+                    new_path = format!("{}-{}.jpg", tmp_dir.path().to_str().unwrap_or(""), i);
+                    img_path = &new_path;
+                    img.save(&img_path)?;
+                }
+            }
+            if let Ok(img) = xobject::image(img_path) {
+                if let Ok(dimensions) = image_dimensions(&img_path) {
                     let insert_result = doc.insert_image(
                         page_id,
                         img,
                         (10., dimensions.1 as f64),
-                        (dimensions.0 as f64, dimensions.1 as f64)
+                        (dimensions.0 as f64, dimensions.1 as f64),
                     );
                     if let Some(insert_error) = insert_result.err() {
                         eprintln!(
                             "{}",
                             format!("Couln't insert images: {}", insert_error)
-                            .white()
-                            .on_red()
+                                .white()
+                                .on_red()
                         );
                         continue;
                     }

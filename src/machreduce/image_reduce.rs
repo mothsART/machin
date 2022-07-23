@@ -6,7 +6,7 @@ use colored::*;
 use image::io::Reader as ImageReader;
 use image::{image_dimensions, GenericImage, ImageBuffer, Rgba};
 
-use crate::machreduce::{InputTo, Direction};
+use crate::machreduce::{Direction, InputTo};
 
 pub struct ImageOutputFile<'a> {
     pub output_file: &'a str,
@@ -68,8 +68,7 @@ impl<'a> InputTo<'a> for ImageOutputFile<'a> {
                                     y_size = dimensions.1;
                                 }
                                 x_size += dimensions.0;
-                            }
-                            else {
+                            } else {
                                 _files.push(ImagePath {
                                     pos: dimensions.1,
                                     path: _l,
@@ -99,11 +98,8 @@ impl<'a> InputTo<'a> for ImageOutputFile<'a> {
                 if let Err(_e) = img_buf.copy_from(&new_img, before_pos, 0) {
                     continue;
                 }
-            }
-            else {
-                if let Err(_e) = img_buf.copy_from(&new_img, 0, before_pos) {
-                    continue;
-                }
+            } else if let Err(_e) = img_buf.copy_from(&new_img, 0, before_pos) {
+                continue;
             }
             before_pos = _file.pos;
         }
@@ -113,15 +109,11 @@ impl<'a> InputTo<'a> for ImageOutputFile<'a> {
 }
 
 #[derive(Debug)]
-pub struct NoPicturesFoundError {
-}
+pub struct NoPicturesFoundError {}
 
-impl<'a> fmt::Display for NoPicturesFoundError {
+impl fmt::Display for NoPicturesFoundError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "No input pictures found",
-        )
+        write!(f, "No input pictures found",)
     }
 }
 

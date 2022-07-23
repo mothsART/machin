@@ -6,14 +6,14 @@ pub mod pdf_reduce;
 pub mod zip_reduce;
 
 use crate::machreduce::errors::OutputFileUnsupportedError;
-use crate::machreduce::pdf_reduce::PdfOutputFile;
 use crate::machreduce::image_reduce::ImageOutputFile;
+use crate::machreduce::pdf_reduce::PdfOutputFile;
 use crate::machreduce::zip_reduce::ZipOutputFile;
 
 #[derive(PartialEq)]
 pub enum Direction {
     Vertical,
-    Horizontal
+    Horizontal,
 }
 
 pub trait InputTo<'a> {
@@ -27,7 +27,10 @@ pub struct InputsFiles<'a> {
 
 impl<'a> InputsFiles<'a> {
     pub fn new(output_file: &'a str, direction: Direction) -> InputsFiles<'a> {
-        InputsFiles { output_file, direction }
+        InputsFiles {
+            output_file,
+            direction,
+        }
     }
 
     pub fn reduce(&mut self) -> Result<String, Box<dyn Error + 'a>> {
