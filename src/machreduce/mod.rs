@@ -2,6 +2,7 @@ use std::error::Error;
 
 pub mod errors;
 pub mod image_reduce;
+pub mod pdf;
 pub mod pdf_reduce;
 pub mod zip_reduce;
 

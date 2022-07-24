@@ -89,6 +89,12 @@ Create archiv (zip) with files:
 ls *.png | machreduce -o archive.zip
 ```
 
+Create one pdf with several pdf
+
+```zsh
+ls *.pdf | machreduce -o merge.pdf
+```
+
 ## Dev
 
 Makefile inspire by https://git.sr.ht/~julienxx/castor/tree/master/item/Makefile

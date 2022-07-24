@@ -17,3 +17,14 @@ impl<'a> fmt::Display for OutputFileUnsupportedError<'a> {
 }
 
 impl<'a> Error for OutputFileUnsupportedError<'a> {}
+
+#[derive(Debug)]
+pub struct InputFilesToPdfUnsupportedError {}
+
+impl fmt::Display for InputFilesToPdfUnsupportedError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "Some inputs files extension not supported")
+    }
+}
+
+impl Error for InputFilesToPdfUnsupportedError {}
