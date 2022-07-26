@@ -28,32 +28,27 @@ machmap -s svg
 Convert svg files to png :
 
 ```zsh
-ls input.svg | machmap -o output.png
+ls .svg | machmap -e png
 ```
 
 Convert png files to jpg, avif :
 
 ```zsh
-ls input.png | machmap -o output.jpg
-ls input.png | machmap -o output.avif
+ls *.png | machmap -e jpg
+ls *.png | machmap -e avif
 ```
 
-Convert jpg file to png :
+Convert jpg file to png, avif :
 
 ```zsh
-ls content/essai.jpg | machmap -o result.png
-```
-
-Convert jpg file to avif :
-
-```zsh
-ls file.jpg | machmap -o result.avif
+ls *.jpg | machmap -e png
+ls *.jpg | machmap -e avif
 ```
 
 Convert markdown to 
 
 ```zsh
-ls README.md | machmap -o result.png
+ls *.md | machmap -e png
 ```
 
 ## Some **machconvert** examples

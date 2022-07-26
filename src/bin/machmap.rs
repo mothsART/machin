@@ -32,9 +32,9 @@ fn main() {
         .about("Transform files into another format")
         .arg_required_else_help(true)
         .arg(
-            Arg::new("output")
-                .short('o')
-                .help("output to a specific file pattern (like *.png)")
+            Arg::new("extension")
+                .short('e')
+                .help("output to a specific extension name (like png)")
                 .takes_value(true),
         )
         .arg(
@@ -62,61 +62,36 @@ fn main() {
         }
         return;
     }
-    if let Some(output_file) = matches.value_of("output") {
-        let output_mime = mime_guess::from_path(output_file);
+    if let Some(extension) = matches.value_of("extension") {
+        let fake_path = &format!("fake.{}", extension);
+        let output_mime = mime_guess::from_path(fake_path);
         if output_mime.first().is_none() {
             colored_err!(format!(
                 "Output file extension \"{}\" doesn't been reconize.",
-                output_file
+                extension
             ));
             process::exit(exitcode::DATAERR);
         }
 
-        let mut is_static_output_file = true;
-        let mut output_extension = "";
-        if let Some(prefix) = Path::new(&output_file).file_stem() {
-            if prefix == "*" {
-                is_static_output_file = false;
-                output_extension = Path::new(&output_file).extension().and_then(OsStr::to_str).unwrap();
-            }
-        }
-
-        let lines = readlines();
-        if is_static_output_file == true && lines.len() >= 2 {
-            colored_err!(format!(
-                "Output file extension \"{}\" is unique. You can't choise it for every input files.",
-                output_file
-            ));
-            process::exit(exitcode::DATAERR);
-        }
-
-        for _l in lines {
-            let mut o_file = output_file;
-            let tmp_file;
-
+        for _l in readlines() {
             if !Path::new(&_l).exists() {
                 colored_err!(format!(
                     "Input file \"{}\" doesn't exist", _l
                 ));
                 continue;
             }
-            if !is_static_output_file {
-                tmp_file = format!(
-                    "{:?}.{:?}",
-                    Path::new(&_l).file_stem().unwrap(),
-                    &output_extension,
-                );
-                o_file = &tmp_file;
-            }
+            let o_file = format!(
+                "{}.{}",
+                Path::new(&_l).file_stem().unwrap().to_str().unwrap(),
+                &extension.to_string(),
+            );
             let i_f = InputsFiles::new(&_l, &o_file);
             match i_f.mime_map() {
-                Ok(r) => {
-                    colored_success!(r);
-                }
-                Err(e) => {
-                    colored_err!(e.to_string());
-                }
+                Ok(r) => colored_success!(r),
+                Err(e) => colored_err!(e.to_string())
             };
         }
+        return;
     }
+    colored_err!("You must choose an extension file for conversion");
 }
