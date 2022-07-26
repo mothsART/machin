@@ -64,12 +64,9 @@ impl<'a> ImagesToPdf<'a> {
                         (dimensions.0 as f64, dimensions.1 as f64),
                     );
                     if let Some(insert_error) = insert_result.err() {
-                        eprintln!(
-                            "{}",
-                            format!("Couln't insert images: {}", insert_error)
-                                .white()
-                                .on_red()
-                        );
+                        colored_err!(format!(
+                            "Couln't insert images: {}", insert_error
+                        ));
                         continue;
                     }
                     pdf_kids.push(page_id.into());
