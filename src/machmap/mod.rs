@@ -37,6 +37,7 @@ macro_rules! create_input {
                     input_file: self.input_file,
                     output_ext: self.output_file,
                 };
+                println!("blublu");
                 match &output_mime.first_raw() {
                     Some(i_mime) => match self.map.get(i_mime) {
                         Some(val) => val.convert(),

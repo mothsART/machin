@@ -11,10 +11,19 @@ use colored::*;
 use std::io::{self, BufRead};
 use std::path::Path;
 use std::process;
+use std::ffi::OsStr;
 
 use clap::{Arg, Command};
 
 use machin::machmap::*;
+use machin::{colored_err, colored_success};
+
+fn readlines() -> Vec<String> {
+    use std::io::prelude::*;
+    let stdin = std::io::stdin();
+    let v = stdin.lock().lines().map(|x| x.unwrap()).collect();
+    v
+}
 
 fn main() {
     let matches = Command::new("machmap")
@@ -45,10 +54,10 @@ fn main() {
                 println!("{}", r);
             }
             Err(_e) => {
-                eprintln!(
+                colored_err!(format!(
                     "The type of file \".{}\" is not yet supported.",
                     support_arg
-                );
+                ));
             }
         }
         return;
@@ -56,38 +65,58 @@ fn main() {
     if let Some(output_file) = matches.value_of("output") {
         let output_mime = mime_guess::from_path(output_file);
         if output_mime.first().is_none() {
-            eprintln!(
+            colored_err!(format!(
                 "Output file extension \"{}\" doesn't been reconize.",
                 output_file
-            );
+            ));
             process::exit(exitcode::DATAERR);
         }
-        for line in io::stdin().lock().lines() {
-            match line {
-                Ok(_l) => {
-                    if !Path::new(&_l).exists() {
-                        eprintln!(
-                            "{}",
-                            format!("Input file \"{}\" doesn't exist", _l)
-                                .black()
-                                .on_red()
-                        );
-                        continue;
-                    }
-                    let i_f = InputsFiles::new(&_l, output_file);
-                    match i_f.mime_map() {
-                        Ok(r) => {
-                            println!("{}", r.white().on_green());
-                        }
-                        Err(e) => {
-                            eprintln!("{}", e.to_string().white().on_red());
-                        }
-                    }
-                }
-                Err(_) => {
-                    continue;
-                }
+
+        let mut is_static_output_file = true;
+        let mut output_extension = "";
+        if let Some(prefix) = Path::new(&output_file).file_stem() {
+            if prefix == "*" {
+                is_static_output_file = false;
+                output_extension = Path::new(&output_file).extension().and_then(OsStr::to_str).unwrap();
             }
+        }
+
+        let lines = readlines();
+        if is_static_output_file == true && lines.len() >= 2 {
+            colored_err!(format!(
+                "Output file extension \"{}\" is unique. You can't choise it for every input files.",
+                output_file
+            ));
+            process::exit(exitcode::DATAERR);
+        }
+
+        for _l in lines {
+            let mut o_file = output_file;
+            let tmp_file;
+
+            if !Path::new(&_l).exists() {
+                colored_err!(format!(
+                    "Input file \"{}\" doesn't exist", _l
+                ));
+                continue;
+            }
+            if !is_static_output_file {
+                tmp_file = format!(
+                    "{:?}.{:?}",
+                    Path::new(&_l).file_stem().unwrap(),
+                    &output_extension,
+                );
+                o_file = &tmp_file;
+            }
+            let i_f = InputsFiles::new(&_l, &o_file);
+            match i_f.mime_map() {
+                Ok(r) => {
+                    colored_success!(r);
+                }
+                Err(e) => {
+                    colored_err!(e.to_string());
+                }
+            };
         }
     }
 }

@@ -25,22 +25,17 @@ Give the list of supported conversion for an entry format :
 machmap -s svg
 ```
 
-Convert svg file to png :
+Convert svg files to png :
 
 ```zsh
-ls file.svg | machmap -o result.png
+ls input.svg | machmap -o output.png
 ```
 
-Convert png file to jpg :
+Convert png files to jpg, avif :
 
 ```zsh
-ls file.png | machmap -o result.jpg
-```
-
-Convert png file to avif :
-
-```zsh
-ls file.png | machmap -o result.avif
+ls input.png | machmap -o output.jpg
+ls input.png | machmap -o output.avif
 ```
 
 Convert jpg file to png :

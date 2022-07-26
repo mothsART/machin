@@ -13,6 +13,7 @@ use colored::*;
 use clap::{Arg, Command};
 
 use machin::machreduce::*;
+use machin::{colored_err, colored_success};
 
 fn main() {
     let matches = Command::new("machreduce")
@@ -44,10 +45,9 @@ fn main() {
                 direction = Direction::Horizontal;
             }
             _e => {
-                eprintln!(
-                    "{}",
-                    format!("direction argument \"{}\" isn't a good value. There're only 2 options : vertical or horizontal", _e).white().on_red()
-                );
+                colored_err!(format!(
+                    "direction argument \"{}\" isn't a good value. There're only 2 options : vertical or horizontal", _e
+                ));
                 return;
             }
         }
@@ -57,10 +57,10 @@ fn main() {
         Some(output_file) => {
             let mut i_f = InputsFiles::new(output_file, direction);
             match i_f.reduce() {
-                Ok(r) => println!("{}", r.white().on_green()),
-                Err(e) => eprintln!("{}", e.to_string().white().on_red()),
+                Ok(r) => colored_success!(r),
+                Err(e) => colored_err!(e.to_string()),
             };
         }
-        None => eprintln!("output file is required"),
+        None => colored_err!("output file is required"),
     }
 }

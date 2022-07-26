@@ -14,6 +14,7 @@ use std::path::Path;
 use clap::{Arg, Command};
 
 use machin::machconvert::*;
+use machin::{colored_err, colored_success};
 
 fn convert_files(prefix: Option<&str>, rotate_value: Option<&str>) {
     for line in io::stdin().lock().lines() {
@@ -24,21 +25,18 @@ fn convert_files(prefix: Option<&str>, rotate_value: Option<&str>) {
                     output_file = format!("{}{}", _prefix, output_file);
                 }
                 if !Path::new(&l).exists() {
-                    eprintln!(
-                        "{}",
-                        format!("Input file \"{}\" doesn't exist", l)
-                            .black()
-                            .on_red()
-                    );
+                    colored_err!(format!(
+                        "Input file \"{}\" doesn't exist", l
+                    ));
                     continue;
                 }
                 let i_f = InputsFiles::new(&l, &output_file);
                 match i_f.convert(rotate_value) {
                     Ok(r) => {
-                        println!("{}", r.white().on_green());
+                        colored_success!(r);
                     }
                     Err(e) => {
-                        eprintln!("{}", e.to_string().white().on_red());
+                        colored_err!(e.to_string());
                     }
                 };
             }
