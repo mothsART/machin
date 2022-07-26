@@ -95,7 +95,7 @@ impl<'a> InputTo<'a> for ImageOutputFile<'a> {
             } else if let Err(_e) = img_buf.copy_from(&new_img, 0, before_pos) {
                 continue;
             }
-            before_pos = _file.pos;
+            before_pos += _file.pos;
         }
         img_buf.save(self.output_file)?;
         Ok(format!("images reduce to {}", self.output_file))
