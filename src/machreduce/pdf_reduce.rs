@@ -38,9 +38,7 @@ impl<'a> InputTo<'a> for PdfOutputFile<'a> {
             match line {
                 Ok(_l) => {
                     if !Path::new(&_l).exists() {
-                        colored_err!(format!(
-                            "Input file \"{}\" doesn't exist", _l
-                        ));
+                        colored_err!(format!("Input file \"{}\" doesn't exist", _l));
                         continue;
                     }
                     if let Some(o_mime) = mime_guess::from_path(&_l).first_raw() {

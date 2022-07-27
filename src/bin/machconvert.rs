@@ -25,9 +25,7 @@ fn convert_files(prefix: Option<&str>, rotate_value: Option<&str>) {
                     output_file = format!("{}{}", _prefix, output_file);
                 }
                 if !Path::new(&l).exists() {
-                    colored_err!(format!(
-                        "Input file \"{}\" doesn't exist", l
-                    ));
+                    colored_err!(format!("Input file \"{}\" doesn't exist", l));
                     continue;
                 }
                 let i_f = InputsFiles::new(&l, &output_file);

@@ -73,9 +73,7 @@ fn main() {
 
         for _l in readlines() {
             if !Path::new(&_l).exists() {
-                colored_err!(format!(
-                    "Input file \"{}\" doesn't exist", _l
-                ));
+                colored_err!(format!("Input file \"{}\" doesn't exist", _l));
                 continue;
             }
             let o_file = format!(
@@ -86,7 +84,7 @@ fn main() {
             let i_f = InputsFiles::new(&_l, &o_file);
             match i_f.mime_map() {
                 Ok(r) => colored_success!(r),
-                Err(e) => colored_err!(e.to_string())
+                Err(e) => colored_err!(e.to_string()),
             };
         }
         return;

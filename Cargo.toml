@@ -1,6 +1,6 @@
 [package]
 name = "machin"
-version = "0.3.0"
+version = "0.4.0"
 authors = ["Ferry Jérémie <ferryjeremie@free.fr>"]
 description = "Machin is a cli program that simplifies file conversions and batch processing. It's inspired from filter/map/reduce"
 keywords = ["app", "cli", "files", "conversion", "batch"]

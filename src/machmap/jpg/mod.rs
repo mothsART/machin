@@ -1,10 +1,10 @@
 pub mod jpgtoavif;
-pub mod jpgtopng;
 pub mod jpgtopdf;
+pub mod jpgtopng;
 
 use crate::machmap::jpg::jpgtoavif::JPGTOAVIF;
-use crate::machmap::jpg::jpgtopng::JPGTOPNG;
 use crate::machmap::jpg::jpgtopdf::JpgToPdf;
+use crate::machmap::jpg::jpgtopng::JPGTOPNG;
 
 use crate::machmap::{HashMap, InputTo, JPGInputFile};
 

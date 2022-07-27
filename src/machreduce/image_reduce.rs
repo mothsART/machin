@@ -40,16 +40,12 @@ impl<'a> InputTo<'a> for ImageOutputFile<'a> {
             match line {
                 Ok(_l) => {
                     if !Path::new(&_l).exists() {
-                        colored_err!(format!(
-                            "Input file \"{}\" doesn't exist", _l
-                        ));
+                        colored_err!(format!("Input file \"{}\" doesn't exist", _l));
                         continue;
                     }
                     if let Some(o_mime) = mime_guess::from_path(&_l).first_raw() {
                         if !self.input_mime_type.contains(&o_mime) {
-                            colored_err!(format!(
-                                "Input file \"{}\" not supported", _l
-                            ));
+                            colored_err!(format!("Input file \"{}\" not supported", _l));
                             continue;
                         }
                         if let Ok(dimensions) = image_dimensions(&_l) {
