@@ -25,24 +25,27 @@ Give the list of supported conversion for an entry format :
 machmap -s svg
 ```
 
-Convert svg files to png :
+Convert svg files to png, jpg :
 
 ```zsh
-ls .svg | machmap -e png
+ls *.svg | machmap -e png
+ls *.svg | machmap -e jpg
 ```
 
-Convert png files to jpg, avif :
+Convert png files to jpg, avif, pdf :
 
 ```zsh
 ls *.png | machmap -e jpg
 ls *.png | machmap -e avif
+ls *.png | machmap -e pdf
 ```
 
-Convert jpg file to png, avif :
+Convert jpg file to png, avif, pdf :
 
 ```zsh
 ls *.jpg | machmap -e png
 ls *.jpg | machmap -e avif
+ls *.jpg | machmap -e pdf
 ```
 
 Convert markdown to 

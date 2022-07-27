@@ -8,10 +8,8 @@ extern crate resvg;
 extern crate usvg;
 
 use colored::*;
-use std::io::{self, BufRead};
 use std::path::Path;
 use std::process;
-use std::ffi::OsStr;
 
 use clap::{Arg, Command};
 
