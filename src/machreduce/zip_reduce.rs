@@ -24,7 +24,7 @@ impl<'a> ZipOutputFile<'a> {
 
 impl<'a> InputTo<'a> for ZipOutputFile<'a> {
     fn reduce(&self, _direction: &Direction) -> Result<String, Box<dyn Error + 'a>> {
-        let lines = std::io::stdin().lines();
+        let lines = std::io::stdin().lock().lines();
 
         let path = std::path::Path::new(&self.output_file);
         let file = std::fs::File::create(&path).unwrap();

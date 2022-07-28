@@ -24,7 +24,7 @@ impl<'a> PdfOutputFile<'a> {
 
 impl<'a> InputTo<'a> for PdfOutputFile<'a> {
     fn reduce(&self, _direction: &Direction) -> Result<String, Box<dyn Error + 'a>> {
-        let lines = std::io::stdin().lines();
+        let lines = std::io::stdin().lock().lines();
         let mut _files = Vec::new();
         let mut only_img = true;
         let mut only_pdf = true;

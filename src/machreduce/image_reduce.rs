@@ -31,7 +31,7 @@ struct ImagePath {
 
 impl<'a> InputTo<'a> for ImageOutputFile<'a> {
     fn reduce(&self, direction: &Direction) -> Result<String, Box<dyn Error + 'a>> {
-        let lines = std::io::stdin().lines();
+        let lines = std::io::stdin().lock().lines();
         let mut x_size: u32 = 0;
         let mut y_size: u32 = 0;
         let mut _files = Vec::new();
