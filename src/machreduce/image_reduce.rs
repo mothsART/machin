@@ -3,6 +3,7 @@ use std::fmt;
 use std::path::Path;
 
 use colored::*;
+use std::io::BufRead;
 use image::io::Reader as ImageReader;
 use image::{image_dimensions, GenericImage, ImageBuffer, Rgba};
 

@@ -1,6 +1,6 @@
 use std::error::Error;
 use std::fs::File;
-use std::io::Read;
+use std::io::{Read, BufRead};
 use std::io::Write;
 use std::path::Path;
 
