@@ -5,6 +5,7 @@ use std::path::Path;
 use colored::*;
 use image::io::Reader as ImageReader;
 use image::{image_dimensions, GenericImage, ImageBuffer, Rgba};
+use std::io::BufRead;
 
 use crate::machreduce::{Direction, InputTo};
 
