@@ -56,10 +56,15 @@ ls *.md | machmap -e png
 
 ## Some **machconvert** examples
 
-Apply a 180 degree rotation of photo.jpg to prefix_photo.jpg
+Apply a grayscale, a vertical flip and at last a 90 degree rotation of photo.jpg to prefix_photo.jpg
+
+Order is important :
+1. On first, color option
+2. flip option (vertical or horizontal)
+3. rotation
 
 ```zsh
-ls photo.jpg | machconvert -r 180 -p prefix_
+ls photo.jpg | machconvert -c grayscale -f vertical -r 90 -p prefix_
 ```
 
 ## Some **machreduce** examples
@@ -82,7 +87,7 @@ Create archiv (zip) with files:
 ls *.png | machreduce -o archive.zip
 ```
 
-Create one pdf with several pdf
+Create one pdf with several pdfr
 
 ```zsh
 ls *.pdf | machreduce -o merge.pdf

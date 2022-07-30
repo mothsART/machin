@@ -1,8 +1,12 @@
 use image::imageops;
 use image::io::Reader as ImageReader;
+use image::DynamicImage::{ImageLuma8, ImageRgba8};
 use std::error::Error;
 
-use crate::machconvert::errors::UnsupportedRotateError;
+use colored::Colorize;
+
+use crate::machconvert::errors::{ArgConvertError, UnsupportedRotateError};
+use crate::machconvert::{ConvertArgs, ConvertFlip};
 
 impl<'a> ImageInputFile<'a> {
     pub fn new(input_file: &'a str, output_file: &'a str) -> ImageInputFile<'a> {
@@ -14,31 +18,71 @@ impl<'a> ImageInputFile<'a> {
 }
 
 impl<'a> InputTo<'a> for ImageInputFile<'a> {
-    fn convert(&self, rotate_value: &str) -> Result<String, Box<dyn Error + 'a>> {
+    fn convert(&self, args: &ConvertArgs) -> Result<String, Box<dyn Error + 'a>> {
         let e = UnsupportedRotateError {};
-        match rotate_value.parse::<i16>() {
-            Ok(r) => {
-                if r == 90 || r == 180 || r == 270 {
-                    let img = ImageReader::open(&self.input_file)?.decode()?;
-                    let new_img;
-                    if r == 90 {
-                        new_img = imageops::rotate90(&img);
-                    } else if r == 180 {
-                        new_img = imageops::rotate180(&img);
-                    } else {
-                        new_img = imageops::rotate270(&img);
-                    }
-                    new_img.save(self.output_file)?;
-                    Ok(format!(
-                        "apply a {} degree rotation of {} to {}",
-                        rotate_value, self.input_file, self.output_file,
-                    ))
-                } else {
-                    Err(Box::new(e))
+        let arg_e = ArgConvertError {};
+
+        if None == args.color && None == args.flip && None == args.rotate {
+            return Err(Box::new(arg_e));
+        }
+
+        let mut step = 1;
+        let mut img = ImageReader::open(&self.input_file)?.decode()?;
+
+        if args.color.is_some() {
+            img = ImageLuma8(imageops::grayscale(&img));
+            colored_success!(format!(
+                "Step {} : apply a grayscale of {} to {}",
+                step, self.input_file, self.output_file,
+            ));
+            step += 1;
+        }
+
+        if let Some(flip_value) = &args.flip {
+            match flip_value {
+                ConvertFlip::Horizontal => {
+                    img = ImageRgba8(imageops::flip_horizontal(&img));
+                    colored_success!(format!(
+                        "Step {} : apply an horizontal flip of {} to {}",
+                        step, self.input_file, self.output_file,
+                    ));
+                }
+                ConvertFlip::Vertical => {
+                    img = ImageRgba8(imageops::flip_vertical(&img));
+                    colored_success!(format!(
+                        "Step {} : apply a vertical flip of {} to {}",
+                        step, self.input_file, self.output_file,
+                    ));
                 }
             }
-            Err(_e) => Err(Box::new(e)),
+            step += 1;
         }
+
+        if let Some(r_value) = args.rotate {
+            match r_value.parse::<i16>() {
+                Ok(r) => {
+                    if r == 90 || r == 180 || r == 270 {
+                        if r == 90 {
+                            img = ImageRgba8(imageops::rotate90(&img));
+                        } else if r == 180 {
+                            img = ImageRgba8(imageops::rotate180(&img));
+                        } else {
+                            img = ImageRgba8(imageops::rotate270(&img));
+                        }
+                        colored_success!(format!(
+                            "Step {} : apply a {} degree rotation of {} to {}",
+                            step, r_value, self.input_file, self.output_file,
+                        ));
+                    } else {
+                        return Err(Box::new(e));
+                    }
+                }
+                Err(_e) => return Err(Box::new(e)),
+            };
+        }
+
+        img.save(self.output_file)?;
+        Ok(String::new())
     }
 }
 
@@ -53,7 +97,7 @@ macro_rules! create_convert_input {
 }
 
 pub trait InputTo<'a> {
-    fn convert(&self, rotate_value: &str) -> Result<String, Box<dyn Error + 'a>>;
+    fn convert(&self, args: &ConvertArgs) -> Result<String, Box<dyn Error + 'a>>;
 }
 
 create_convert_input!(ImageInputFile);
