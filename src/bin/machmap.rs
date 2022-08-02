@@ -11,8 +11,6 @@ use colored::*;
 use std::path::Path;
 use std::process;
 
-use clap::{Arg, Command};
-
 use machin::machmap::*;
 use machin::{colored_err, colored_success};
 
@@ -24,24 +22,7 @@ fn readlines() -> Vec<String> {
 }
 
 fn main() {
-    let matches = Command::new("machmap")
-        .version(crate_version!())
-        .author(crate_authors!())
-        .about("Transform files into another format")
-        .arg_required_else_help(true)
-        .arg(
-            Arg::new("extension")
-                .short('e')
-                .help("output to a specific extension name (like png)")
-                .takes_value(true),
-        )
-        .arg(
-            Arg::new("support")
-                .short('s')
-                .help("return list of supporting conversion")
-                .takes_value(true),
-        )
-        .get_matches();
+    let matches = cli::build_cli("machmap", crate_version!(), crate_authors!()).get_matches();
 
     if let Some(support_arg) = matches.value_of("support") {
         let fake_path = &format!("fake.{}", support_arg);

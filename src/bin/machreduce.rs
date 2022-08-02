@@ -10,31 +10,11 @@ extern crate usvg;
 
 use colored::*;
 
-use clap::{Arg, Command};
-
 use machin::machreduce::*;
 use machin::{colored_err, colored_success};
 
 fn main() {
-    let matches = Command::new("machreduce")
-        .version(crate_version!())
-        .author(crate_authors!())
-        .about("Reduce a list of files to one")
-        .arg_required_else_help(true)
-        .arg(
-            Arg::new("output")
-                .short('o')
-                .help("output to a specific file (like result.zip)")
-                .required(true)
-                .takes_value(true),
-        )
-        .arg(
-            Arg::new("direction")
-                .short('d')
-                .help("direction : horizontal or vertical (vertical by default)")
-                .takes_value(true),
-        )
-        .get_matches();
+    let matches = cli::build_cli("machreduce", crate_version!(), crate_authors!()).get_matches();
 
     let mut direction = Direction::Vertical;
 

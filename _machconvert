@@ -1,0 +1,35 @@
+#compdef machconvert
+
+autoload -U is-at-least
+
+_machconvert() {
+    typeset -A opt_args
+    typeset -a _arguments_options
+    local ret=1
+
+    if is-at-least 5.2; then
+        _arguments_options=(-s -S -C)
+    else
+        _arguments_options=(-s -C)
+    fi
+
+    local context curcontext="$curcontext" state line
+    _arguments "${_arguments_options[@]}" \
+'-p+[copy on new source with a file prefix]: : ' \
+'-c+[color (priority 1) : grayscale]: : ' \
+'-f+[flip (priority 2) : horizontal or vertical]: : ' \
+'-r+[rotate (priority 3) with degree. 90, 180 or 270.]: : ' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Print version information]' \
+'--version[Print version information]' \
+&& ret=0
+}
+
+(( $+functions[_machconvert_commands] )) ||
+_machconvert_commands() {
+    local commands; commands=()
+    _describe -t commands 'machconvert commands' commands "$@"
+}
+
+_machconvert "$@"

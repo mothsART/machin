@@ -3,6 +3,7 @@ use std::error::Error;
 
 use crate::errors::*;
 
+pub mod cli;
 pub mod jpg;
 pub mod markdown;
 pub mod png;

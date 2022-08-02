@@ -64,7 +64,8 @@ Order is important :
 3. rotation
 
 ```zsh
-ls photo.jpg | machconvert -c grayscale -f vertical -r 90 -p prefix_
+ls *.png | machconvert -c grayscale -f vertical -r 90 -p prefix_
+ls *.jpg | machconvert -c grayscale -f vertical -r 90 -p prefix_
 ```
 
 ## Some **machreduce** examples

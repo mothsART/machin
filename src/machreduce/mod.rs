@@ -1,5 +1,6 @@
 use std::error::Error;
 
+pub mod cli;
 pub mod errors;
 pub mod image_reduce;
 pub mod pdf;

@@ -11,10 +11,8 @@ use colored::*;
 use std::io::{self, BufRead};
 use std::path::Path;
 
-use clap::{Arg, Command};
-
 use machin::colored_err;
-use machin::machconvert::*;
+use machin::machconvert::{cli, ConvertArgs, ConvertColor, ConvertFlip, InputsFiles};
 
 fn convert_files(prefix: Option<&str>, args: &ConvertArgs) {
     for line in io::stdin().lock().lines() {
@@ -44,36 +42,7 @@ fn convert_files(prefix: Option<&str>, args: &ConvertArgs) {
 }
 
 fn main() {
-    let matches = Command::new("machconvert")
-        .version(crate_version!())
-        .author(crate_authors!())
-        .about("Convert files but keep the same type (priority arguments are important)")
-        .arg_required_else_help(true)
-        .arg(
-            Arg::new("prefix")
-                .short('p')
-                .help("copy on new source with a file prefix")
-                .takes_value(true),
-        )
-        .arg(
-            Arg::new("color")
-                .short('c')
-                .help("color (priority 1) : grayscale")
-                .takes_value(true),
-        )
-        .arg(
-            Arg::new("flip")
-                .short('f')
-                .help("flip (priority 2) : horizontal or vertical")
-                .takes_value(true),
-        )
-        .arg(
-            Arg::new("rotate")
-                .short('r')
-                .help("rotate (priority 3) with degree. 90, 180 or 270.")
-                .takes_value(true),
-        )
-        .get_matches();
+    let matches = cli::build_cli("machconvert", crate_version!(), crate_authors!()).get_matches();
 
     let mut color = None;
     if let Some(color_value) = matches.value_of("color") {
