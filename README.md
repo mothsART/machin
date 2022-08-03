@@ -48,10 +48,10 @@ ls *.jpg | machmap -e avif
 ls *.jpg | machmap -e pdf
 ```
 
-Convert markdown to 
+Convert markdown to html
 
 ```zsh
-ls *.md | machmap -e png
+ls *.md | machmap -e html
 ```
 
 ## Some **machconvert** examples
