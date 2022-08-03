@@ -1,10 +1,9 @@
-use clap::{Arg, Command};
-
-pub fn build_cli(
+pub fn build_machreduce_cli(
     name: &'static str,
     version: &'static str,
     authors: &'static str,
 ) -> Command<'static> {
+
     Command::new(name)
         .version(version)
         .author(authors)

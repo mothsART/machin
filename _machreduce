@@ -15,10 +15,8 @@ _machreduce() {
 
     local context curcontext="$curcontext" state line
     _arguments "${_arguments_options[@]}" \
-'-p+[copy on new source with a file prefix]: : ' \
-'-c+[color (priority 1) : grayscale]: : ' \
-'-f+[flip (priority 2) : horizontal or vertical]: : ' \
-'-r+[rotate (priority 3) with degree. 90, 180 or 270.]: : ' \
+'-o+[output to a specific file (like result.zip)]: : ' \
+'-d+[direction : horizontal or vertical (vertical by default)]: : ' \
 '-h[Print help information]' \
 '--help[Print help information]' \
 '-V[Print version information]' \

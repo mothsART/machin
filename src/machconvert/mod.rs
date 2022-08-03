@@ -2,7 +2,6 @@ use std::error::Error;
 
 use crate::errors::InputFileUnsupportedError;
 
-pub mod cli;
 pub mod errors;
 pub mod image_input;
 

@@ -11,8 +11,12 @@ use colored::*;
 use std::io::{self, BufRead};
 use std::path::Path;
 
+use clap::{Arg, Command};
+
 use machin::colored_err;
-use machin::machconvert::{cli, ConvertArgs, ConvertColor, ConvertFlip, InputsFiles};
+use machin::machconvert::{ConvertArgs, ConvertColor, ConvertFlip, InputsFiles};
+
+include!("../machconvert/cli.rs");
 
 fn convert_files(prefix: Option<&str>, args: &ConvertArgs) {
     for line in io::stdin().lock().lines() {
@@ -42,7 +46,7 @@ fn convert_files(prefix: Option<&str>, args: &ConvertArgs) {
 }
 
 fn main() {
-    let matches = cli::build_cli("machconvert", crate_version!(), crate_authors!()).get_matches();
+    let matches = build_machconvert_cli("machconvert", crate_version!(), crate_authors!()).get_matches();
 
     let mut color = None;
     if let Some(color_value) = matches.value_of("color") {

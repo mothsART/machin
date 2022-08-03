@@ -9,12 +9,15 @@ extern crate resvg;
 extern crate usvg;
 
 use colored::*;
+use clap::{Arg, Command};
 
 use machin::machreduce::*;
 use machin::{colored_err, colored_success};
 
+include!("../machreduce/cli.rs");
+
 fn main() {
-    let matches = cli::build_cli("machreduce", crate_version!(), crate_authors!()).get_matches();
+    let matches = build_machreduce_cli("machreduce", crate_version!(), crate_authors!()).get_matches();
 
     let mut direction = Direction::Vertical;
 

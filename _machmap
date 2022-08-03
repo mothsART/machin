@@ -15,10 +15,8 @@ _machmap() {
 
     local context curcontext="$curcontext" state line
     _arguments "${_arguments_options[@]}" \
-'-p+[copy on new source with a file prefix]: : ' \
-'-c+[color (priority 1) : grayscale]: : ' \
-'-f+[flip (priority 2) : horizontal or vertical]: : ' \
-'-r+[rotate (priority 3) with degree. 90, 180 or 270.]: : ' \
+'-e+[output to a specific extension name (like png)]: : ' \
+'-s+[return list of supporting conversion]: : ' \
 '-h[Print help information]' \
 '--help[Print help information]' \
 '-V[Print version information]' \

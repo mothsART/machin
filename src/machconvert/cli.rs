@@ -1,6 +1,4 @@
-use clap::{Arg, Command};
-
-pub fn build_cli(
+pub fn build_machconvert_cli(
     name: &'static str,
     version: &'static str,
     authors: &'static str,

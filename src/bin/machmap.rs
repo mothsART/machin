@@ -7,12 +7,17 @@ extern crate mime_guess;
 extern crate resvg;
 extern crate usvg;
 
-use colored::*;
+
 use std::path::Path;
 use std::process;
 
+use colored::*;
+use clap::{Arg, Command};
+
 use machin::machmap::*;
 use machin::{colored_err, colored_success};
+
+include!("../machmap/cli.rs");
 
 fn readlines() -> Vec<String> {
     use std::io::prelude::*;
@@ -22,7 +27,7 @@ fn readlines() -> Vec<String> {
 }
 
 fn main() {
-    let matches = cli::build_cli("machmap", crate_version!(), crate_authors!()).get_matches();
+    let matches = build_machmap_cli("machmap", crate_version!(), crate_authors!()).get_matches();
 
     if let Some(support_arg) = matches.value_of("support") {
         let fake_path = &format!("fake.{}", support_arg);
