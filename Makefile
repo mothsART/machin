@@ -36,9 +36,9 @@ copy-data:
 	$(INSTALL_DATA) machmap.fish $(sharedir)/fish/vendor_completions.d/machmap.fish
 	$(INSTALL_DATA) _machmap $(sharedir)/zsh/site-functions/_machmap
 
-	$(INSTALL_DATA) mapreduce.bash $(sharedir)/bash-completion/completions/mapreduce.bash
-	$(INSTALL_DATA) mapreduce.fish $(sharedir)/fish/vendor_completions.d/mapreduce.fish
-	$(INSTALL_DATA) _mapreduce $(sharedir)/zsh/site-functions/_mapreduce
+	$(INSTALL_DATA) machreduce.bash $(sharedir)/bash-completion/completions/machreduce.bash
+	$(INSTALL_DATA) machreduce.fish $(sharedir)/fish/vendor_completions.d/machreduce.fish
+	$(INSTALL_DATA) _machreduce $(sharedir)/zsh/site-functions/_machreduce
 
 uninstall:
 	rm -f $(sharedir)/bash-completion/completions/machconvert.bash
@@ -49,9 +49,9 @@ uninstall:
 	rm -f $(sharedir)/fish/vendor_completions.d/machmap.fish
 	rm -f $(sharedir)/zsh/site-functions/_machmap
 
-	rm -f $(sharedir)/bash-completion/completions/mapreduce.bash
-	rm -f $(sharedir)/fish/vendor_completions.d/machconvert.fish
-	rm -f $(sharedir)/zsh/site-functions/_machconvert
+	rm -f $(sharedir)/bash-completion/completions/machreduce.bash
+	rm -f $(sharedir)/fish/vendor_completions.d/machreduce.fish
+	rm -f $(sharedir)/zsh/site-functions/_machreduce
 
 	# Remove the binary
 	rm -f $(bindir)/machconvert

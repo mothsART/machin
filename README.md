@@ -9,6 +9,12 @@
 **Machin** is a cli program that simplifies file conversions and batch processing.
 It's inspired from filter/map/reduce
 
+## Install with crates.io
+
+```zsh
+cargo install machin
+```
+
 ## Install on your system
 
 clone the projet and install it with :
@@ -92,6 +98,21 @@ Create one pdf with several pdfr
 
 ```zsh
 ls *.pdf | machreduce -o merge.pdf
+```
+
+## Autocomplete
+
+On zsh :
+
+Add this on your ~/.zshrc :
+
+```zsh
+fpath=("dir_of/_pouf" "${fpath[@]}")
+```
+
+before :
+```zsh
+autoload -Uz compinit && compinit
 ```
 
 ## Dev
