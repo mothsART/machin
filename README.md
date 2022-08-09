@@ -17,7 +17,7 @@ cargo install machin
 
 ## Install on your system
 
-clone the projet and install it with :
+clone the project and install it with :
 
 ```zsh
 cargo install --path .
@@ -46,7 +46,7 @@ ls *.png | machmap -e avif
 ls *.png | machmap -e pdf
 ```
 
-Convert jpg file to png, avif, pdf :
+Convert jpg files to png, avif, pdf :
 
 ```zsh
 ls *.jpg | machmap -e png
@@ -54,7 +54,7 @@ ls *.jpg | machmap -e avif
 ls *.jpg | machmap -e pdf
 ```
 
-Convert markdown to html
+Convert markdown files to html
 
 ```zsh
 ls *.md | machmap -e html
@@ -88,13 +88,13 @@ Create pdf with images:
 ls *.jpg | machreduce -o result.pdf
 ```
 
-Create archiv (zip) with files:
+Create archive (zip) with files:
 
 ```zsh
 ls *.png | machreduce -o archive.zip
 ```
 
-Create one pdf with several pdfr
+Create one pdf with multiple pdf
 
 ```zsh
 ls *.pdf | machreduce -o merge.pdf
@@ -117,7 +117,7 @@ autoload -Uz compinit && compinit
 
 ## Dev
 
-Makefile inspire by https://git.sr.ht/~julienxx/castor/tree/master/item/Makefile
+Makefile inspired by https://git.sr.ht/~julienxx/castor/tree/master/item/Makefile
 
 ## Publish
 
