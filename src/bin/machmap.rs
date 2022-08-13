@@ -7,12 +7,11 @@ extern crate mime_guess;
 extern crate resvg;
 extern crate usvg;
 
-
 use std::path::Path;
 use std::process;
 
-use colored::*;
 use clap::{Arg, Command};
+use colored::*;
 
 use machin::machmap::*;
 use machin::{colored_err, colored_success};

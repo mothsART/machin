@@ -8,8 +8,8 @@ extern crate mime_guess;
 extern crate resvg;
 extern crate usvg;
 
-use colored::*;
 use clap::{Arg, Command};
+use colored::*;
 
 use machin::machreduce::*;
 use machin::{colored_err, colored_success};
@@ -17,7 +17,8 @@ use machin::{colored_err, colored_success};
 include!("../machreduce/cli.rs");
 
 fn main() {
-    let matches = build_machreduce_cli("machreduce", crate_version!(), crate_authors!()).get_matches();
+    let matches =
+        build_machreduce_cli("machreduce", crate_version!(), crate_authors!()).get_matches();
 
     let mut direction = Direction::Vertical;
 

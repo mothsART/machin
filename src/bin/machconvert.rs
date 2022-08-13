@@ -46,7 +46,8 @@ fn convert_files(prefix: Option<&str>, args: &ConvertArgs) {
 }
 
 fn main() {
-    let matches = build_machconvert_cli("machconvert", crate_version!(), crate_authors!()).get_matches();
+    let matches =
+        build_machconvert_cli("machconvert", crate_version!(), crate_authors!()).get_matches();
 
     let mut color = None;
     if let Some(color_value) = matches.value_of("color") {
