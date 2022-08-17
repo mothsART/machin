@@ -3,50 +3,18 @@ use std::error::Error;
 
 use crate::errors::*;
 
+#[macro_use]
+pub mod macros;
 pub mod jpg;
 pub mod markdown;
 pub mod png;
 pub mod svg;
 
+pub mod webp;
+
 pub trait IFile<'a> {
     fn support(&self) -> Result<String, Box<dyn Error + 'a>>;
     fn mime_map(&self) -> Result<String, Box<dyn Error + 'a>>;
-}
-
-#[macro_export]
-macro_rules! create_input {
-    ($struct_name:ident, $convert_trait:ident) => {
-        struct $struct_name<'a> {
-            input_file: &'a str,
-            output_file: &'a str,
-            map: HashMap<&'a str, Box<dyn $convert_trait<'a> + 'a>>,
-        }
-
-        impl<'a> IFile<'a> for $struct_name<'a> {
-            fn support(&self) -> Result<String, Box<dyn Error + 'a>> {
-                let mut result = "".to_string();
-                for (key, _) in &self.map {
-                    result = format!("{}{}\n", result, key);
-                }
-                Ok(result)
-            }
-
-            fn mime_map(&self) -> Result<String, Box<dyn Error + 'a>> {
-                let output_mime = mime_guess::from_path(self.output_file);
-                let e = UnSupportedError {
-                    input_file: self.input_file,
-                    output_ext: self.output_file,
-                };
-                match &output_mime.first_raw() {
-                    Some(i_mime) => match self.map.get(i_mime) {
-                        Some(val) => val.convert(),
-                        None => Err(Box::new(e)),
-                    },
-                    None => Err(Box::new(e)),
-                }
-            }
-        }
-    };
 }
 
 pub struct InputsFiles<'a> {
@@ -61,11 +29,13 @@ impl<'a> InputsFiles<'a> {
         let svg = SVGInputFile::new(input_file, output_file);
         let jpg = JPGInputFile::new(input_file, output_file);
         let png = PNGInputFile::new(input_file, output_file);
+        let webp = WebpInputFile::new(input_file, output_file);
         let markdown = MarkdownInputFile::new(input_file, output_file);
 
         map.insert("image/svg+xml", Box::new(svg));
         map.insert("image/jpeg", Box::new(jpg));
         map.insert("image/png", Box::new(png));
+        map.insert("image/webp", Box::new(webp));
         map.insert("text/markdown", Box::new(markdown));
         InputsFiles {
             input_file,
@@ -112,4 +82,5 @@ trait InputTo<'a> {
 create_input!(SVGInputFile, InputTo);
 create_input!(JPGInputFile, InputTo);
 create_input!(PNGInputFile, InputTo);
+create_input!(WebpInputFile, InputTo);
 create_input!(MarkdownInputFile, InputTo);
