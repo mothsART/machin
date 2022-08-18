@@ -1,17 +1,18 @@
-pub mod jpgtoavif;
 pub mod jpgtopdf;
-pub mod jpgtopng;
 
-use crate::machmap::jpg::jpgtoavif::JPGTOAVIF;
+use image::io::Reader as ImageReader;
+
 use crate::machmap::jpg::jpgtopdf::JpgToPdf;
-use crate::machmap::jpg::jpgtopng::JPGTOPNG;
-
-use crate::machmap::{HashMap, InputTo, JPGInputFile};
+use crate::machmap::{HashMap, InputTo, JPGInputFile, Error};
 
 impl<'a> JPGInputFile<'a> {
     pub fn new(input_file: &'a str, output_file: &'a str) -> JPGInputFile<'a> {
-        let png = JPGTOPNG::new(input_file, output_file);
-        let avif = JPGTOAVIF::new(input_file, output_file);
+        convert_img!(JpgToPng, "jpg", "png");
+        let png = JpgToPng::new(input_file, output_file);
+
+        convert_img!(JpgToAvif, "jpg", "avif");
+        let avif = JpgToAvif::new(input_file, output_file);
+
         let pdf = JpgToPdf::new(input_file, output_file);
 
         let mut map: HashMap<&'a str, Box<dyn InputTo<'a> + 'a>> = HashMap::new();

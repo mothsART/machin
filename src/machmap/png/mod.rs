@@ -1,16 +1,18 @@
-pub mod pngtoavif;
-pub mod pngtojpg;
 pub mod pngtopdf;
 
-use crate::machmap::png::pngtoavif::PNGToAVIF;
-use crate::machmap::png::pngtojpg::PNGToJPG;
+use image::io::Reader as ImageReader;
+
 use crate::machmap::png::pngtopdf::PngToPdf;
-use crate::machmap::{HashMap, InputTo, PNGInputFile};
+use crate::machmap::{HashMap, InputTo, PNGInputFile, Error};
 
 impl<'a> PNGInputFile<'a> {
     pub fn new(input_file: &'a str, output_file: &'a str) -> PNGInputFile<'a> {
-        let jpg = PNGToJPG::new(input_file, output_file);
-        let avif = PNGToAVIF::new(input_file, output_file);
+        convert_img!(PngToJpg, "png", "jpg");
+        let jpg = PngToJpg::new(input_file, output_file);
+
+        convert_img!(PngToAvif, "png", "avif");
+        let avif = PngToAvif::new(input_file, output_file);
+
         let pdf = PngToPdf::new(input_file, output_file);
 
         let mut map: HashMap<&'a str, Box<dyn InputTo<'a> + 'a>> = HashMap::new();

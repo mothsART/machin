@@ -5,12 +5,14 @@ use crate::errors::*;
 
 #[macro_use]
 pub mod macros;
+
 pub mod jpg;
-pub mod markdown;
 pub mod png;
+pub mod webp;
+
+pub mod markdown;
 pub mod svg;
 
-pub mod webp;
 
 pub trait IFile<'a> {
     fn support(&self) -> Result<String, Box<dyn Error + 'a>>;
