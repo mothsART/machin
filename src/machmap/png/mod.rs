@@ -3,7 +3,7 @@ pub mod pngtopdf;
 use image::io::Reader as ImageReader;
 
 use crate::machmap::png::pngtopdf::PngToPdf;
-use crate::machmap::{HashMap, InputTo, PNGInputFile, Error};
+use crate::machmap::{Error, HashMap, InputTo, PNGInputFile};
 
 impl<'a> PNGInputFile<'a> {
     pub fn new(input_file: &'a str, output_file: &'a str) -> PNGInputFile<'a> {

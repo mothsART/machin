@@ -58,9 +58,7 @@ impl<'a> InputsFiles<'a> {
                 }
                 Err(Box::new(output_e))
             }
-            None => {
-                Err(Box::new(output_e))
-            }
+            None => Err(Box::new(output_e)),
         }
     }
 }

@@ -13,7 +13,6 @@ pub mod webp;
 pub mod markdown;
 pub mod svg;
 
-
 pub trait IFile<'a> {
     fn support(&self) -> Result<String, Box<dyn Error + 'a>>;
     fn mime_map(&self) -> Result<String, Box<dyn Error + 'a>>;

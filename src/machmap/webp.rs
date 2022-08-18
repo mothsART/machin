@@ -1,6 +1,6 @@
 use image::io::Reader as ImageReader;
 
-use crate::machmap::{HashMap, InputTo, WebpInputFile, Error};
+use crate::machmap::{Error, HashMap, InputTo, WebpInputFile};
 
 impl<'a> WebpInputFile<'a> {
     pub fn new(input_file: &'a str, output_file: &'a str) -> WebpInputFile<'a> {

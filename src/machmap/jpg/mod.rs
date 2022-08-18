@@ -3,7 +3,7 @@ pub mod jpgtopdf;
 use image::io::Reader as ImageReader;
 
 use crate::machmap::jpg::jpgtopdf::JpgToPdf;
-use crate::machmap::{HashMap, InputTo, JPGInputFile, Error};
+use crate::machmap::{Error, HashMap, InputTo, JPGInputFile};
 
 impl<'a> JPGInputFile<'a> {
     pub fn new(input_file: &'a str, output_file: &'a str) -> JPGInputFile<'a> {

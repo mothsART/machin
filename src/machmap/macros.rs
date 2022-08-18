@@ -39,7 +39,6 @@ macro_rules! convert_img {
         $input_name:expr,
         $output_name:expr
     ) => {
-
         struct $struct_name<'a> {
             input_file: &'a str,
             output_file: &'a str,
@@ -60,13 +59,9 @@ macro_rules! convert_img {
                 img.save(&self.output_file)?;
                 Ok(format!(
                     "convert {} to {} : {} -> {}",
-                    $input_name,
-                    $output_name,
-                    self.input_file,
-                    self.output_file,
+                    $input_name, $output_name, self.input_file, self.output_file,
                 ))
             }
         }
-    }
+    };
 }
-
