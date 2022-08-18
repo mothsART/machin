@@ -43,6 +43,7 @@ Convert webp files to png, jpg :
 ```zsh
 ls *.webp | machmap -e png
 ls *.webp | machmap -e jpg
+```
 
 Convert png files to jpg, avif, pdf :
 
