@@ -29,3 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Convert webp files to png or jpg files
+
+### Fixed
+
+- Converting an svg file to a png or a jpg file lost the svg filename
