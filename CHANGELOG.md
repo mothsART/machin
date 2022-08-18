@@ -21,6 +21,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ls *.jpg | machconvert --resize-x 800
 - ls *.jpg | machconvert --resize-y 800
 
+- ls *.jpg | machreduce -o result.odt
+- ls *.jpg | machreduce -o result.odp
+
 ## [Unreleased]
 
 ### Added
