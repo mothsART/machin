@@ -31,9 +31,9 @@ impl<'a> InputTo<'a> for ZipOutputFile<'a> {
         let mut zip = zip::ZipWriter::new(file);
         let options =
             zip::write::FileOptions::default().compression_method(zip::CompressionMethod::Stored);
-        let mut buffer = Vec::new();
 
         for line in lines {
+            let mut buffer = Vec::new();
             match line {
                 Ok(_l) => {
                     if !Path::new(&_l).exists() {
