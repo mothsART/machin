@@ -33,7 +33,7 @@ impl<'a> InputTo<'a> for SVGToJPG<'a> {
             .unwrap();
         let mut pixmap = tiny_skia::Pixmap::new(pixmap_size.width(), pixmap_size.height()).unwrap();
         resvg::render(&rtree, usvg::FitTo::Original, pixmap.as_mut()).unwrap();
-        pixmap.save_png("output.jpg")?;
+        pixmap.save_png(self.output_file)?;
         Ok("".to_string())
     }
 }
