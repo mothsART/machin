@@ -8,12 +8,12 @@ pub mod image_input;
 use crate::machconvert::image_input::InputTo;
 use image_input::ImageInputFile;
 
-#[derive(PartialEq)]
+#[derive(Eq, PartialEq)]
 pub enum ConvertColor {
     Grayscale,
 }
 
-#[derive(PartialEq)]
+#[derive(Eq, PartialEq)]
 pub enum ConvertFlip {
     Horizontal,
     Vertical,
@@ -52,12 +52,12 @@ impl<'a> InputsFiles<'a> {
                 if self.image_mime_type.contains(i_mime) {
                     return self.image_convert(args);
                 }
-                return Err(Box::new(input_e));
+                Err(Box::new(input_e))
             }
             None => {
-                return Err(Box::new(input_e));
+                Err(Box::new(input_e))
             }
-        };
+        }
     }
 
     pub fn image_convert(&self, args: &ConvertArgs) -> Result<String, Box<dyn Error + 'a>> {

@@ -11,7 +11,7 @@ use crate::machreduce::image_reduce::ImageOutputFile;
 use crate::machreduce::pdf_reduce::PdfOutputFile;
 use crate::machreduce::zip_reduce::ZipOutputFile;
 
-#[derive(PartialEq)]
+#[derive(Eq, PartialEq)]
 pub enum Direction {
     Vertical,
     Horizontal,
@@ -56,11 +56,11 @@ impl<'a> InputsFiles<'a> {
                 if zip_output.output_mime_type.contains(o_mime) {
                     return zip_output.reduce(&self.direction);
                 }
-                return Err(Box::new(output_e));
+                Err(Box::new(output_e))
             }
             None => {
-                return Err(Box::new(output_e));
+                Err(Box::new(output_e))
             }
-        };
+        }
     }
 }
