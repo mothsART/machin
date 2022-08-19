@@ -1,6 +1,6 @@
 [package]
 name = "machin"
-version = "0.5.2"
+version = "0.5.3"
 authors = ["Ferry Jérémie <ferryjeremie@free.fr>"]
 description = "Machin is a cli program that simplifies file conversions and batch processing. It's inspired from filter/map/reduce"
 keywords = ["app", "cli", "files", "conversion", "batch"]
@@ -21,7 +21,7 @@ mime_guess="2.0"
 resvg="0.14"
 usvg="0.14.0"
 tiny-skia="0.5"
-image = { version="0.24", features=['avif-encoder'] }
+image = { version="0.24" }
 markdown = "0.3"
 colored = "2"
 zip = "0.6"

@@ -45,19 +45,17 @@ ls *.webp | machmap -e png
 ls *.webp | machmap -e jpg
 ```
 
-Convert png files to jpg, avif, pdf :
+Convert png files to jpg, pdf :
 
 ```zsh
 ls *.png | machmap -e jpg
-ls *.png | machmap -e avif
 ls *.png | machmap -e pdf
 ```
 
-Convert jpg files to png, avif, pdf :
+Convert jpg files to png, pdf :
 
 ```zsh
 ls *.jpg | machmap -e png
-ls *.jpg | machmap -e avif
 ls *.jpg | machmap -e pdf
 ```
 

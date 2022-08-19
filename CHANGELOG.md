@@ -24,11 +24,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ls *.jpg | machreduce -o result.odt
 - ls *.jpg | machreduce -o result.odp
 
-## [Unreleased]
+## [0.5.3]  - 2022-08-19
 
 ### Added
 
 - Convert webp files to png or jpg files
+
+### Removed
+
+- Converting an image to avif file is too slow.
+Waiting resolution of https://github.com/image-rs/image/issues/1760
 
 ### Fixed
 

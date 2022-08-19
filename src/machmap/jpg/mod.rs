@@ -10,14 +10,14 @@ impl<'a> JPGInputFile<'a> {
         convert_img!(JpgToPng, "jpg", "png");
         let png = JpgToPng::new(input_file, output_file);
 
-        convert_img!(JpgToAvif, "jpg", "avif");
-        let avif = JpgToAvif::new(input_file, output_file);
+        //convert_img!(JpgToAvif, "jpg", "avif");
+        //let avif = JpgToAvif::new(input_file, output_file);
 
         let pdf = JpgToPdf::new(input_file, output_file);
 
         let mut map: HashMap<&'a str, Box<dyn InputTo<'a> + 'a>> = HashMap::new();
         map.insert("image/png", Box::new(png));
-        map.insert("image/avif", Box::new(avif));
+        //map.insert("image/avif", Box::new(avif));
         map.insert("application/pdf", Box::new(pdf));
         JPGInputFile {
             input_file,
