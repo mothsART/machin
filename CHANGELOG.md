@@ -34,3 +34,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Converting an svg file to a png or a jpg file lost the svg filename
 - Reducing multiple png files to a zip archive only used the first image
+- Converting a png file to a pdf creates a blank page
