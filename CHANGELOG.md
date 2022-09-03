@@ -17,12 +17,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ls *.csv | machmap *.xls
 - ls *.csv | machmap *.ods
 
+- ls *.yaml |machmap *.toml
+- ls *.json |machmap *.toml
+- ls *.toml |machmap *.yaml
+- ls *.toml |machmap *.json
+
+- ls *.svg | machconvert --sanitize // using svg-hush
+
 - ls *.jpg | machconvert --resize 800x600
 - ls *.jpg | machconvert --resize-x 800
 - ls *.jpg | machconvert --resize-y 800
 
 - ls *.jpg | machreduce -o result.odt
 - ls *.jpg | machreduce -o result.odp
+
+
+- base64 <-> image
+- minifize/deminifieze json, html, svg
+
+## [Unreleased]
+
+### Added
+
+- ls *.yaml |machmap *.json
+- ls *.json |machmap *.yaml
 
 ## [0.5.3]  - 2022-08-19
 

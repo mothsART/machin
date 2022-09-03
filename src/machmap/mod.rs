@@ -13,6 +13,9 @@ pub mod webp;
 pub mod markdown;
 pub mod svg;
 
+pub mod yaml;
+pub mod json;
+
 pub trait IFile<'a> {
     fn support(&self) -> Result<String, Box<dyn Error + 'a>>;
     fn mime_map(&self) -> Result<String, Box<dyn Error + 'a>>;
@@ -32,12 +35,16 @@ impl<'a> InputsFiles<'a> {
         let png = PNGInputFile::new(input_file, output_file);
         let webp = WebpInputFile::new(input_file, output_file);
         let markdown = MarkdownInputFile::new(input_file, output_file);
+        let yaml = YamlInputFile::new(input_file, output_file);
+        let json = JsonInputFile::new(input_file, output_file);
 
         map.insert("image/svg+xml", Box::new(svg));
         map.insert("image/jpeg", Box::new(jpg));
         map.insert("image/png", Box::new(png));
         map.insert("image/webp", Box::new(webp));
         map.insert("text/markdown", Box::new(markdown));
+        map.insert("text/x-yaml", Box::new(yaml));
+        map.insert("application/json", Box::new(json));
         InputsFiles {
             input_file,
             output_file,
@@ -85,3 +92,5 @@ create_input!(JPGInputFile, InputTo);
 create_input!(PNGInputFile, InputTo);
 create_input!(WebpInputFile, InputTo);
 create_input!(MarkdownInputFile, InputTo);
+create_input!(YamlInputFile, InputTo);
+create_input!(JsonInputFile, InputTo);
