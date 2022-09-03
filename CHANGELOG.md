@@ -22,6 +22,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ls *.toml |machmap *.yaml
 - ls *.toml |machmap *.json
 
+- ls *.yaml |machmap *.pdf // colorized and insert on pdf file
+- ls *.json |machmap *.pdf // colorized and insert on pdf file
+- ls *.toml |machmap *.pdf // colorized and insert on pdf file
+- ls *.yaml |machmap *.html // colorized and insert on html file
+- ls *.json |machmap *.html // colorized and insert on html file
+- ls *.toml |machmap *.html // colorized and insert on html file
+- ls *.yaml |machmap *.md // insert code on markdown file
+- ls *.json |machmap *.md // insert code on markdown file
+- ls *.toml |machmap *.md // insert code on markdown file
+
 - ls *.svg | machconvert --sanitize // using svg-hush
 
 - ls *.jpg | machconvert --resize 800x600
