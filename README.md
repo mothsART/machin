@@ -59,10 +59,22 @@ ls *.jpg | machmap -e png
 ls *.jpg | machmap -e pdf
 ```
 
-Convert markdown files to html
+Convert markdown files to html :
 
 ```zsh
 ls *.md | machmap -e html
+```
+
+Convert json files to yaml :
+
+```zsh
+ls *.json | machmap -e yaml
+```
+
+Convert yaml files to json :
+
+```zsh
+ls *.yaml | machmap -e json
 ```
 
 ## Some **machconvert** examples
@@ -87,19 +99,19 @@ Concatenate images on same file :
 ls *.png | machreduce -o result.png
 ```
 
-Create pdf with images:
+Create pdf with images :
 
 ```zsh
 ls *.jpg | machreduce -o result.pdf
 ```
 
-Create archive (zip) with files:
+Create archive (zip) with files :
 
 ```zsh
 ls *.png | machreduce -o archive.zip
 ```
 
-Create one pdf with multiple pdf
+Create one pdf with multiple pdf :
 
 ```zsh
 ls *.pdf | machreduce -o merge.pdf
