@@ -52,6 +52,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ls *.yaml |machmap *.json
 - ls *.json |machmap *.yaml
 
+### Fixed
+
+- preserve order on converting yaml to json 
+
 ## [0.5.3]  - 2022-08-19
 
 ### Added
