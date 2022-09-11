@@ -9,6 +9,10 @@
 **Machin** is a cli program that simplifies file conversions and batch processing.
 It's inspired from filter/map/reduce
 
+## Last stable version
+
+[![Packaging status](https://repology.org/badge/vertical-allrepos/machin.svg)](https://repology.org/project/machin/versions)
+
 ## Install with crates.io
 
 ```zsh
