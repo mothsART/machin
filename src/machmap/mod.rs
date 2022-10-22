@@ -13,8 +13,8 @@ pub mod webp;
 pub mod markdown;
 pub mod svg;
 
-pub mod yaml;
 pub mod json;
+pub mod yaml;
 
 pub trait IFile<'a> {
     fn support(&self) -> Result<String, Box<dyn Error + 'a>>;

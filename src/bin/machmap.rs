@@ -5,8 +5,8 @@ extern crate exitcode;
 extern crate mime;
 extern crate mime_guess;
 extern crate resvg;
-extern crate usvg;
 extern crate serde;
+extern crate usvg;
 
 use std::path::Path;
 use std::process;

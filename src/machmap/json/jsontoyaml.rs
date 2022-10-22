@@ -1,7 +1,7 @@
 use std::error::Error;
+use std::fs;
 use std::fs::File;
 use std::io::Write;
-use std::fs;
 
 use crate::machmap::InputTo;
 
