@@ -1,5 +1,8 @@
 use std::error::Error;
 
+use image::io::Reader as ImageReader;
+use tempfile::tempdir;
+
 use crate::machmap::InputTo;
 
 pub struct SVGToJPG<'a> {
@@ -18,7 +21,6 @@ impl<'a> SVGToJPG<'a> {
 
 impl<'a> InputTo<'a> for SVGToJPG<'a> {
     fn convert(&self) -> Result<String, Box<dyn Error + 'a>> {
-        println!("convert svg to jpg");
         let opt = usvg::Options::default();
 
         let rtree = usvg::Tree::from_file(self.input_file, &opt)?;
@@ -33,7 +35,17 @@ impl<'a> InputTo<'a> for SVGToJPG<'a> {
             .unwrap();
         let mut pixmap = tiny_skia::Pixmap::new(pixmap_size.width(), pixmap_size.height()).unwrap();
         resvg::render(&rtree, usvg::FitTo::Original, pixmap.as_mut()).unwrap();
-        pixmap.save_png(self.output_file)?;
-        Ok("".to_string())
+
+        let tmp_dir = tempdir()?;
+        let tmp_png = tmp_dir.path().join("tmp.png").display().to_string();
+        pixmap.save_png(&tmp_png)?;
+        let img = ImageReader::open(&tmp_png)?.decode()?;
+        img.save(&self.output_file)?;
+        tmp_dir.close()?;
+
+        Ok(format!(
+            "convert svg to jpg : {} -> {}",
+            self.input_file, self.output_file
+        ))
     }
 }
