@@ -4,7 +4,7 @@
 [![Build Status](https://github.com/mothsART/machin/actions/workflows/ci.yml/badge.svg)](https://github.com/mothsART/machin/actions/workflows/ci.yml)
 [![Coverage Status](https://coveralls.io/repos/github/mothsART/machin/badge.svg?branch=master)](https://coveralls.io/github/mothsART/machin?branch=master)
 [![Crates.io Version](https://img.shields.io/crates/v/machin.svg)](https://crates.io/crates/machin)
-[![Minimum rustc version](https://img.shields.io/badge/rustc-1.60.0+-lightgray.svg)](#rust-version-requirements)
+[![Minimum rustc version](https://img.shields.io/badge/rustc-1.62.0+-lightgray.svg)](#rust-version-requirements)
 
 ## Intro
 
