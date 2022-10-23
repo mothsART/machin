@@ -30,6 +30,28 @@ mod tests {
     }
 
     #[test]
+    fn svg_to_png() {
+        assert_eq!(
+            "bd2926601f16f764c569e8c7ee1e8b6f4e106f04",
+            get_hash_after(
+                "tests/datasets/Rust_programming_language_black_logo.svg",
+                "Rust_programming_language_black_logo.png"
+            )
+        );
+    }
+
+    #[test]
+    fn svg_to_jpg() {
+        assert_eq!(
+            "b3f27e39432473af30e0f56b3dacedbfa4fb5ca3",
+            get_hash_after(
+                "tests/datasets/Rust_programming_language_black_logo.svg",
+                "Rust_programming_language_black_logo.jpg"
+            )
+        );
+    }
+
+    #[test]
     fn png_to_jpg() {
         assert_eq!(
             "122267b78644b438a17f99dcb14b37e816554771",
@@ -68,24 +90,26 @@ mod tests {
     }
 
     #[test]
-    fn svg_to_png() {
+    fn md_to_html() {
         assert_eq!(
-            "bd2926601f16f764c569e8c7ee1e8b6f4e106f04",
-            get_hash_after(
-                "tests/datasets/Rust_programming_language_black_logo.svg",
-                "Rust_programming_language_black_logo.png"
-            )
+            "683817dd0cdc0b63a26c8a58cc05f9f31f26ad5f",
+            get_hash_after("tests/datasets/markdown.md", "markdown.html")
         );
     }
 
     #[test]
-    fn svg_to_jpg() {
+    fn json_to_yaml() {
         assert_eq!(
-            "b3f27e39432473af30e0f56b3dacedbfa4fb5ca3",
-            get_hash_after(
-                "tests/datasets/Rust_programming_language_black_logo.svg",
-                "Rust_programming_language_black_logo.jpg"
-            )
+            "a15505250ffdefc95cd6ec0bbb914b196e96e3e9",
+            get_hash_after("tests/datasets/example.json", "example.yaml")
+        );
+    }
+
+    #[test]
+    fn yaml_to_json() {
+        assert_eq!(
+            "548dbfa8e473fc9453df1518c39d11f74fff6af1",
+            get_hash_after("tests/datasets/docker-compose.yaml", "docker-compose.json")
         );
     }
 }

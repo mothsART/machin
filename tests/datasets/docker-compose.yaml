@@ -1,0 +1,115 @@
+version: '3.3'
+
+services:
+  traefik:
+    image: "traefik:v2.7"
+    container_name: "traefik"
+    command:
+      - "--api.insecure=true" #For development purpose only
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - go-github
+
+  go-github-fetcher:
+    build: ./go-github-fetcher/
+    restart: on-failure
+    container_name: go-github-fetcher
+    environment:
+      - MONGO_USER=root
+      - MONGO_PASSWORD=example
+      - MONGO_HOST=mongo_master
+      - MONGO_PORT=27017
+    networks:
+      - go-github
+    depends_on:
+      mongo_master:
+        condition: service_healthy
+
+  mongo_master:
+    image: mongo
+    container_name: mongo_master
+    ports: 
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo mongo_master:27017 --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    networks:
+      - go-github
+    restart: on-failure
+
+  # mongo_slave_1:
+  #   image: mongo
+  #   container_name: mongo_slave_1
+  #   links: 
+  #     - mongo_master
+  #   command: mongod --slave --source mongo_master
+  #   networks:
+  #     - go-github
+  #   restart: on-failure
+      
+  # mongo_slave_2:
+  #   image: mongo
+  #   container_name: mongo_slave_2
+    
+  #   command: "--bind_ip_all --replSet rs0 --port 30002"
+  #   networks:
+  #     - go-github
+  #   restart: on-failure
+
+  go-github-api:
+    build: ./go-github-api/
+    restart: on-failure
+    container_name: go-github-api
+    environment:
+      - MONGO_USER=root
+      - MONGO_PASSWORD=example
+      - MONGO_HOST=mongo_master
+      - MONGO_PORT=27017
+    networks:
+      - go-github
+    ports:
+      - "8081:8080"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.go-github-api.rule=Host(`go-github.localhost`)"
+      - "traefik.http.services.go-github-api.loadbalancer.server.port=8080"
+    depends_on:
+      mongo_master:
+        condition: service_healthy
+
+  go-github-api-2:
+    build: ./go-github-api/
+    restart: on-failure
+    container_name: go-github-api-2
+    environment:
+      - MONGO_USER=root
+      - MONGO_PASSWORD=example
+      - MONGO_HOST=mongo_master
+      - MONGO_PORT=27017
+    networks:
+      - go-github
+    ports:
+      - "8082:8080"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.go-github-api.loadbalancer.server.port=8080"
+    depends_on:
+      mongo_master:
+        condition: service_healthy
+
+
+networks:
+    go-github:
