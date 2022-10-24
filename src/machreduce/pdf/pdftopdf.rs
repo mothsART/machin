@@ -22,7 +22,7 @@ impl<'a> PdfToPdf<'a> {
 
     pub fn reduce(
         &self,
-        pdf_path: Vec<String>,
+        pdf_path: Vec<&String>,
         output_file: &str,
     ) -> Result<String, Box<dyn Error + 'a>> {
         let mut doc = Document::with_version("1.5");

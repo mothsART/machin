@@ -22,13 +22,15 @@ pub trait InputTo<'a> {
 }
 
 pub struct InputsFiles<'a> {
+    pub input_lines: &'a Vec<String>,
     pub output_file: &'a str,
     pub direction: Direction,
 }
 
 impl<'a> InputsFiles<'a> {
-    pub fn new(output_file: &'a str, direction: Direction) -> InputsFiles<'a> {
+    pub fn new(input_lines: &'a Vec<String>, output_file: &'a str, direction: Direction) -> InputsFiles<'a> {
         InputsFiles {
+            input_lines,
             output_file,
             direction,
         }
@@ -41,9 +43,9 @@ impl<'a> InputsFiles<'a> {
             output_file: self.output_file,
         };
 
-        let image_output = ImageOutputFile::new(self.output_file);
-        let pdf_output = PdfOutputFile::new(self.output_file);
-        let zip_output = ZipOutputFile::new(self.output_file);
+        let image_output = ImageOutputFile::new(self.input_lines, self.output_file);
+        let pdf_output = PdfOutputFile::new(self.input_lines, self.output_file);
+        let zip_output = ZipOutputFile::new(self.input_lines, self.output_file);
 
         match &output_mime.first_raw() {
             Some(o_mime) => {

@@ -16,6 +16,12 @@ use machin::{colored_err, colored_success};
 
 include!("../machreduce/cli.rs");
 
+fn readlines() -> Vec<String> {
+    let stdin = std::io::stdin();
+    let v = stdin.lines().map(|x| x.unwrap()).collect();
+    v
+}
+
 fn main() {
     let matches =
         build_machreduce_cli("machreduce", crate_version!(), crate_authors!()).get_matches();
@@ -39,7 +45,8 @@ fn main() {
 
     match matches.value_of("output") {
         Some(output_file) => {
-            let mut i_f = InputsFiles::new(output_file, direction);
+            let r = readlines();
+            let mut i_f = InputsFiles::new(&r, output_file, direction);
             match i_f.reduce() {
                 Ok(r) => colored_success!(r),
                 Err(e) => colored_err!(e.to_string()),

@@ -27,7 +27,7 @@ impl<'a> ImagesToPdf<'a> {
 
     pub fn reduce(
         &self,
-        images_path: Vec<String>,
+        images_path: Vec<&String>,
         output_file: &str,
     ) -> Result<String, Box<dyn Error + 'a>> {
         let mut doc = Document::with_version("1.5");
@@ -46,13 +46,12 @@ impl<'a> ImagesToPdf<'a> {
             });
             let new_path;
             let input_mime = mime_guess::from_path(&f);
-            let mut img_path = f;
+            let img_path = f;
             if let Some(img_mime) = &input_mime.first_raw() {
                 if !img_mime.contains("image/jpeg") {
                     let img = ImageReader::open(&img_path)?.decode()?;
                     new_path = format!("{}-{}.jpg", tmp_dir.path().to_str().unwrap_or(""), i);
-                    img_path = &new_path;
-                    img.save(&img_path)?;
+                    img.save(&new_path)?;
                 }
             }
             if let Ok(img) = xobject::image(img_path) {

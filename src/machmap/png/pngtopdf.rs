@@ -20,6 +20,6 @@ impl<'a> PngToPdf<'a> {
 impl<'a> InputTo<'a> for PngToPdf<'a> {
     fn convert(&self) -> Result<String, Box<dyn Error + 'a>> {
         let img_to_pdf = ImagesToPdf::new();
-        img_to_pdf.reduce(vec![self.input_file.to_string()], self.output_file)
+        img_to_pdf.reduce(vec![&self.input_file.to_string()], self.output_file)
     }
 }
