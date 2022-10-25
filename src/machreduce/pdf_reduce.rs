@@ -49,20 +49,6 @@ impl<'a> InputTo<'a> for PdfOutputFile<'a> {
                 }
                 _files.push(line);
             }
-
-            if !Path::new(&line).exists() {
-                colored_err!(format!("Input file \"{}\" doesn't exist", line));
-                continue;
-            }
-            if let Some(o_mime) = mime_guess::from_path(&line).first_raw() {
-                if !image_to_pdf.input_mime_type.contains(&o_mime) {
-                    only_img = false;
-                }
-                if pdf_to_pdf.input_mime_type != o_mime {
-                    only_pdf = false;
-                }
-                _files.push(line);
-            }
         }
 
         if only_img {

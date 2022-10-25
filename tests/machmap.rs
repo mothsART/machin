@@ -65,7 +65,7 @@ mod tests {
     #[test]
     fn png_to_pdf() {
         assert_eq!(
-            "69eff4d4c989a63036b7a0b7eeebfc164652d456",
+            "422fff296caf52cc6086d1e2d485b16e06daa2f5",
             get_hash_after(
                 "tests/datasets/car-vintage-old-rusty.png",
                 "car-vintage-old-rusty.pdf"
