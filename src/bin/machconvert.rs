@@ -13,35 +13,28 @@ use std::path::Path;
 
 use clap::{Arg, Command};
 
-use machin::colored_err;
+use machin::{colored_err, readlines};
 use machin::machconvert::{ConvertArgs, ConvertColor, ConvertFlip, InputsFiles};
 
 include!("../machconvert/cli.rs");
 
 fn convert_files(prefix: Option<&str>, args: &ConvertArgs) {
-    for line in io::stdin().lock().lines() {
-        match line {
-            Ok(l) => {
-                let mut output_file = l.to_string();
-                if let Some(_prefix) = prefix {
-                    output_file = format!("{}{}", _prefix, output_file);
-                }
-                if !Path::new(&l).exists() {
-                    colored_err!(format!("Input file \"{}\" doesn't exist", l));
-                    continue;
-                }
-                let i_f = InputsFiles::new(&l, &output_file);
-                match i_f.convert(args) {
-                    Ok(_) => {}
-                    Err(e) => {
-                        colored_err!(e.to_string());
-                    }
-                };
-            }
-            Err(_) => {
-                continue;
-            }
+    for line in readlines() {
+        let mut output_file = line.to_string();
+        if let Some(_prefix) = prefix {
+            output_file = format!("{}{}", _prefix, output_file);
         }
+        if !Path::new(&line).exists() {
+            colored_err!(format!("Input file \"{}\" doesn't exist", line));
+            continue;
+        }
+        let i_f = InputsFiles::new(&line, &output_file);
+        match i_f.convert(args) {
+            Ok(_) => {}
+            Err(e) => {
+                colored_err!(e.to_string());
+            }
+        };
     }
 }
 

@@ -14,17 +14,11 @@ use std::process;
 use clap::{Arg, Command};
 use colored::*;
 
+use machin::readlines;
 use machin::machmap::*;
 use machin::{colored_err, colored_success};
 
 include!("../machmap/cli.rs");
-
-fn readlines() -> Vec<String> {
-    use std::io::prelude::*;
-    let stdin = std::io::stdin();
-    let v = stdin.lock().lines().map(|x| x.unwrap()).collect();
-    v
-}
 
 fn main() {
     let matches = build_machmap_cli("machmap", crate_version!(), crate_authors!()).get_matches();
