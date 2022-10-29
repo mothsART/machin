@@ -11,8 +11,8 @@ extern crate usvg;
 use clap::{Arg, Command};
 use colored::*;
 
-use machin::readlines;
 use machin::machreduce::*;
+use machin::readlines;
 use machin::{colored_err, colored_success};
 
 include!("../machreduce/cli.rs");

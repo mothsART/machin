@@ -8,13 +8,12 @@ extern crate resvg;
 extern crate usvg;
 
 use colored::*;
-use std::io::{self, BufRead};
 use std::path::Path;
 
 use clap::{Arg, Command};
 
-use machin::{colored_err, readlines};
 use machin::machconvert::{ConvertArgs, ConvertColor, ConvertFlip, InputsFiles};
+use machin::{colored_err, readlines};
 
 include!("../machconvert/cli.rs");
 

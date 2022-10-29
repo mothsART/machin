@@ -28,7 +28,11 @@ pub struct InputsFiles<'a> {
 }
 
 impl<'a> InputsFiles<'a> {
-    pub fn new(input_lines: &'a Vec<String>, output_file: &'a str, direction: Direction) -> InputsFiles<'a> {
+    pub fn new(
+        input_lines: &'a Vec<String>,
+        output_file: &'a str,
+        direction: Direction,
+    ) -> InputsFiles<'a> {
         InputsFiles {
             input_lines,
             output_file,

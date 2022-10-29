@@ -1,7 +1,7 @@
 use std::error::Error;
 use std::fs::File;
-use std::io::Write;
 use std::io::Read;
+use std::io::Write;
 use std::path::Path;
 
 use colored::*;
@@ -26,7 +26,6 @@ impl<'a> ZipOutputFile<'a> {
 
 impl<'a> InputTo<'a> for ZipOutputFile<'a> {
     fn reduce(&self, _direction: &Direction) -> Result<String, Box<dyn Error + 'a>> {
-
         let path = std::path::Path::new(&self.output_file);
         let file = std::fs::File::create(&path).unwrap();
         let mut zip = zip::ZipWriter::new(file);

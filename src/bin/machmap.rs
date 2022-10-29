@@ -14,8 +14,8 @@ use std::process;
 use clap::{Arg, Command};
 use colored::*;
 
-use machin::readlines;
 use machin::machmap::*;
+use machin::readlines;
 use machin::{colored_err, colored_success};
 
 include!("../machmap/cli.rs");
