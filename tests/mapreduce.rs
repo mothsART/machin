@@ -92,4 +92,19 @@ mod tests {
             )
         );
     }
+
+    #[test]
+    fn create_pdf_with_multiple_pdf_files() {
+        assert_eq!(
+            "cbfae5ac87499cf157b5073a6726db5c191bf103",
+            get_hash_after(
+                vec![
+                    "tests/datasets/first_doc.pdf",
+                    "tests/datasets/second_doc.pdf",
+                ],
+                "merge.pdf",
+                Direction::Vertical
+            )
+        );
+    }
 }
