@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 pub fn build_machreduce_cli(
     name: &'static str,
     version: &'static str,
@@ -12,6 +14,7 @@ pub fn build_machreduce_cli(
         .args([
             Arg::new("output")
                 .short('o')
+                .value_parser(clap::value_parser!(PathBuf))
                 .help("output to a specific file (like result.zip)")
                 .required(true),
             Arg::new("direction")

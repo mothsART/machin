@@ -33,15 +33,14 @@ fn main() {
         }
     }
 
-    match matches.get_one::<String>("output").map(|s| s.as_str()) {
-        Some(output_file) => {
-            let r = readlines();
-            let mut i_f = InputsFiles::new(&r, output_file, direction);
-            match i_f.reduce() {
-                Ok(r) => colored_success!(r),
-                Err(e) => colored_err!(e.to_string()),
-            };
-        }
-        None => colored_err!("output file is required"),
+    if let Some(output_file) = matches.get_one::<PathBuf>("output") {
+        let r = readlines();
+        let o = output_file.display().to_string();
+
+        let mut i_f = InputsFiles::new(&r, &o, direction);
+        match i_f.reduce() {
+            Ok(r) => colored_success!(r),
+            Err(e) => colored_err!(e.to_string()),
+        };
     }
 }

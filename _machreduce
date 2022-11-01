@@ -15,7 +15,7 @@ _machreduce() {
 
     local context curcontext="$curcontext" state line
     _arguments "${_arguments_options[@]}" \
-'-o+[output to a specific file (like result.zip)]: : ' \
+'-o+[output to a specific file (like result.zip)]: :_files' \
 '-d+[direction : horizontal or vertical (vertical by default)]: :(horizontal vertical)' \
 '-h[Print help information]' \
 '--help[Print help information]' \
