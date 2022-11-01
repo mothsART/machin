@@ -1,7 +1,11 @@
 #[cfg(test)]
 mod tests {
+    use std::fs::File;
+    use std::io::Read;
+
     use crypto::digest::Digest;
     use crypto::sha1::Sha1;
+    use map_macro::map;
     use tempfile::tempdir;
 
     use machin::machreduce::{Direction, InputsFiles};
@@ -31,6 +35,43 @@ mod tests {
         tmp_dir.close().unwrap();
 
         return str_hash;
+    }
+
+    #[test]
+    fn create_zip() {
+        let mut inputs_file = vec![];
+
+        let hashes = map! {
+          "tests/datasets/rusted_gears.jpg" => "b6f1c03e2893f8afd5dfa5d3ac6cabb67222fd21",
+          "tests/datasets/rusted_chain.jpg" => "312ca494310f40c465fb0de587d90580566e969a",
+          "tests/datasets/car-vintage-old-rusty.png" => "f474d4b8629ff0d34296b9f7c825c020029b92ac",
+        };
+
+        for h in hashes.keys() {
+            inputs_file.push(h.to_string());
+        }
+
+        let tmp_dir = tempdir().unwrap();
+        let output_path = tmp_dir.path().join("result.zip").display().to_string();
+
+        InputsFiles::new(&inputs_file, &output_path, Direction::Vertical)
+            .reduce()
+            .unwrap();
+
+        let zip_file = File::open(&output_path).unwrap();
+        let mut zip = zip::ZipArchive::new(zip_file).unwrap();
+
+        for i in 0..zip.len() {
+            let mut file = zip.by_index(i).unwrap();
+            let mut hasher = Sha1::new();
+            let mut buffer = Vec::new();
+            file.read_to_end(&mut buffer).unwrap();
+            hasher.input(&buffer);
+            let str_hash = hasher.result_str();
+            assert_eq!(hashes.get(file.name()).unwrap(), &str_hash);
+        }
+
+        tmp_dir.close().unwrap();
     }
 
     #[test]
