@@ -44,7 +44,7 @@ mod tests {
         let args = ConvertArgs {
             color: Some(ConvertColor::Grayscale),
             flip: Some(ConvertFlip::Vertical),
-            rotate: Some("90"),
+            rotate: Some(90),
         };
         assert_eq!(
             "e47cf13fbcd738e4822c03d409fcbd31ffa2b0be",
@@ -66,7 +66,7 @@ mod tests {
         let args = ConvertArgs {
             color: None,
             flip: Some(ConvertFlip::Horizontal),
-            rotate: Some("270"),
+            rotate: Some(270),
         };
         assert_eq!(
             "5f8d1cce382e45cff88247ef2914dd728128d013",

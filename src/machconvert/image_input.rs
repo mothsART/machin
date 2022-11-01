@@ -5,7 +5,7 @@ use std::error::Error;
 
 use colored::Colorize;
 
-use crate::machconvert::errors::{ArgConvertError, UnsupportedRotateError};
+use crate::machconvert::errors::ArgConvertError;
 use crate::machconvert::{ConvertArgs, ConvertFlip};
 
 impl<'a> ImageInputFile<'a> {
@@ -19,7 +19,6 @@ impl<'a> ImageInputFile<'a> {
 
 impl<'a> InputTo<'a> for ImageInputFile<'a> {
     fn convert(&self, args: &ConvertArgs) -> Result<String, Box<dyn Error + 'a>> {
-        let e = UnsupportedRotateError {};
         let arg_e = ArgConvertError {};
 
         if None == args.color && None == args.flip && None == args.rotate {
@@ -58,27 +57,18 @@ impl<'a> InputTo<'a> for ImageInputFile<'a> {
             step += 1;
         }
 
-        if let Some(r_value) = args.rotate {
-            match r_value.parse::<i16>() {
-                Ok(r) => {
-                    if r == 90 || r == 180 || r == 270 {
-                        if r == 90 {
-                            img = ImageRgba8(imageops::rotate90(&img));
-                        } else if r == 180 {
-                            img = ImageRgba8(imageops::rotate180(&img));
-                        } else {
-                            img = ImageRgba8(imageops::rotate270(&img));
-                        }
-                        colored_success!(format!(
-                            "Step {} : apply a {} degree rotation of {} to {}",
-                            step, r_value, self.input_file, self.output_file,
-                        ));
-                    } else {
-                        return Err(Box::new(e));
-                    }
-                }
-                Err(_e) => return Err(Box::new(e)),
-            };
+        if let Some(r) = args.rotate {
+            if r == 90 {
+                img = ImageRgba8(imageops::rotate90(&img));
+            } else if r == 180 {
+                img = ImageRgba8(imageops::rotate180(&img));
+            } else {
+                img = ImageRgba8(imageops::rotate270(&img));
+            }
+            colored_success!(format!(
+                "Step {} : apply a {} degree rotation of {} to {}",
+                step, r, self.input_file, self.output_file,
+            ));
         }
 
         img.save(self.output_file)?;

@@ -19,10 +19,10 @@ pub enum ConvertFlip {
     Vertical,
 }
 
-pub struct ConvertArgs<'a> {
+pub struct ConvertArgs {
     pub color: Option<ConvertColor>,
     pub flip: Option<ConvertFlip>,
-    pub rotate: Option<&'a str>,
+    pub rotate: Option<u16>,
 }
 
 pub struct InputsFiles<'a> {

@@ -23,22 +23,17 @@ fn main() {
 
     let mut direction = Direction::Vertical;
 
-    if let Some(direction_value) = matches.value_of("direction") {
+    if let Some(direction_value) = matches.get_one::<String>("direction").map(|s| s.as_str()) {
         match direction_value {
             "vertical" => {}
             "horizontal" => {
                 direction = Direction::Horizontal;
             }
-            _e => {
-                colored_err!(format!(
-                    "direction argument \"{}\" isn't a good value. There're only 2 options : vertical or horizontal", _e
-                ));
-                return;
-            }
+            _e => { }
         }
     }
 
-    match matches.value_of("output") {
+    match matches.get_one::<String>("output").map(|s| s.as_str()) {
         Some(output_file) => {
             let r = readlines();
             let mut i_f = InputsFiles::new(&r, output_file, direction);

@@ -8,8 +8,8 @@ _machmap() {
 
     for i in ${COMP_WORDS[@]}
     do
-        case "${i}" in
-            "$1")
+        case "${cmd},${i}" in
+            ",$1")
                 cmd="machmap"
                 ;;
             *)
@@ -19,7 +19,7 @@ _machmap() {
 
     case "${cmd}" in
         machmap)
-            opts="-h -V -e -s --help --version"
+            opts="-e -s -h -V --help --version"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 1 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0

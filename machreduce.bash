@@ -8,8 +8,8 @@ _machreduce() {
 
     for i in ${COMP_WORDS[@]}
     do
-        case "${i}" in
-            "$1")
+        case "${cmd},${i}" in
+            ",$1")
                 cmd="machreduce"
                 ;;
             *)
@@ -19,7 +19,7 @@ _machreduce() {
 
     case "${cmd}" in
         machreduce)
-            opts="-h -V -o -d --help --version"
+            opts="-o -d -h -V --help --version"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 1 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -30,7 +30,7 @@ _machreduce() {
                     return 0
                     ;;
                 -d)
-                    COMPREPLY=($(compgen -f "${cur}"))
+                    COMPREPLY=($(compgen -W "horizontal vertical" -- "${cur}"))
                     return 0
                     ;;
                 *)

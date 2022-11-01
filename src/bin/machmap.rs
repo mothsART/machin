@@ -23,7 +23,7 @@ include!("../machmap/cli.rs");
 fn main() {
     let matches = build_machmap_cli("machmap", crate_version!(), crate_authors!()).get_matches();
 
-    if let Some(support_arg) = matches.value_of("support") {
+    if let Some(support_arg) = matches.get_one::<String>("support").map(|s| s.as_str()) {
         let fake_path = &format!("fake.{}", support_arg);
         let i = InputsFiles::new(fake_path, "fake");
         match i.support() {
@@ -40,7 +40,7 @@ fn main() {
         }
         return;
     }
-    if let Some(extension) = matches.value_of("extension") {
+    if let Some(extension) = matches.get_one::<String>("extension").map(|s| s.as_str()) {
         let fake_path = &format!("fake.{}", extension);
         let output_mime = mime_guess::from_path(fake_path);
         if output_mime.first().is_none() {
