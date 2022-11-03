@@ -52,6 +52,28 @@ mod tests {
     }
 
     #[test]
+    fn webp_to_jpg() {
+        assert_eq!(
+            "3077294abcd351689f5e261f940eddd9e2970dd0",
+            get_hash_after(
+                "tests/datasets/house.webp",
+                "house.jpg"
+            )
+        );
+    }
+
+    #[test]
+    fn webp_to_png() {
+        assert_eq!(
+            "0f848e7f44014c6f9ce82707c13b386fe94f336c",
+            get_hash_after(
+                "tests/datasets/house.webp",
+                "house.png"
+            )
+        );
+    }
+
+    #[test]
     fn png_to_jpg() {
         assert_eq!(
             "122267b78644b438a17f99dcb14b37e816554771",
@@ -76,7 +98,7 @@ mod tests {
     #[test]
     fn jpg_to_png() {
         assert_eq!(
-            "bf6ab61276f04c8093ddcc4db66d5656be3d15af",
+            "2edbffe70d5b9a61b2c1545d98cb6f05216b33b5",
             get_hash_after("tests/datasets/rusted_chain.jpg", "rusted_chain.png")
         );
     }

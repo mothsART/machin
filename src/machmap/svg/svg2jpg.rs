@@ -40,7 +40,7 @@ impl<'a> InputTo<'a> for SVGToJPG<'a> {
         let tmp_png = tmp_dir.path().join("tmp.png").display().to_string();
         pixmap.save_png(&tmp_png)?;
         let img = ImageReader::open(&tmp_png)?.decode()?;
-        img.save(&self.output_file)?;
+        img.save(self.output_file)?;
         tmp_dir.close()?;
 
         Ok(format!(

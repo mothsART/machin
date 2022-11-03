@@ -45,17 +45,17 @@ impl<'a> ImagesToPdf<'a> {
                 "Contents" => content_id,
             });
             let new_path;
-            let input_mime = mime_guess::from_path(&f);
+            let input_mime = mime_guess::from_path(f);
             let img_path = f;
             if let Some(img_mime) = &input_mime.first_raw() {
                 if !img_mime.contains("image/jpeg") {
-                    let img = ImageReader::open(&img_path)?.decode()?;
+                    let img = ImageReader::open(img_path)?.decode()?;
                     new_path = format!("{}-{}.jpg", tmp_dir.path().to_str().unwrap_or(""), i);
                     img.save(&new_path)?;
                 }
             }
             if let Ok(img) = xobject::image(img_path) {
-                if let Ok(dimensions) = image_dimensions(&img_path) {
+                if let Ok(dimensions) = image_dimensions(img_path) {
                     // magical values ? TODO : ref to pdf documentation
                     let max_width = 590.;
                     let max_height = 770.;

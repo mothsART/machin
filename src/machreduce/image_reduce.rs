@@ -42,12 +42,12 @@ impl<'a> InputTo<'a> for ImageOutputFile<'a> {
                 colored_err!(format!("Input file \"{}\" doesn't exist", line));
                 continue;
             }
-            if let Some(o_mime) = mime_guess::from_path(&line).first_raw() {
+            if let Some(o_mime) = mime_guess::from_path(line).first_raw() {
                 if !self.input_mime_type.contains(&o_mime) {
                     colored_err!(format!("Input file \"{}\" not supported", line));
                     continue;
                 }
-                if let Ok(dimensions) = image_dimensions(&line) {
+                if let Ok(dimensions) = image_dimensions(line) {
                     if *direction == Direction::Horizontal {
                         _files.push(ImagePath {
                             pos: dimensions.0,

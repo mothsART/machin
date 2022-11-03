@@ -28,11 +28,8 @@ fn convert_files(prefix: Option<&str>, args: &ConvertArgs) {
             continue;
         }
         let i_f = InputsFiles::new(&line, &output_file);
-        match i_f.convert(args) {
-            Ok(_) => {}
-            Err(e) => {
-                colored_err!(e.to_string());
-            }
+        if let Err(e) = i_f.convert(args) {
+            colored_err!(e.to_string());
         };
     }
 }
@@ -42,26 +39,16 @@ fn main() {
         build_machconvert_cli("machconvert", crate_version!(), crate_authors!()).get_matches();
 
     let mut color = None;
-    if let Some(color_value) = matches.get_one::<String>("color").map(|s| s.as_str()) {
-        match color_value {
-            "grayscale" => {
-                color = Some(ConvertColor::Grayscale);
-            }
-            _e => {}
-        }
+    if let Some("grayscale") = matches.get_one::<String>("color").map(|s| s.as_str()) {
+        color = Some(ConvertColor::Grayscale);
     }
 
     let mut flip = None;
-    if let Some(flip_value) = matches.get_one::<String>("flip").map(|s| s.as_str()) {
-        match flip_value {
-            "vertical" => {
-                flip = Some(ConvertFlip::Vertical);
-            }
-            "horizontal" => {
-                flip = Some(ConvertFlip::Horizontal);
-            }
-            _e => {}
-        }
+    let flip_value = matches.get_one::<String>("flip").map(|s| s.as_str());
+    if let Some("vertical") = flip_value {
+        flip = Some(ConvertFlip::Vertical);
+    } else if let Some("horizontal") = flip_value {
+        flip = Some(ConvertFlip::Horizontal);
     }
 
     let mut rotate: Option<u16> = None;
@@ -74,8 +61,8 @@ fn main() {
 
     let args = ConvertArgs {
         color,
-        flip: flip,
-        rotate: rotate,
+        flip,
+        rotate,
     };
     convert_files(
         matches.get_one::<String>("prefix").map(|s| s.as_str()),

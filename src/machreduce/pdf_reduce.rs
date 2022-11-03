@@ -40,7 +40,7 @@ impl<'a> InputTo<'a> for PdfOutputFile<'a> {
                 colored_err!(format!("Input file \"{}\" doesn't exist", line));
                 continue;
             }
-            if let Some(o_mime) = mime_guess::from_path(&line).first_raw() {
+            if let Some(o_mime) = mime_guess::from_path(line).first_raw() {
                 if !image_to_pdf.input_mime_type.contains(&o_mime) {
                     only_img = false;
                 }

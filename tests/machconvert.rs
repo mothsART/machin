@@ -47,7 +47,7 @@ mod tests {
             rotate: Some(90),
         };
         assert_eq!(
-            "e47cf13fbcd738e4822c03d409fcbd31ffa2b0be",
+            "e16f1ffa1a40302c8d3cd486f9bcdc03cfc6892b",
             get_hash_after(
                 "tests/datasets/car-vintage-old-rusty.png",
                 "car-vintage-old-rusty.png",

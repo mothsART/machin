@@ -107,7 +107,7 @@ mod tests {
     #[test]
     fn create_png_with_heterogeneous_pictures() {
         assert_eq!(
-            "8788a8a12380265c49a64a89d0ba9cd2a9b24823",
+            "94288c4505baf2306c36c4930ac8bd44f2b65e82",
             get_hash_after(
                 vec![
                     "tests/datasets/rusted_gears.jpg",

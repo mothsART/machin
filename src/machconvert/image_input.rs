@@ -21,12 +21,12 @@ impl<'a> InputTo<'a> for ImageInputFile<'a> {
     fn convert(&self, args: &ConvertArgs) -> Result<String, Box<dyn Error + 'a>> {
         let arg_e = ArgConvertError {};
 
-        if None == args.color && None == args.flip && None == args.rotate {
+        if args.color.is_none() && args.flip.is_none() && args.rotate.is_none() {
             return Err(Box::new(arg_e));
         }
 
         let mut step = 1;
-        let mut img = ImageReader::open(&self.input_file)?.decode()?;
+        let mut img = ImageReader::open(self.input_file)?.decode()?;
 
         if args.color.is_some() {
             img = ImageLuma8(imageops::grayscale(&img));

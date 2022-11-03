@@ -22,15 +22,8 @@ fn main() {
         build_machreduce_cli("machreduce", crate_version!(), crate_authors!()).get_matches();
 
     let mut direction = Direction::Vertical;
-
-    if let Some(direction_value) = matches.get_one::<String>("direction").map(|s| s.as_str()) {
-        match direction_value {
-            "vertical" => {}
-            "horizontal" => {
-                direction = Direction::Horizontal;
-            }
-            _e => { }
-        }
+    if let Some("horizontal") = matches.get_one::<String>("direction").map(|s| s.as_str()) {
+        direction = Direction::Horizontal;
     }
 
     if let Some(output_file) = matches.get_one::<PathBuf>("output") {

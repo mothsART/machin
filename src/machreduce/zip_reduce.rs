@@ -27,7 +27,7 @@ impl<'a> ZipOutputFile<'a> {
 impl<'a> InputTo<'a> for ZipOutputFile<'a> {
     fn reduce(&self, _direction: &Direction) -> Result<String, Box<dyn Error + 'a>> {
         let path = std::path::Path::new(&self.output_file);
-        let file = std::fs::File::create(&path).unwrap();
+        let file = std::fs::File::create(path).unwrap();
         let mut zip = zip::ZipWriter::new(file);
         let options =
             zip::write::FileOptions::default().compression_method(zip::CompressionMethod::Stored);
@@ -44,9 +44,9 @@ impl<'a> InputTo<'a> for ZipOutputFile<'a> {
                 continue;
             }
             zip.start_file(line, options)?;
-            let mut f = File::open(&line)?;
+            let mut f = File::open(line)?;
             f.read_to_end(&mut buffer)?;
-            zip.write_all(&*buffer)?;
+            zip.write_all(&buffer)?;
         }
         zip.finish()?;
         Ok(format!("images reduce to {}", self.output_file))
