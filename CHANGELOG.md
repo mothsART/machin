@@ -51,14 +51,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0]  - 2022-11-27
+
 ### Added
 
 - ls *.yaml |machmap *.json
 - ls *.json |machmap *.yaml
+- migration to clap 4.0
+- code coverage and github action
 
 ### Fixed
 
-- preserve order on converting yaml to json 
+- preserve order on converting yaml to json
+- convert webp files to png, jpg
 
 ## [0.5.3]  - 2022-08-19
 
