@@ -55,44 +55,45 @@ impl<'a> ImagesToPdf<'a> {
                 }
             }
             if let Ok(img) = xobject::image(img_path) {
-                let dimensions = image_dimensions(img_path)?;
-                // magical values ? TODO : ref to pdf documentation
-                let max_width = 590.;
-                let max_height = 770.;
+                if let Ok(dimensions) = image_dimensions(img_path) {
+                    // magical values ? TODO : ref to pdf documentation
+                    let max_width = 590.;
+                    let max_height = 770.;
 
-                let mut padding_left = 10.;
-                let mut padding_right = 10.;
-                let mut width = dimensions.0 as f64;
-                let mut height = dimensions.1 as f64;
-                let ratio = height / width;
+                    let mut padding_left = 10.;
+                    let mut padding_right = 10.;
+                    let mut width = dimensions.0 as f64;
+                    let mut height = dimensions.1 as f64;
+                    let ratio = height / width;
 
-                if width > max_width || height > max_height {
-                    if ratio > 1. {
-                        height = max_height;
-                        width = height / ratio;
-                    } else {
-                        width = max_width;
-                        height = width * ratio;
+                    if width > max_width || height > max_height {
+                        if ratio > 1. {
+                            height = max_height;
+                            width = height / ratio;
+                        } else {
+                            width = max_width;
+                            height = width * ratio;
+                        }
                     }
-                }
-                if max_width > width {
-                    padding_left = (max_width - width) / 2.;
-                }
-                if max_height > height {
-                    padding_right = (max_height - height) / 2.;
-                }
+                    if max_width > width {
+                        padding_left = (max_width - width) / 2.;
+                    }
+                    if max_height > height {
+                        padding_right = (max_height - height) / 2.;
+                    }
 
-                let insert_result = doc.insert_image(
-                    page_id,
-                    img,
-                    (padding_left, padding_right),
-                    (width, height),
-                );
-                if let Some(insert_error) = insert_result.err() {
-                    colored_err!(format!("Couln't insert images: {}", insert_error));
-                    continue;
+                    let insert_result = doc.insert_image(
+                        page_id,
+                        img,
+                        (padding_left, padding_right),
+                        (width, height),
+                    );
+                    if let Some(insert_error) = insert_result.err() {
+                        colored_err!(format!("Couln't insert images: {}", insert_error));
+                        continue;
+                    }
+                    pdf_kids.push(page_id.into());
                 }
-                pdf_kids.push(page_id.into());
             }
         }
 
