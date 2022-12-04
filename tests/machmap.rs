@@ -1,13 +1,13 @@
 #[cfg(test)]
 mod tests {
+    use std::collections::HashMap;
     use std::env;
     use std::fs::File;
     use std::io::Read;
-    use std::collections::HashMap;
 
-    use map_macro::map;
     use crypto::digest::Digest;
     use crypto::sha1::Sha1;
+    use map_macro::map;
     use tempfile::tempdir;
 
     use machin::machmap::InputsFiles;
@@ -33,7 +33,10 @@ mod tests {
         return str_hash;
     }
 
-    fn get_zip_hashes(input_file: &'static str, output_file: &'static str) -> HashMap<String, String> {
+    fn get_zip_hashes(
+        input_file: &'static str,
+        output_file: &'static str,
+    ) -> HashMap<String, String> {
         let mut hashes = HashMap::new();
 
         let tmp_dir = tempdir().unwrap();
@@ -53,7 +56,7 @@ mod tests {
             file.read_to_end(&mut buffer).unwrap();
             hasher.input(&buffer);
             let str_hash = hasher.result_str();
-            
+
             let file_name = file.name();
             hashes.insert(file_name.to_string(), str_hash);
         }
@@ -100,10 +103,7 @@ mod tests {
     fn webp_to_jpg() {
         assert_eq!(
             "3077294abcd351689f5e261f940eddd9e2970dd0",
-            get_hash_after(
-                "tests/datasets/house.webp",
-                "house.jpg"
-            )
+            get_hash_after("tests/datasets/house.webp", "house.jpg")
         );
     }
 
@@ -111,10 +111,7 @@ mod tests {
     fn webp_to_png() {
         assert_eq!(
             "0f848e7f44014c6f9ce82707c13b386fe94f336c",
-            get_hash_after(
-                "tests/datasets/house.webp",
-                "house.png"
-            )
+            get_hash_after("tests/datasets/house.webp", "house.png")
         );
     }
 

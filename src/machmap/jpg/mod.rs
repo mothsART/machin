@@ -1,10 +1,10 @@
-pub mod jpgtopdf;
 pub mod jpgtoodt;
+pub mod jpgtopdf;
 
 use image::io::Reader as ImageReader;
 
-use crate::machmap::jpg::jpgtopdf::JpgToPdf;
 use crate::machmap::jpg::jpgtoodt::JpgToOdt;
+use crate::machmap::jpg::jpgtopdf::JpgToPdf;
 use crate::machmap::{Error, HashMap, InputTo, JPGInputFile};
 
 impl<'a> JPGInputFile<'a> {

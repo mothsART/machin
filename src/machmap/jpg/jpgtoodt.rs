@@ -19,11 +19,11 @@ impl<'a> JpgToOdt<'a> {
 impl<'a> InputTo<'a> for JpgToOdt<'a> {
     fn convert(&self) -> Result<String, Box<dyn Error + 'a>> {
         use std::fs::File;
-        use std::path::Path;
         use std::io::{Read, Write};
+        use std::path::Path;
 
         use image::image_dimensions;
-        use tera::{Tera, Context};
+        use tera::{Context, Tera};
 
         let path = std::path::Path::new(&self.output_file);
         let file = std::fs::File::create(path).unwrap();
