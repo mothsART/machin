@@ -6,9 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Roadmap]
 
-- upgrade to clap >= 4.0
-
 ### Added
+
+- using file-format (https://crates.io/crates/file-format) before open a file : just file extension will not be secure.
+
 
 - ls file.odt | machexplode -d final_dir // all content files on odt (images, fonts) in a directory
 - ls file.epub | machexplode -d final_dir // all content files (images, fonts) in a directory
@@ -23,6 +24,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ls *.json |machmap *.toml
 - ls *.toml |machmap *.yaml
 - ls *.toml |machmap *.json
+
+- ls *.gif |machmap -e html
+- ls *.png |machmap -e html
+- ls *.jpg |machmap -e html
 
 - ls *.yaml |machmap *.pdf // colorized and insert on pdf file
 - ls *.json |machmap *.pdf // colorized and insert on pdf file
@@ -40,7 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ls *.jpg | machconvert --resize-x 800
 - ls *.jpg | machconvert --resize-y 800
 
-- ls *.jpg | machreduce -o result.zip --orientation landscape --nb-by-pages 4
+- ls *.jpg | machreduce -o result.pdf --orientation landscape --nb-by-pages 4
 
 - ls *.jpg | machreduce -o result.odt
 - ls *.jpg | machreduce -o result.odp

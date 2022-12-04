@@ -58,11 +58,12 @@ ls *.png | machmap -e jpg
 ls *.png | machmap -e pdf
 ```
 
-Convert jpg files to png, pdf :
+Convert jpg files to png, pdf, odt :
 
 ```zsh
 ls *.jpg | machmap -e png
 ls *.jpg | machmap -e pdf
+ls *.jpg | machmap -e odt
 ```
 
 Convert markdown files to html :

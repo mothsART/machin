@@ -66,9 +66,9 @@ mod tests {
     fn jpg_to_odt() {
         assert_eq!(
             map! {
-                "content.xml".to_string() => "ff2cb9772ca1e64379f58ca6f9106f1d5ff98f88".to_string(),
+                "content.xml".to_string() => "77853510e108e143a7e8c8b29f5413f37771d9ee".to_string(),
                 "Pictures/rusted_chain.jpg".to_string() => "312ca494310f40c465fb0de587d90580566e969a".to_string(),
-                "META-INF/manifest.xml".to_string() => "11ea94494ddab8961eedb54972165401c5844508".to_string()
+                "META-INF/manifest.xml".to_string() => "4b302bb7954931a255ecd4d765c6c62396613b68".to_string()
             },
             get_zip_hashes("tests/datasets/rusted_chain.jpg", "rusted_chain.odt")
         );
