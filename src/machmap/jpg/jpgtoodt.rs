@@ -36,7 +36,7 @@ impl<'a> InputTo<'a> for JpgToOdt<'a> {
         let file_name = Path::new(self.input_file).file_name();
         if let Some(f_name_os_str) = file_name {
             if let Some(f_name) = f_name_os_str.to_str() {
-                let dimensions = image_dimensions(&self.input_file)?;
+                let dimensions = image_dimensions(self.input_file)?;
                 let width = dimensions.0 as f64;
                 let height = dimensions.1 as f64;
 
@@ -46,7 +46,7 @@ impl<'a> InputTo<'a> for JpgToOdt<'a> {
 
                 let mut buffer = Vec::new();
                 zip.start_file(format!("Pictures/{}", f_name), options)?;
-                let mut pic_f = File::open(&self.input_file)?;
+                let mut pic_f = File::open(self.input_file)?;
                 pic_f.read_to_end(&mut buffer)?;
                 zip.write_all(&buffer)?;
 
