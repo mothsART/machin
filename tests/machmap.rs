@@ -1,7 +1,11 @@
 #[cfg(test)]
 mod tests {
     use std::env;
+    use std::fs::File;
+    use std::io::Read;
+    use std::collections::HashMap;
 
+    use map_macro::map;
     use crypto::digest::Digest;
     use crypto::sha1::Sha1;
     use tempfile::tempdir;
@@ -27,6 +31,47 @@ mod tests {
         tmp_dir.close().unwrap();
 
         return str_hash;
+    }
+
+    fn get_zip_hashes(input_file: &'static str, output_file: &'static str) -> HashMap<String, String> {
+        let mut hashes = HashMap::new();
+
+        let tmp_dir = tempdir().unwrap();
+        let output_path = tmp_dir.path().join(output_file).display().to_string();
+
+        InputsFiles::new(&input_file, &output_path)
+            .mime_map()
+            .unwrap();
+
+        let zip_file = File::open(&output_path).unwrap();
+        let mut zip = zip::ZipArchive::new(zip_file).unwrap();
+
+        for i in 0..zip.len() {
+            let mut file = zip.by_index(i).unwrap();
+            let mut hasher = Sha1::new();
+            let mut buffer = Vec::new();
+            file.read_to_end(&mut buffer).unwrap();
+            hasher.input(&buffer);
+            let str_hash = hasher.result_str();
+            
+            let file_name = file.name();
+            hashes.insert(file_name.to_string(), str_hash);
+        }
+
+        tmp_dir.close().unwrap();
+        return hashes;
+    }
+
+    #[test]
+    fn jpg_to_odt() {
+        assert_eq!(
+            map! {
+                "content.xml".to_string() => "ff2cb9772ca1e64379f58ca6f9106f1d5ff98f88".to_string(),
+                "Pictures/rusted_chain.jpg".to_string() => "312ca494310f40c465fb0de587d90580566e969a".to_string(),
+                "META-INF/manifest.xml".to_string() => "11ea94494ddab8961eedb54972165401c5844508".to_string()
+            },
+            get_zip_hashes("tests/datasets/rusted_chain.jpg", "rusted_chain.odt")
+        );
     }
 
     #[test]
