@@ -45,8 +45,8 @@ impl<'a> PdfToPdf<'a> {
 
             documents_pages.extend(
                 _doc.get_pages()
-                    .into_iter()
-                    .map(|(_, object_id)| {
+                    .into_values()
+                    .map(|object_id| {
                         if !first {
                             let bookmark = Bookmark::new(
                                 format!("Page_{}", pagenum),
