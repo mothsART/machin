@@ -51,7 +51,7 @@ impl<'a> ImagesToPdf<'a> {
                 if !img_mime.contains("image/jpeg") {
                     let img = ImageReader::open(img_path)?.decode()?;
                     new_path = format!("{}-{}.jpg", tmp_dir.path().to_str().unwrap_or(""), i);
-                    img.save(&new_path)?;
+                    img.save(new_path)?;
                 }
             }
             if let Ok(img) = xobject::image(img_path) {

@@ -151,8 +151,8 @@ impl<'a> PdfToPdf<'a> {
             dictionary.set(
                 "Kids",
                 documents_pages
-                    .into_iter()
-                    .map(|(object_id, _)| Object::Reference(object_id))
+                    .into_keys()
+                    .map(Object::Reference)
                     .collect::<Vec<_>>(),
             );
 
