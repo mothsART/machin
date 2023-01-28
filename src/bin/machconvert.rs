@@ -21,10 +21,10 @@ fn convert_files(prefix: Option<&str>, args: &ConvertArgs) {
     for line in readlines() {
         let mut output_file = line.to_string();
         if let Some(_prefix) = prefix {
-            output_file = format!("{}{}", _prefix, output_file);
+            output_file = format!("{_prefix}{output_file}");
         }
         if !Path::new(&line).exists() {
-            colored_err!(format!("Input file \"{}\" doesn't exist", line));
+            colored_err!(format!("Input file \"{line}\" doesn't exist"));
             continue;
         }
         let i_f = InputsFiles::new(&line, &output_file);

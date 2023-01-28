@@ -45,7 +45,7 @@ impl<'a> InputTo<'a> for JpgToOdt<'a> {
                 context.insert("image", &f_name);
 
                 let mut buffer = Vec::new();
-                zip.start_file(format!("Pictures/{}", f_name), options)?;
+                zip.start_file(format!("Pictures/{f_name}"), options)?;
                 let mut pic_f = File::open(self.input_file)?;
                 pic_f.read_to_end(&mut buffer)?;
                 zip.write_all(&buffer)?;

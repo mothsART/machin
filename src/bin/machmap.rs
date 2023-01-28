@@ -24,36 +24,34 @@ fn main() {
     let matches = build_machmap_cli("machmap", crate_version!(), crate_authors!()).get_matches();
 
     if let Some(support_arg) = matches.get_one::<String>("support").map(|s| s.as_str()) {
-        let fake_path = &format!("fake.{}", support_arg);
+        let fake_path = &format!("fake.{support_arg}");
         let i = InputsFiles::new(fake_path, "fake");
         match i.support() {
             Ok(r) => {
-                println!("The type of file \".{}\" support :", support_arg);
-                println!("{}", r);
+                println!("The type of file \".{support_arg}\" support :");
+                println!("{r}");
             }
             Err(_e) => {
                 colored_err!(format!(
-                    "The type of file \".{}\" is not yet supported.",
-                    support_arg
+                    "The type of file \".{support_arg}\" is not yet supported."
                 ));
             }
         }
         return;
     }
     if let Some(extension) = matches.get_one::<String>("extension").map(|s| s.as_str()) {
-        let fake_path = &format!("fake.{}", extension);
+        let fake_path = &format!("fake.{extension}");
         let output_mime = mime_guess::from_path(fake_path);
         if output_mime.first().is_none() {
             colored_err!(format!(
-                "Output file extension \"{}\" doesn't been reconize.",
-                extension
+                "Output file extension \"{extension}\" doesn't been reconize."
             ));
             process::exit(exitcode::DATAERR);
         }
 
         for _l in readlines() {
             if !Path::new(&_l).exists() {
-                colored_err!(format!("Input file \"{}\" doesn't exist", _l));
+                colored_err!(format!("Input file \"{_l}\" doesn't exist"));
                 continue;
             }
             let o_file = format!(

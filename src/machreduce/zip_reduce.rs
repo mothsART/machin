@@ -37,7 +37,7 @@ impl<'a> InputTo<'a> for ZipOutputFile<'a> {
             if !Path::new(&line).exists() {
                 eprintln!(
                     "{}",
-                    format!("Input file \"{}\" doesn't exist", line)
+                    format!("Input file \"{line}\" doesn't exist")
                         .black()
                         .on_red()
                 );

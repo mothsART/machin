@@ -89,7 +89,7 @@ impl<'a> ImagesToPdf<'a> {
                         (width, height),
                     );
                     if let Some(insert_error) = insert_result.err() {
-                        colored_err!(format!("Couln't insert images: {}", insert_error));
+                        colored_err!(format!("Couln't insert images: {insert_error}"));
                         continue;
                     }
                     pdf_kids.push(page_id.into());
@@ -112,6 +112,6 @@ impl<'a> ImagesToPdf<'a> {
         doc.trailer.set("Root", catalog_id);
         doc.compress();
         doc.save(output_file)?;
-        Ok(format!("images reduce to {}", output_file))
+        Ok(format!("images reduce to {output_file}"))
     }
 }

@@ -49,7 +49,7 @@ impl<'a> PdfToPdf<'a> {
                     .map(|object_id| {
                         if !first {
                             let bookmark = Bookmark::new(
-                                format!("Page_{}", pagenum),
+                                format!("Page_{pagenum}"),
                                 [0.0, 0.0, 1.0],
                                 0,
                                 object_id,
@@ -192,6 +192,6 @@ impl<'a> PdfToPdf<'a> {
 
         // Save the merged PDF
         doc.save(output_file)?;
-        Ok(format!("pdf reduce to {}", output_file))
+        Ok(format!("pdf reduce to {output_file}"))
     }
 }
