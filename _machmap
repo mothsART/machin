@@ -17,10 +17,10 @@ _machmap() {
     _arguments "${_arguments_options[@]}" \
 '-e+[output to a specific extension name (like png)]: : ' \
 '-s+[return list of supporting conversion]: : ' \
-'-h[Print help information]' \
-'--help[Print help information]' \
-'-V[Print version information]' \
-'--version[Print version information]' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 && ret=0
 }
 

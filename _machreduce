@@ -17,10 +17,10 @@ _machreduce() {
     _arguments "${_arguments_options[@]}" \
 '-o+[output to a specific file (like result.zip)]: :_files' \
 '-d+[direction : horizontal or vertical (vertical by default)]: :(horizontal vertical)' \
-'-h[Print help information]' \
-'--help[Print help information]' \
-'-V[Print version information]' \
-'--version[Print version information]' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 && ret=0
 }
 

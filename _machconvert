@@ -19,10 +19,10 @@ _machconvert() {
 '-c+[color (priority 1)]: :(grayscale)' \
 '-f+[flip (priority 2)]: :(horizontal vertical)' \
 '-r+[rotate (priority 3) with degree. 90, 180 or 270.]: :(90 180 270)' \
-'-h[Print help information]' \
-'--help[Print help information]' \
-'-V[Print version information]' \
-'--version[Print version information]' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 && ret=0
 }
 
