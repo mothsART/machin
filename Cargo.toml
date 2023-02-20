@@ -10,7 +10,7 @@ readme = "README.md"
 repository = "https://github.com/mothsart/machin"
 homepage = "https://github.com/mothsart/machin"
 edition = "2021"
-rust-version = "1.62"
+rust-version = "1.64"
 
 [dependencies]
 clap = { version="4.1", features=['cargo'] }
