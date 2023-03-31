@@ -30,4 +30,8 @@ _machmap_commands() {
     _describe -t commands 'machmap commands' commands "$@"
 }
 
-_machmap "$@"
+if [ "$funcstack[1]" = "_machmap" ]; then
+    _machmap "$@"
+else
+    compdef _machmap machmap
+fi

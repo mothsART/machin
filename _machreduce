@@ -30,4 +30,8 @@ _machreduce_commands() {
     _describe -t commands 'machreduce commands' commands "$@"
 }
 
-_machreduce "$@"
+if [ "$funcstack[1]" = "_machreduce" ]; then
+    _machreduce "$@"
+else
+    compdef _machreduce machreduce
+fi

@@ -32,4 +32,8 @@ _machconvert_commands() {
     _describe -t commands 'machconvert commands' commands "$@"
 }
 
-_machconvert "$@"
+if [ "$funcstack[1]" = "_machconvert" ]; then
+    _machconvert "$@"
+else
+    compdef _machconvert machconvert
+fi
