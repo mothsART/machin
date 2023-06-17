@@ -13,7 +13,7 @@ edition = "2021"
 rust-version = "1.64"
 
 [dependencies]
-clap = { version="4.2", features=['cargo'] }
+clap = { version="4.3", features=['cargo'] }
 lopdf = { version="0.27", features=["embed_image"] }
 exitcode="1.1.2"
 mime="0.3"
@@ -37,5 +37,5 @@ rust-crypto = "0.2.36"
 map-macro = "0.2.4"
 
 [build-dependencies]
-clap = { version="4.2", features=['cargo'] }
-clap_complete = { version="4.2" }
+clap = { version="4.3", features=['cargo'] }
+clap_complete = { version="4.3" }
