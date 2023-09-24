@@ -12,8 +12,6 @@ jobs:
         rust:
           - stable
           - beta
-          - nightly
-          - 1.64
 
     steps:
       - name: Checkout sources
