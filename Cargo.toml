@@ -21,7 +21,7 @@ mime_guess="2.0"
 resvg="0.14"
 usvg="0.14.0"
 tiny-skia="0.5"
-image = { version="0.24.6" }
+image = { version="0.24.7" }
 markdown = "0.3"
 colored = "2"
 zip = "0.6"
