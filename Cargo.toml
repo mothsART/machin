@@ -37,5 +37,5 @@ sha1 = "0.10.6"
 map-macro = "0.2.4"
 
 [build-dependencies]
-clap = { version="4.3", features=['cargo'] }
-clap_complete = { version="4.3" }
+clap = { version="4.4", features=['cargo'] }
+clap_complete = { version="4.4" }

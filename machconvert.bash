@@ -51,4 +51,4 @@ _machconvert() {
     esac
 }
 
-complete -F _machconvert -o bashdefault -o default machconvert
+complete -F _machconvert -o nosort -o bashdefault -o default machconvert

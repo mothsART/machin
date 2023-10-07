@@ -43,4 +43,4 @@ _machmap() {
     esac
 }
 
-complete -F _machmap -o bashdefault -o default machmap
+complete -F _machmap -o nosort -o bashdefault -o default machmap

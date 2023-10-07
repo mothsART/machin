@@ -43,4 +43,4 @@ _machreduce() {
     esac
 }
 
-complete -F _machreduce -o bashdefault -o default machreduce
+complete -F _machreduce -o nosort -o bashdefault -o default machreduce
