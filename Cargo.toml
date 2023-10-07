@@ -33,7 +33,7 @@ serde_yaml = "0.9"
 tera = "1.17"
 
 [dev-dependencies]
-rust-crypto = "0.2.36"
+sha1 = "0.10.6"
 map-macro = "0.2.4"
 
 [build-dependencies]

@@ -3,8 +3,7 @@ mod tests {
     use std::fs::File;
     use std::io::Read;
 
-    use crypto::digest::Digest;
-    use crypto::sha1::Sha1;
+    use sha1::{Sha1, Digest};
     use map_macro::map;
     use tempfile::tempdir;
 
@@ -29,9 +28,9 @@ mod tests {
 
         let bytes = std::fs::read(&output_path).unwrap();
         let mut hasher = Sha1::new();
-        hasher.input(&bytes);
+        hasher.update(&bytes);
 
-        let str_hash = hasher.result_str();
+        let str_hash = format!("{:x}", hasher.finalize());
         tmp_dir.close().unwrap();
 
         return str_hash;
@@ -66,8 +65,8 @@ mod tests {
             let mut hasher = Sha1::new();
             let mut buffer = Vec::new();
             file.read_to_end(&mut buffer).unwrap();
-            hasher.input(&buffer);
-            let str_hash = hasher.result_str();
+            hasher.update(&buffer);
+            let str_hash = format!("{:x}", hasher.finalize());
             assert_eq!(hashes.get(file.name()).unwrap(), &str_hash);
         }
 

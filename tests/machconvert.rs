@@ -2,8 +2,7 @@
 mod tests {
     use std::env;
 
-    use crypto::digest::Digest;
-    use crypto::sha1::Sha1;
+    use sha1::{Sha1, Digest};
     use tempfile::tempdir;
 
     use machin::machconvert::{ConvertArgs, ConvertColor, ConvertFlip, InputsFiles};
@@ -25,9 +24,9 @@ mod tests {
 
         let bytes = std::fs::read(&output_path).unwrap();
         let mut hasher = Sha1::new();
-        hasher.input(&bytes);
+        hasher.update(&bytes);
 
-        let str_hash = hasher.result_str();
+        let str_hash = format!("{:x}", hasher.finalize());
         tmp_dir.close().unwrap();
 
         return str_hash;
