@@ -2,7 +2,7 @@
 mod tests {
     use std::env;
 
-    use sha1::{Sha1, Digest};
+    use sha1::{Digest, Sha1};
     use tempfile::tempdir;
 
     use machin::machconvert::{ConvertArgs, ConvertColor, ConvertFlip, InputsFiles};

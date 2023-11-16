@@ -5,8 +5,8 @@ mod tests {
     use std::fs::File;
     use std::io::Read;
 
-    use sha1::{Sha1, Digest};
     use map_macro::map;
+    use sha1::{Digest, Sha1};
     use tempfile::tempdir;
 
     use machin::machmap::InputsFiles;
