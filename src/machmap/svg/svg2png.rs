@@ -31,7 +31,7 @@ impl<'a> InputTo<'a> for SVGToPNG<'a> {
             .fit_to(rtree.svg_node().size.to_screen_size())
             .unwrap();
         let mut pixmap = tiny_skia::Pixmap::new(pixmap_size.width(), pixmap_size.height()).unwrap();
-        resvg::render(&rtree, usvg::FitTo::Original, pixmap.as_mut()).unwrap();
+        resvg::render(&rtree, usvg::FitTo::Original, pixmap.as_mut());
         pixmap.save_png(self.output_file)?;
         Ok(format!(
             "convert svg to png : {} -> {}",

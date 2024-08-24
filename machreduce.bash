@@ -43,4 +43,8 @@ _machreduce() {
     esac
 }
 
-complete -F _machreduce -o nosort -o bashdefault -o default machreduce
+if [[ "${BASH_VERSINFO[0]}" -eq 4 && "${BASH_VERSINFO[1]}" -ge 4 || "${BASH_VERSINFO[0]}" -gt 4 ]]; then
+    complete -F _machreduce -o nosort -o bashdefault -o default machreduce
+else
+    complete -F _machreduce -o bashdefault -o default machreduce
+fi

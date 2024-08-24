@@ -34,7 +34,7 @@ impl<'a> InputTo<'a> for SVGToJPG<'a> {
             .fit_to(rtree.svg_node().size.to_screen_size())
             .unwrap();
         let mut pixmap = tiny_skia::Pixmap::new(pixmap_size.width(), pixmap_size.height()).unwrap();
-        resvg::render(&rtree, usvg::FitTo::Original, pixmap.as_mut()).unwrap();
+        resvg::render(&rtree, usvg::FitTo::Original, pixmap.as_mut());
 
         let tmp_dir = tempdir()?;
         let tmp_png = tmp_dir.path().join("tmp.png").display().to_string();

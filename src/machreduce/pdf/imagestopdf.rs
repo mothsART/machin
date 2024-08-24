@@ -62,8 +62,8 @@ impl<'a> ImagesToPdf<'a> {
 
                     let mut padding_left = 10.;
                     let mut padding_right = 10.;
-                    let mut width = dimensions.0 as f64;
-                    let mut height = dimensions.1 as f64;
+                    let mut width = dimensions.0 as f32;
+                    let mut height = dimensions.1 as f32;
                     let ratio = height / width;
 
                     if width > max_width || height > max_height {

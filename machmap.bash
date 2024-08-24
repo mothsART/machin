@@ -43,4 +43,8 @@ _machmap() {
     esac
 }
 
-complete -F _machmap -o nosort -o bashdefault -o default machmap
+if [[ "${BASH_VERSINFO[0]}" -eq 4 && "${BASH_VERSINFO[1]}" -ge 4 || "${BASH_VERSINFO[0]}" -gt 4 ]]; then
+    complete -F _machmap -o nosort -o bashdefault -o default machmap
+else
+    complete -F _machmap -o bashdefault -o default machmap
+fi

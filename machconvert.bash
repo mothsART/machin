@@ -51,4 +51,8 @@ _machconvert() {
     esac
 }
 
-complete -F _machconvert -o nosort -o bashdefault -o default machconvert
+if [[ "${BASH_VERSINFO[0]}" -eq 4 && "${BASH_VERSINFO[1]}" -ge 4 || "${BASH_VERSINFO[0]}" -gt 4 ]]; then
+    complete -F _machconvert -o nosort -o bashdefault -o default machconvert
+else
+    complete -F _machconvert -o bashdefault -o default machconvert
+fi
