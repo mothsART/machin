@@ -2,7 +2,7 @@ use std::error::Error;
 
 use colored::Colorize;
 use image::image_dimensions;
-use image::io::Reader as ImageReader;
+use image::ImageReader;
 use lopdf::content::Content;
 use lopdf::xobject;
 use lopdf::{dictionary, Document, Object, Stream};

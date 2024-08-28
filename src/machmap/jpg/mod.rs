@@ -1,7 +1,7 @@
 pub mod jpgtoodt;
 pub mod jpgtopdf;
 
-use image::io::Reader as ImageReader;
+use image::ImageReader;
 
 use crate::machmap::jpg::jpgtoodt::JpgToOdt;
 use crate::machmap::jpg::jpgtopdf::JpgToPdf;

@@ -6,6 +6,13 @@ macro_rules! colored_err {
 }
 
 #[macro_export]
+macro_rules! colored_warn {
+    ($content:expr) => {
+        eprintln!("{}", $content.white().on_yellow())
+    };
+}
+
+#[macro_export]
 macro_rules! colored_success {
     ($content:expr) => {
         println!("{}", $content.white().on_green());

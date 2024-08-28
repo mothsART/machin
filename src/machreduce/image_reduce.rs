@@ -3,7 +3,7 @@ use std::fmt;
 use std::path::Path;
 
 use colored::*;
-use image::io::Reader as ImageReader;
+use image::ImageReader;
 use image::{image_dimensions, GenericImage, ImageBuffer, Rgba};
 
 use crate::machreduce::{Direction, InputTo};

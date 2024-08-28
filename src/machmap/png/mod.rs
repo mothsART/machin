@@ -1,6 +1,6 @@
 pub mod pngtopdf;
 
-use image::io::Reader as ImageReader;
+use image::ImageReader;
 
 use crate::machmap::png::pngtopdf::PngToPdf;
 use crate::machmap::{Error, HashMap, InputTo, PNGInputFile};

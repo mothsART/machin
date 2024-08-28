@@ -1,6 +1,6 @@
 use std::error::Error;
 
-use image::io::Reader as ImageReader;
+use image::ImageReader;
 use tempfile::tempdir;
 
 use crate::machmap::InputTo;
