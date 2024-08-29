@@ -73,9 +73,7 @@ impl<'a> InputTo<'a> for ImageInputFile<'a> {
 
         let format = ImageFormat::from_path(self.input_file)?;
 
-        println!(">>>{:?}", img.color());
         if format == ImageFormat::Jpeg && img.color() == Rgba8 {
-            println!(">>>{}", img.color().has_alpha());
             //TODO: https://github.com/image-rs/image/issues/2211
             colored_warn!(format!(
                 "Warning : file \"{}\" have an alpha channel : is not supported for en jpeg file with 8 bits. The output file will no longer have an alpha channel.",
