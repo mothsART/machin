@@ -62,11 +62,23 @@ fn jpg_grayscale_vertical_rotate() {
         flip: Some(ConvertFlip::Horizontal),
         rotate: Some(270),
     };
+
+    // jpg file with alpha
+    assert_eq!(
+        "908702b6429c033b142f0d23b746d85436d6f242",
+        get_hash_after(
+            "tests/datasets/rusted_chain__with_alpha.jpg",
+            "tests/datasets/machconvert/rusted_chain__delete_alpha.jpg",
+            &args,
+        )
+    );
+
+    // jpg file without alpha
     assert_eq!(
         "96bfdf6b8e57cba4d567b3d50af560a9f4ba4b03",
         get_hash_after(
-            "tests/datasets/rusted_chain.jpg",
-            "tests/datasets/machconvert/rusted_chain.jpg",
+            "tests/datasets/rusted_chain__without_alpha.jpg",
+            "tests/datasets/machconvert/rusted_chain__without_alpha.jpg",
             &args,
         )
     );
