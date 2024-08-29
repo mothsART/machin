@@ -1,7 +1,7 @@
 use std::fs::File;
 use std::io::Read;
 
-use map_macro::map;
+use map_macro::hash_map;
 use sha1::{Digest, Sha1};
 use tempfile::tempdir;
 
@@ -38,7 +38,7 @@ fn get_hash_after(
 fn create_zip() {
     let mut inputs_file = vec![];
 
-    let hashes = map! {
+    let hashes = hash_map! {
         "tests/datasets/rusted_gears.jpg" => "b6f1c03e2893f8afd5dfa5d3ac6cabb67222fd21",
         "tests/datasets/rusted_chain.jpg" => "312ca494310f40c465fb0de587d90580566e969a",
         "tests/datasets/car-vintage-old-rusty.png" => "f474d4b8629ff0d34296b9f7c825c020029b92ac",
