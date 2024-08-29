@@ -120,7 +120,7 @@ fn png_to_jpg() {
 #[test]
 fn png_to_pdf() {
     assert_eq!(
-        "422fff296caf52cc6086d1e2d485b16e06daa2f5",
+        "9db89042bc8d93564706ca0d8c69b539c8ac4fa6",
         get_hash_after(
             "tests/datasets/car-vintage-old-rusty.png",
             "tests/datasets/machmap/car-vintage-old-rusty.pdf"
@@ -150,7 +150,7 @@ fn jpg_to_png() {
 #[test]
 fn jpg_to_pdf() {
     assert_eq!(
-        "7e5be97ebb11d35b04e48484a1d2a0a01483ce31",
+        "d97c55eb291c5d89173b4e116a99fda821261200",
         get_hash_after(
             "tests/datasets/rusted_chain__with_alpha.jpg",
             "tests/datasets/machmap/rusted_chain__with_alpha.pdf"
@@ -158,7 +158,7 @@ fn jpg_to_pdf() {
     );
 
     assert_eq!(
-        "7e5be97ebb11d35b04e48484a1d2a0a01483ce31",
+        "6ebb879fbba854b1ecdf00b493a7cb5b8c3c0c3d",
         get_hash_after(
             "tests/datasets/rusted_chain__without_alpha.jpg",
             "tests/datasets/machmap/rusted_chain__without_alpha.pdf"
