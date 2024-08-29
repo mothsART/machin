@@ -60,11 +60,26 @@ fn get_zip_hashes(
 fn jpg_to_odt() {
     assert_eq!(
         hash_map! {
-            "content.xml".to_string() => "77853510e108e143a7e8c8b29f5413f37771d9ee".to_string(),
-            "Pictures/rusted_chain.jpg".to_string() => "312ca494310f40c465fb0de587d90580566e969a".to_string(),
-            "META-INF/manifest.xml".to_string() => "4b302bb7954931a255ecd4d765c6c62396613b68".to_string()
+            "content.xml".to_string() => "3c9923482a85c797748e2c8a55a4e7274498977a".to_string(),
+            "Pictures/rusted_chain__with_alpha.jpg".to_string() => "7dcab112baadeb6c58b2091b84b03421ad1e44ea".to_string(),
+            "META-INF/manifest.xml".to_string() => "800b9c7351904c97578d5291390d1efd66951393".to_string()
         },
-        get_zip_hashes("tests/datasets/rusted_chain.jpg", "tests/datasets/machmap/rusted_chain.odt")
+        get_zip_hashes(
+            "tests/datasets/rusted_chain__with_alpha.jpg",
+            "tests/datasets/machmap/rusted_chain__with_alpha.odt"
+        )
+    );
+
+    assert_eq!(
+        hash_map! {
+            "content.xml".to_string() => "8a5b55526e7c755a6291acea931d4865b39bcc39".to_string(),
+            "Pictures/rusted_chain__without_alpha.jpg".to_string() => "312ca494310f40c465fb0de587d90580566e969a".to_string(),
+            "META-INF/manifest.xml".to_string() => "4b8a3d3e7081ac932e17bdccc217c8c0db52826d".to_string()
+        },
+        get_zip_hashes(
+            "tests/datasets/rusted_chain__without_alpha.jpg",
+            "tests/datasets/machmap/rusted_chain__without_alpha.odt"
+        )
     );
 }
 
