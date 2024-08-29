@@ -71,8 +71,7 @@ impl<'a> InputTo<'a> for ImageInputFile<'a> {
             ));
         }
 
-        let format = ImageFormat::from_path(self.input_file)?;
-
+        let format = ImageFormat::from_path(self.output_file)?;
         if format == ImageFormat::Jpeg && img.color() == Rgba8 {
             //TODO: https://github.com/image-rs/image/issues/2211
             colored_warn!(format!(
