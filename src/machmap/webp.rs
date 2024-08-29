@@ -1,4 +1,4 @@
-use image::io::Reader as ImageReader;
+use image::ImageReader;
 
 use crate::machmap::{Error, HashMap, InputTo, WebpInputFile};
 

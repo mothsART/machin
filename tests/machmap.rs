@@ -3,18 +3,15 @@ use std::env;
 use std::fs::File;
 use std::io::Read;
 
-use map_macro::map;
+use map_macro::hash_map;
 use sha1::{Digest, Sha1};
-use tempfile::tempdir;
 
 use machin::machmap::InputsFiles;
 
 fn get_hash_after(input_path: &'static str, output_file: &'static str) -> String {
     let path = env::current_dir().unwrap();
     let input_file = path.join(input_path).display().to_string();
-
-    let tmp_dir = tempdir().unwrap();
-    let output_path = tmp_dir.path().join(output_file).display().to_string();
+    let output_path = path.join(output_file).display().to_string();
 
     InputsFiles::new(&input_file, &output_path)
         .mime_map()
@@ -25,8 +22,6 @@ fn get_hash_after(input_path: &'static str, output_file: &'static str) -> String
     hasher.update(&bytes);
 
     let str_hash = format!("{:x}", hasher.finalize());
-    tmp_dir.close().unwrap();
-
     return str_hash;
 }
 
@@ -36,8 +31,8 @@ fn get_zip_hashes(
 ) -> HashMap<String, String> {
     let mut hashes = HashMap::new();
 
-    let tmp_dir = tempdir().unwrap();
-    let output_path = tmp_dir.path().join(output_file).display().to_string();
+    let path = env::current_dir().unwrap();
+    let output_path = path.join(output_file).display().to_string();
 
     InputsFiles::new(&input_file, &output_path)
         .mime_map()
@@ -58,19 +53,33 @@ fn get_zip_hashes(
         hashes.insert(file_name.to_string(), str_hash);
     }
 
-    tmp_dir.close().unwrap();
     return hashes;
 }
 
 #[test]
 fn jpg_to_odt() {
     assert_eq!(
-        map! {
-            "content.xml".to_string() => "77853510e108e143a7e8c8b29f5413f37771d9ee".to_string(),
-            "Pictures/rusted_chain.jpg".to_string() => "312ca494310f40c465fb0de587d90580566e969a".to_string(),
-            "META-INF/manifest.xml".to_string() => "4b302bb7954931a255ecd4d765c6c62396613b68".to_string()
+        hash_map! {
+            "content.xml".to_string() => "3c9923482a85c797748e2c8a55a4e7274498977a".to_string(),
+            "Pictures/rusted_chain__with_alpha.jpg".to_string() => "7dcab112baadeb6c58b2091b84b03421ad1e44ea".to_string(),
+            "META-INF/manifest.xml".to_string() => "800b9c7351904c97578d5291390d1efd66951393".to_string()
         },
-        get_zip_hashes("tests/datasets/rusted_chain.jpg", "rusted_chain.odt")
+        get_zip_hashes(
+            "tests/datasets/rusted_chain__with_alpha.jpg",
+            "tests/datasets/machmap/rusted_chain__with_alpha.odt"
+        )
+    );
+
+    assert_eq!(
+        hash_map! {
+            "content.xml".to_string() => "8a5b55526e7c755a6291acea931d4865b39bcc39".to_string(),
+            "Pictures/rusted_chain__without_alpha.jpg".to_string() => "312ca494310f40c465fb0de587d90580566e969a".to_string(),
+            "META-INF/manifest.xml".to_string() => "4b8a3d3e7081ac932e17bdccc217c8c0db52826d".to_string()
+        },
+        get_zip_hashes(
+            "tests/datasets/rusted_chain__without_alpha.jpg",
+            "tests/datasets/machmap/rusted_chain__without_alpha.odt"
+        )
     );
 }
 
@@ -80,7 +89,7 @@ fn svg_to_png() {
         "bd2926601f16f764c569e8c7ee1e8b6f4e106f04",
         get_hash_after(
             "tests/datasets/Rust_programming_language_black_logo.svg",
-            "Rust_programming_language_black_logo.png"
+            "tests/datasets/machmap/Rust_programming_language_black_logo.png"
         )
     );
 }
@@ -91,7 +100,7 @@ fn svg_to_jpg() {
         "b3f27e39432473af30e0f56b3dacedbfa4fb5ca3",
         get_hash_after(
             "tests/datasets/Rust_programming_language_black_logo.svg",
-            "Rust_programming_language_black_logo.jpg"
+            "tests/datasets/machmap/Rust_programming_language_black_logo.jpg"
         )
     );
 }
@@ -99,16 +108,16 @@ fn svg_to_jpg() {
 #[test]
 fn webp_to_jpg() {
     assert_eq!(
-        "3077294abcd351689f5e261f940eddd9e2970dd0",
-        get_hash_after("tests/datasets/house.webp", "house.jpg")
+        "50db5f0fcf0ff48ad2bf73f66d9aab48aff2438d",
+        get_hash_after("tests/datasets/house.webp", "tests/datasets/machmap/house.jpg")
     );
 }
 
 #[test]
 fn webp_to_png() {
     assert_eq!(
-        "0f848e7f44014c6f9ce82707c13b386fe94f336c",
-        get_hash_after("tests/datasets/house.webp", "house.png")
+        "c594c0c7e329a657c6b6cb074c90a185aabbf238",
+        get_hash_after("tests/datasets/house.webp", "tests/datasets/machmap/house.png")
     );
 }
 
@@ -118,7 +127,7 @@ fn png_to_jpg() {
         "122267b78644b438a17f99dcb14b37e816554771",
         get_hash_after(
             "tests/datasets/car-vintage-old-rusty.png",
-            "car-vintage-old-rusty.jpg"
+            "tests/datasets/machmap/car-vintage-old-rusty.jpg"
         )
     );
 }
@@ -126,10 +135,10 @@ fn png_to_jpg() {
 #[test]
 fn png_to_pdf() {
     assert_eq!(
-        "422fff296caf52cc6086d1e2d485b16e06daa2f5",
+        "9db89042bc8d93564706ca0d8c69b539c8ac4fa6",
         get_hash_after(
             "tests/datasets/car-vintage-old-rusty.png",
-            "car-vintage-old-rusty.pdf"
+            "tests/datasets/machmap/car-vintage-old-rusty.pdf"
         )
     );
 }
@@ -137,16 +146,38 @@ fn png_to_pdf() {
 #[test]
 fn jpg_to_png() {
     assert_eq!(
-        "2edbffe70d5b9a61b2c1545d98cb6f05216b33b5",
-        get_hash_after("tests/datasets/rusted_chain.jpg", "rusted_chain.png")
+        "6177356ecb2f23b6d8ce304b559bc56f5d82e188",
+        get_hash_after(
+            "tests/datasets/rusted_chain__with_alpha.jpg",
+            "tests/datasets/machmap/rusted_chain__with_alpha.png"
+        )
+    );
+
+    assert_eq!(
+        "d7d68275f50e414115b0cbc881a1b930736386c8",
+        get_hash_after(
+            "tests/datasets/rusted_chain__without_alpha.jpg",
+            "tests/datasets/machmap/rusted_chain__without_alpha.png"
+        )
     );
 }
 
 #[test]
 fn jpg_to_pdf() {
     assert_eq!(
-        "7e5be97ebb11d35b04e48484a1d2a0a01483ce31",
-        get_hash_after("tests/datasets/rusted_chain.jpg", "rusted_chain.pdf")
+        "d97c55eb291c5d89173b4e116a99fda821261200",
+        get_hash_after(
+            "tests/datasets/rusted_chain__with_alpha.jpg",
+            "tests/datasets/machmap/rusted_chain__with_alpha.pdf"
+        )
+    );
+
+    assert_eq!(
+        "6ebb879fbba854b1ecdf00b493a7cb5b8c3c0c3d",
+        get_hash_after(
+            "tests/datasets/rusted_chain__without_alpha.jpg",
+            "tests/datasets/machmap/rusted_chain__without_alpha.pdf"
+        )
     );
 }
 
@@ -154,7 +185,7 @@ fn jpg_to_pdf() {
 fn md_to_html() {
     assert_eq!(
         "683817dd0cdc0b63a26c8a58cc05f9f31f26ad5f",
-        get_hash_after("tests/datasets/markdown.md", "markdown.html")
+        get_hash_after("tests/datasets/markdown.md", "tests/datasets/machmap/markdown.html")
     );
 }
 
@@ -162,7 +193,7 @@ fn md_to_html() {
 fn json_to_yaml() {
     assert_eq!(
         "a15505250ffdefc95cd6ec0bbb914b196e96e3e9",
-        get_hash_after("tests/datasets/example.json", "example.yaml")
+        get_hash_after("tests/datasets/example.json", "tests/datasets/machmap/example.yaml")
     );
 }
 
@@ -170,6 +201,6 @@ fn json_to_yaml() {
 fn yaml_to_json() {
     assert_eq!(
         "548dbfa8e473fc9453df1518c39d11f74fff6af1",
-        get_hash_after("tests/datasets/docker-compose.yaml", "docker-compose.json")
+        get_hash_after("tests/datasets/docker-compose.yaml", "tests/datasets/machmap/docker-compose.json")
     );
 }

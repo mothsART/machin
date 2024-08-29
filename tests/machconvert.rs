@@ -1,10 +1,12 @@
 use std::env;
 
 use sha1::{Digest, Sha1};
-use tempfile::tempdir;
 
 use machin::machconvert::{ConvertArgs, ConvertColor, ConvertFlip, InputsFiles};
 
+///
+/// get hash of image after operation
+/// 
 fn get_hash_after(
     input_path: &'static str,
     output_file: &'static str,
@@ -12,10 +14,7 @@ fn get_hash_after(
 ) -> String {
     let path = env::current_dir().unwrap();
     let input_file = path.join(input_path).display().to_string();
-
-    let tmp_dir = tempdir().unwrap();
-    let output_path = tmp_dir.path().join(output_file).display().to_string();
-
+    let output_path = path.join(output_file).display().to_string();
     InputsFiles::new(&input_file, &output_path)
         .convert(args)
         .unwrap();
@@ -25,8 +24,6 @@ fn get_hash_after(
     hasher.update(&bytes);
 
     let str_hash = format!("{:x}", hasher.finalize());
-    tmp_dir.close().unwrap();
-
     return str_hash;
 }
 
@@ -44,11 +41,11 @@ fn png_grayscale_vertical_rotate() {
         rotate: Some(90),
     };
     assert_eq!(
-        "e16f1ffa1a40302c8d3cd486f9bcdc03cfc6892b",
+        "651978d8b41fb628eed0ffd2bb58d39e40ee2fbd",
         get_hash_after(
             "tests/datasets/car-vintage-old-rusty.png",
-            "car-vintage-old-rusty.png",
-            &args
+            "tests/datasets/machconvert/car-vintage-old-rusty.png",
+            &args,
         )
     );
 }
@@ -65,8 +62,24 @@ fn jpg_grayscale_vertical_rotate() {
         flip: Some(ConvertFlip::Horizontal),
         rotate: Some(270),
     };
+
+    // jpg file with alpha
     assert_eq!(
-        "5f8d1cce382e45cff88247ef2914dd728128d013",
-        get_hash_after("tests/datasets/rusted_chain.jpg", "rusted_chain.jpg", &args)
+        "908702b6429c033b142f0d23b746d85436d6f242",
+        get_hash_after(
+            "tests/datasets/rusted_chain__with_alpha.jpg",
+            "tests/datasets/machconvert/rusted_chain__delete_alpha.jpg",
+            &args,
+        )
+    );
+
+    // jpg file without alpha
+    assert_eq!(
+        "96bfdf6b8e57cba4d567b3d50af560a9f4ba4b03",
+        get_hash_after(
+            "tests/datasets/rusted_chain__without_alpha.jpg",
+            "tests/datasets/machconvert/rusted_chain__without_alpha.jpg",
+            &args,
+        )
     );
 }

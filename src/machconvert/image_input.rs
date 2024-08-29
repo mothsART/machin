@@ -1,5 +1,5 @@
-use image::imageops;
-use image::io::Reader as ImageReader;
+use image::{imageops, ImageFormat, ImageReader};
+use image::ColorType::Rgba8;
 use image::DynamicImage::{ImageLuma8, ImageRgba8};
 use std::error::Error;
 
@@ -71,7 +71,18 @@ impl<'a> InputTo<'a> for ImageInputFile<'a> {
             ));
         }
 
-        img.save(self.output_file)?;
+        let format = ImageFormat::from_path(self.output_file)?;
+        if format == ImageFormat::Jpeg && img.color() == Rgba8 {
+            //TODO: https://github.com/image-rs/image/issues/2211
+            colored_warn!(format!(
+                "Warning : file \"{}\" have an alpha channel : is not supported for en jpeg file with 8 bits. The output file will no longer have an alpha channel.",
+                self.input_file
+            ));
+            img.to_rgb8().save(self.output_file)?;
+        }
+        else {
+            img.save(self.output_file)?;
+        }
         Ok(String::new())
     }
 }

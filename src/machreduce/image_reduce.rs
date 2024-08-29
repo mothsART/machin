@@ -3,8 +3,9 @@ use std::fmt;
 use std::path::Path;
 
 use colored::*;
-use image::io::Reader as ImageReader;
-use image::{image_dimensions, GenericImage, ImageBuffer, Rgba};
+use image::{DynamicImage, ImageFormat, ImageReader, RgbaImage};
+use image::ColorType::Rgba8;
+use image::{image_dimensions, GenericImage};
 
 use crate::machreduce::{Direction, InputTo};
 
@@ -74,20 +75,33 @@ impl<'a> InputTo<'a> for ImageOutputFile<'a> {
             return Err(Box::new(NoPicturesFoundError {}));
         }
 
-        let mut img_buf = <ImageBuffer<Rgba<u8>, _>>::new(x_size, y_size);
+        let rgba = RgbaImage::new(x_size, y_size);
+        let mut d_img = DynamicImage::ImageRgba8(rgba);
         let mut before_pos = 0;
         for _file in _files.iter() {
             let new_img = ImageReader::open(&_file.path)?.decode()?;
             if *direction == Direction::Horizontal {
-                if let Err(_e) = img_buf.copy_from(&new_img, before_pos, 0) {
+                if let Err(_e) = d_img.copy_from(&new_img, before_pos, 0) {
                     continue;
                 }
-            } else if let Err(_e) = img_buf.copy_from(&new_img, 0, before_pos) {
+            } else if let Err(_e) = d_img.copy_from(&new_img, 0, before_pos) {
                 continue;
             }
             before_pos += _file.pos;
         }
-        img_buf.save(self.output_file)?;
+        let format = ImageFormat::from_path(self.output_file)?;
+        if format == ImageFormat::Jpeg && d_img.color() == Rgba8 {
+            //TODO: https://github.com/image-rs/image/issues/2211
+            colored_warn!(format!(
+                "Warning : file \"{}\" have an alpha channel : is not supported for en jpeg file with 8 bits. The output file will no longer have an alpha channel.",
+                self.output_file
+            ));
+            d_img.to_rgb8().save(self.output_file)?;
+        }
+        else {
+            d_img.save(self.output_file)?;
+        }
+
         Ok(format!("images reduce to {}", self.output_file))
     }
 }
