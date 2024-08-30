@@ -56,7 +56,19 @@ macro_rules! convert_img {
         impl<'a> InputTo<'a> for $struct_name<'a> {
             fn convert(&self) -> Result<String, Box<dyn Error + 'a>> {
                 let img = ImageReader::open(&self.input_file)?.decode()?;
-                img.save(&self.output_file)?;
+                let format = ImageFormat::from_path(self.output_file)?;
+                if format == ImageFormat::Jpeg {
+                    if img.color().has_alpha() {
+                        colored_warn!(format!(
+                            "Warning : input file \"{}\" have an alpha channel : is not supported for en jpeg file. The output file \"{}\" will no longer have an alpha channel.",
+                            self.input_file,
+                            self.output_file,
+                        ));
+                    }
+                    img.to_rgb8().save(self.output_file)?;
+                } else {
+                    img.save(&self.output_file)?;
+                }
                 Ok(format!(
                     "convert {} to {} : {} -> {}",
                     $input_name, $output_name, self.input_file, self.output_file,

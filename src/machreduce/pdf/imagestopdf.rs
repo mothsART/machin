@@ -45,17 +45,19 @@ impl<'a> ImagesToPdf<'a> {
                 "Contents" => content_id,
             });
             let new_path;
-            let input_mime = mime_guess::from_path(f);
-            let img_path = f;
-            if let Some(img_mime) = &input_mime.first_raw() {
-                if !img_mime.contains("image/jpeg") {
-                    let img = ImageReader::open(img_path)?.decode()?;
-                    new_path = format!("{}-{}.jpg", tmp_dir.path().to_str().unwrap_or(""), i);
-                    img.save(new_path)?;
-                }
+            let img = ImageReader::open(f)?.decode()?;
+            new_path = format!("{}-{}.jpg", tmp_dir.path().to_str().unwrap_or(""), i);
+            if img.color().has_alpha() {
+                colored_warn!(format!(
+                    "Warning : input file \"{}\" have an alpha channel : is not supported for en jpeg file. The output file \"{}\" will no longer have an alpha channel.",
+                    f,
+                    output_file,
+                ));
             }
-            if let Ok(img) = xobject::image(img_path) {
-                if let Ok(dimensions) = image_dimensions(img_path) {
+            img.to_rgb8().save(&new_path)?;
+
+            if let Ok(img) = xobject::image(new_path) {
+                if let Ok(dimensions) = image_dimensions(f) {
                     // magical values ? TODO : ref to pdf documentation
                     let max_width = 590.;
                     let max_height = 770.;
@@ -81,7 +83,6 @@ impl<'a> ImagesToPdf<'a> {
                     if max_height > height {
                         padding_right = (max_height - height) / 2.;
                     }
-
                     let insert_result = doc.insert_image(
                         page_id,
                         img,
