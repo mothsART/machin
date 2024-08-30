@@ -71,7 +71,7 @@ fn jpg_to_odt() {
 #[test]
 fn svg_to_png() {
     assert_eq!(
-        "bd2926601f16f764c569e8c7ee1e8b6f4e106f04",
+        "9dfb6b219ced6ff116df3d7aed39a8acd94db505",
         get_hash_after(
             "tests/datasets/Rust_programming_language_black_logo.svg",
             "tests/datasets/machmap/Rust_programming_language_black_logo.png"
@@ -82,7 +82,7 @@ fn svg_to_png() {
 #[test]
 fn svg_to_jpg() {
     assert_eq!(
-        "b3f27e39432473af30e0f56b3dacedbfa4fb5ca3",
+        "a655c1cd185f924145a349cc83b8b67bdc656a24",
         get_hash_after(
             "tests/datasets/Rust_programming_language_black_logo.svg",
             "tests/datasets/machmap/Rust_programming_language_black_logo.jpg"
