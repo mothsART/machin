@@ -5,6 +5,7 @@ use std::io::Write;
 use std::path::Path;
 
 use colored::*;
+use zip::write::SimpleFileOptions;
 
 use crate::machreduce::{Direction, InputTo};
 
@@ -29,8 +30,7 @@ impl<'a> InputTo<'a> for ZipOutputFile<'a> {
         let path = std::path::Path::new(&self.output_file);
         let file = std::fs::File::create(path).unwrap();
         let mut zip = zip::ZipWriter::new(file);
-        let options =
-            zip::write::FileOptions::default().compression_method(zip::CompressionMethod::Stored);
+        let options = SimpleFileOptions::default();
 
         for line in self.input_lines {
             let mut buffer = Vec::new();

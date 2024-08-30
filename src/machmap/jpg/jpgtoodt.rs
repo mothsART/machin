@@ -1,5 +1,7 @@
 use std::error::Error;
 
+use zip::write::SimpleFileOptions;
+
 use crate::machmap::InputTo;
 
 pub struct JpgToOdt<'a> {
@@ -28,8 +30,8 @@ impl<'a> InputTo<'a> for JpgToOdt<'a> {
         let path = std::path::Path::new(&self.output_file);
         let file = std::fs::File::create(path).unwrap();
         let mut zip = zip::ZipWriter::new(file);
-        let options =
-            zip::write::FileOptions::default().compression_method(zip::CompressionMethod::Stored);
+
+        let options = SimpleFileOptions::default();
 
         let tera = Tera::new("templates/odt/**/*")?;
         let mut context = Context::new();

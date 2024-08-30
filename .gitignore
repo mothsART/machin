@@ -1,3 +1,6 @@
 /target
 Sample.md
 data
+
+tests/datasets/machmap/rusted_chain.odt
+tests/datasets/mapreduce/result.zip
