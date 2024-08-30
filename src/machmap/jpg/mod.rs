@@ -1,7 +1,8 @@
 pub mod jpgtoodt;
 pub mod jpgtopdf;
 
-use image::ImageReader;
+use colored::Colorize;
+use image::{ImageFormat, ImageReader};
 
 use crate::machmap::jpg::jpgtoodt::JpgToOdt;
 use crate::machmap::jpg::jpgtopdf::JpgToPdf;

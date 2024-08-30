@@ -5,8 +5,6 @@ use std::io::Read;
 use map_macro::hash_map;
 use sha1::{Digest, Sha1};
 
-use tempfile::tempdir;
-
 use machin::machreduce::{Direction, InputsFiles};
 
 fn get_hash_after(
@@ -41,16 +39,16 @@ fn create_zip() {
 
     let hashes = hash_map! {
         "tests/datasets/rusted_gears.jpg" => "b6f1c03e2893f8afd5dfa5d3ac6cabb67222fd21",
-        "tests/datasets/rusted_chain.jpg" => "312ca494310f40c465fb0de587d90580566e969a",
-        "tests/datasets/car-vintage-old-rusty.png" => "f474d4b8629ff0d34296b9f7c825c020029b92ac",
+        "tests/datasets/rusted_chain.jpg" => "7dcab112baadeb6c58b2091b84b03421ad1e44ea",
+        "tests/datasets/car-vintage-old-rusty__with_alpha.png" => "1baeb1db563b4c405d3da2b8039fbeebb9cedb7e",
     };
 
     for h in hashes.keys() {
         inputs_file.push(h.to_string());
     }
 
-    let tmp_dir = tempdir().unwrap();
-    let output_path = tmp_dir.path().join("result.zip").display().to_string();
+    let path = env::current_dir().unwrap();
+    let output_path = path.join("tests/datasets/mapreduce/result.zip").display().to_string();
 
     InputsFiles::new(&inputs_file, &output_path, Direction::Vertical)
         .reduce()
@@ -68,8 +66,6 @@ fn create_zip() {
         let str_hash = format!("{:x}", hasher.finalize());
         assert_eq!(hashes.get(file.name()).unwrap(), &str_hash);
     }
-
-    tmp_dir.close().unwrap();
 }
 
 #[test]
@@ -78,10 +74,10 @@ fn create_vertical_jpg() {
         "386da50e983fc714b1e2211e978c9d3ea8da8d5e",
         get_hash_after(
             vec![
-                "tests/datasets/rusted_chain__with_alpha.jpg",
+                "tests/datasets/rusted_chain.jpg",
                 "tests/datasets/rusted_gears.jpg",
             ],
-            "tests/datasets/mapreduce/rusted_chain__with_alpha__vertical__rusted_gears.jpg",
+            "tests/datasets/mapreduce/rusted_chain__vertical__rusted_gears.jpg",
             Direction::Vertical
         )
     );
@@ -93,10 +89,10 @@ fn create_horizontal_jpg() {
         "3e1838bdf4eecb39dbdf13e7d39bdf897c4847f3",
         get_hash_after(
             vec![
-                "tests/datasets/rusted_chain__with_alpha.jpg",
+                "tests/datasets/rusted_chain.jpg",
                 "tests/datasets/rusted_gears.jpg",
             ],
-            "tests/datasets/mapreduce/rusted_chain__with_alpha__horizontal__rusted_gears.jpg",
+            "tests/datasets/mapreduce/rusted_chain__horizontal__rusted_gears.jpg",
             Direction::Horizontal
         )
     );
@@ -105,13 +101,24 @@ fn create_horizontal_jpg() {
 #[test]
 fn create_png_with_heterogeneous_pictures() {
     assert_eq!(
+        "db7d2226668fbe6bb9be5ee49e73ae671a57f21a",
+        get_hash_after(
+            vec![
+                "tests/datasets/rusted_gears.jpg",
+                "tests/datasets/car-vintage-old-rusty__with_alpha.png",
+            ],
+            "tests/datasets/mapreduce/with_heterogeneous_pictures_with_alpha.png",
+            Direction::Vertical
+        )
+    );
+    assert_eq!(
         "7864e925834b66598d4cbbce719d6b55e35828a4",
         get_hash_after(
             vec![
                 "tests/datasets/rusted_gears.jpg",
-                "tests/datasets/car-vintage-old-rusty.png",
+                "tests/datasets/car-vintage-old-rusty__without_alpha.png",
             ],
-            "tests/datasets/mapreduce/with_heterogeneous_pictures.png",
+            "tests/datasets/mapreduce/with_heterogeneous_pictures__without_alpha.png",
             Direction::Vertical
         )
     );
@@ -120,13 +127,24 @@ fn create_png_with_heterogeneous_pictures() {
 #[test]
 fn create_pdf_with_heterogeneous_pictures() {
     assert_eq!(
-        "b2a7e9ba4f23291f21fbd0b382720e72ef32258e",
+        "de33e6c72045eb153e7786554be8307afe657ba9",
         get_hash_after(
             vec![
                 "tests/datasets/rusted_gears.jpg",
-                "tests/datasets/car-vintage-old-rusty.png",
+                "tests/datasets/car-vintage-old-rusty__with_alpha.png",
             ],
-            "tests/datasets/mapreduce/with_heterogeneous_pictures.pdf",
+            "tests/datasets/mapreduce/with_heterogeneous_pictures__with_alpha.pdf",
+            Direction::Vertical
+        )
+    );
+    assert_eq!(
+        "1d3abf3b92f15d086d02c040e9b008ec844ed5e2",
+        get_hash_after(
+            vec![
+                "tests/datasets/rusted_gears.jpg",
+                "tests/datasets/car-vintage-old-rusty__without_alpha.png",
+            ],
+            "tests/datasets/mapreduce/with_heterogeneous_pictures__without_alpha.pdf",
             Direction::Vertical
         )
     );

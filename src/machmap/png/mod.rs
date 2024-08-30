@@ -1,6 +1,7 @@
 pub mod pngtopdf;
 
-use image::ImageReader;
+use colored::Colorize;
+use image::{ImageFormat, ImageReader};
 
 use crate::machmap::png::pngtopdf::PngToPdf;
 use crate::machmap::{Error, HashMap, InputTo, PNGInputFile};

@@ -4,7 +4,6 @@ use std::path::Path;
 
 use colored::*;
 use image::{DynamicImage, ImageFormat, ImageReader, RgbaImage};
-use image::ColorType::Rgba8;
 use image::{image_dimensions, GenericImage};
 
 use crate::machreduce::{Direction, InputTo};
@@ -78,8 +77,12 @@ impl<'a> InputTo<'a> for ImageOutputFile<'a> {
         let rgba = RgbaImage::new(x_size, y_size);
         let mut d_img = DynamicImage::ImageRgba8(rgba);
         let mut before_pos = 0;
+        let mut has_alpha = false;
         for _file in _files.iter() {
             let new_img = ImageReader::open(&_file.path)?.decode()?;
+            if new_img.color().has_alpha() {
+                has_alpha = true;
+            }
             if *direction == Direction::Horizontal {
                 if let Err(_e) = d_img.copy_from(&new_img, before_pos, 0) {
                     continue;
@@ -90,12 +93,13 @@ impl<'a> InputTo<'a> for ImageOutputFile<'a> {
             before_pos += _file.pos;
         }
         let format = ImageFormat::from_path(self.output_file)?;
-        if format == ImageFormat::Jpeg && d_img.color() == Rgba8 {
-            //TODO: https://github.com/image-rs/image/issues/2211
-            colored_warn!(format!(
-                "Warning : file \"{}\" have an alpha channel : is not supported for en jpeg file with 8 bits. The output file will no longer have an alpha channel.",
-                self.output_file
-            ));
+        if format == ImageFormat::Jpeg {
+            if has_alpha {
+                colored_warn!(format!(
+                    "Warning : some input files have an alpha channel : is not supported for en jpeg file. The output file \"{}\" will no longer have an alpha channel.",
+                    self.output_file,
+                ));
+            }
             d_img.to_rgb8().save(self.output_file)?;
         }
         else {

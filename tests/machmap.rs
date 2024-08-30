@@ -60,25 +60,13 @@ fn get_zip_hashes(
 fn jpg_to_odt() {
     assert_eq!(
         hash_map! {
-            "content.xml".to_string() => "3c9923482a85c797748e2c8a55a4e7274498977a".to_string(),
-            "Pictures/rusted_chain__with_alpha.jpg".to_string() => "7dcab112baadeb6c58b2091b84b03421ad1e44ea".to_string(),
-            "META-INF/manifest.xml".to_string() => "800b9c7351904c97578d5291390d1efd66951393".to_string()
+            "content.xml".to_string() => "77853510e108e143a7e8c8b29f5413f37771d9ee".to_string(),
+            "Pictures/rusted_chain.jpg".to_string() => "7dcab112baadeb6c58b2091b84b03421ad1e44ea".to_string(),
+            "META-INF/manifest.xml".to_string() => "4b302bb7954931a255ecd4d765c6c62396613b68".to_string()
         },
         get_zip_hashes(
-            "tests/datasets/rusted_chain__with_alpha.jpg",
-            "tests/datasets/machmap/rusted_chain__with_alpha.odt"
-        )
-    );
-
-    assert_eq!(
-        hash_map! {
-            "content.xml".to_string() => "8a5b55526e7c755a6291acea931d4865b39bcc39".to_string(),
-            "Pictures/rusted_chain__without_alpha.jpg".to_string() => "312ca494310f40c465fb0de587d90580566e969a".to_string(),
-            "META-INF/manifest.xml".to_string() => "4b8a3d3e7081ac932e17bdccc217c8c0db52826d".to_string()
-        },
-        get_zip_hashes(
-            "tests/datasets/rusted_chain__without_alpha.jpg",
-            "tests/datasets/machmap/rusted_chain__without_alpha.odt"
+            "tests/datasets/rusted_chain.jpg",
+            "tests/datasets/machmap/rusted_chain.odt"
         )
     );
 }
@@ -124,10 +112,17 @@ fn webp_to_png() {
 #[test]
 fn png_to_jpg() {
     assert_eq!(
+        "e98cb15b9b71e4e43c017276d17b0df0bba3d2db",
+        get_hash_after(
+            "tests/datasets/car-vintage-old-rusty__with_alpha.png",
+            "tests/datasets/machmap/car-vintage-old-rusty__with_alpha.jpg"
+        )
+    );
+    assert_eq!(
         "122267b78644b438a17f99dcb14b37e816554771",
         get_hash_after(
-            "tests/datasets/car-vintage-old-rusty.png",
-            "tests/datasets/machmap/car-vintage-old-rusty.jpg"
+            "tests/datasets/car-vintage-old-rusty__without_alpha.png",
+            "tests/datasets/machmap/car-vintage-old-rusty__without_alpha.jpg"
         )
     );
 }
@@ -135,10 +130,17 @@ fn png_to_jpg() {
 #[test]
 fn png_to_pdf() {
     assert_eq!(
-        "9db89042bc8d93564706ca0d8c69b539c8ac4fa6",
+        "97852a8bdf45c4926e849c68ac1557b34aa49733",
         get_hash_after(
-            "tests/datasets/car-vintage-old-rusty.png",
-            "tests/datasets/machmap/car-vintage-old-rusty.pdf"
+            "tests/datasets/car-vintage-old-rusty__with_alpha.png",
+            "tests/datasets/machmap/car-vintage-old-rusty__with_alpha.pdf"
+        )
+    );
+    assert_eq!(
+        "1f18ea64a2c81a55c56c0dbb6d71c6d2e2da0206",
+        get_hash_after(
+            "tests/datasets/car-vintage-old-rusty__without_alpha.png",
+            "tests/datasets/machmap/car-vintage-old-rusty__without_alpha.pdf"
         )
     );
 }
@@ -148,16 +150,8 @@ fn jpg_to_png() {
     assert_eq!(
         "6177356ecb2f23b6d8ce304b559bc56f5d82e188",
         get_hash_after(
-            "tests/datasets/rusted_chain__with_alpha.jpg",
-            "tests/datasets/machmap/rusted_chain__with_alpha.png"
-        )
-    );
-
-    assert_eq!(
-        "d7d68275f50e414115b0cbc881a1b930736386c8",
-        get_hash_after(
-            "tests/datasets/rusted_chain__without_alpha.jpg",
-            "tests/datasets/machmap/rusted_chain__without_alpha.png"
+            "tests/datasets/rusted_chain.jpg",
+            "tests/datasets/machmap/rusted_chain.png"
         )
     );
 }
@@ -165,18 +159,10 @@ fn jpg_to_png() {
 #[test]
 fn jpg_to_pdf() {
     assert_eq!(
-        "d97c55eb291c5d89173b4e116a99fda821261200",
+        "53f5a3a3f2c8f673fceb3e120a80994ff474a262",
         get_hash_after(
-            "tests/datasets/rusted_chain__with_alpha.jpg",
-            "tests/datasets/machmap/rusted_chain__with_alpha.pdf"
-        )
-    );
-
-    assert_eq!(
-        "6ebb879fbba854b1ecdf00b493a7cb5b8c3c0c3d",
-        get_hash_after(
-            "tests/datasets/rusted_chain__without_alpha.jpg",
-            "tests/datasets/machmap/rusted_chain__without_alpha.pdf"
+            "tests/datasets/rusted_chain.jpg",
+            "tests/datasets/machmap/rusted_chain.pdf"
         )
     );
 }

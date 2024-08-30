@@ -1,4 +1,5 @@
-use image::ImageReader;
+use colored::Colorize;
+use image::{ImageFormat, ImageReader};
 
 use crate::machmap::{Error, HashMap, InputTo, WebpInputFile};
 

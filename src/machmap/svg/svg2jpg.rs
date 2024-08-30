@@ -1,7 +1,6 @@
 use std::error::Error;
 
 use image::{ImageFormat, ImageReader};
-use image::ColorType::Rgba8;
 use colored::Colorize;
 use tempfile::tempdir;
 
@@ -26,11 +25,12 @@ impl<'a> InputTo<'a> for SVGToJPG<'a> {
         let opt = usvg::Options::default();
 
         let rtree = usvg::Tree::from_file(self.input_file, &opt)?;
-        /* TODO : gérer proprement les erreurs tel que :
+        /*
+        TODO : gérer proprement les erreurs tel que :
          * SVG has an invalid size => passer par un autre moteur de rendu ?
          * SVG data parsing failed cause the document does not have a root node :
          * Si le SVG n'a pas de xmlns="http://www.w3.org/2000/svg", le créer à la volée
-         */
+        */
         let fit_to = usvg::FitTo::Zoom(1.0);
         let pixmap_size = fit_to
             .fit_to(rtree.svg_node().size.to_screen_size())
@@ -44,12 +44,13 @@ impl<'a> InputTo<'a> for SVGToJPG<'a> {
         let img = ImageReader::open(&tmp_png)?.decode()?;
 
         let format = ImageFormat::from_path(self.output_file)?;
-        if format == ImageFormat::Jpeg && img.color() == Rgba8 {
-            //TODO: https://github.com/image-rs/image/issues/2211
-            colored_warn!(format!(
-                "Warning : file \"{}\" have an alpha channel : is not supported for en jpeg file with 8 bits. The output file will no longer have an alpha channel.",
-                self.input_file
-            ));
+        if format == ImageFormat::Jpeg {
+            if img.color().has_alpha() {
+                colored_warn!(format!(
+                    "Warning : file \"{}\" have an alpha channel : is not supported for en jpeg file with 8 bits. The output file will no longer have an alpha channel.",
+                    self.input_file
+                ));
+            }
             img.to_rgb8().save(self.output_file)?;
         }
         else {
