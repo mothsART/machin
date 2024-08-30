@@ -25,10 +25,7 @@ fn get_hash_after(input_path: &'static str, output_file: &'static str) -> String
     return str_hash;
 }
 
-fn get_zip_hashes(
-    input_file: &'static str,
-    output_file: &'static str,
-) -> HashMap<String, String> {
+fn get_zip_hashes(input_file: &'static str, output_file: &'static str) -> HashMap<String, String> {
     let mut hashes = HashMap::new();
 
     let path = env::current_dir().unwrap();
@@ -97,7 +94,10 @@ fn svg_to_jpg() {
 fn webp_to_jpg() {
     assert_eq!(
         "50db5f0fcf0ff48ad2bf73f66d9aab48aff2438d",
-        get_hash_after("tests/datasets/house.webp", "tests/datasets/machmap/house.jpg")
+        get_hash_after(
+            "tests/datasets/house.webp",
+            "tests/datasets/machmap/house.jpg"
+        )
     );
 }
 
@@ -105,7 +105,10 @@ fn webp_to_jpg() {
 fn webp_to_png() {
     assert_eq!(
         "c594c0c7e329a657c6b6cb074c90a185aabbf238",
-        get_hash_after("tests/datasets/house.webp", "tests/datasets/machmap/house.png")
+        get_hash_after(
+            "tests/datasets/house.webp",
+            "tests/datasets/machmap/house.png"
+        )
     );
 }
 
@@ -171,7 +174,10 @@ fn jpg_to_pdf() {
 fn md_to_html() {
     assert_eq!(
         "683817dd0cdc0b63a26c8a58cc05f9f31f26ad5f",
-        get_hash_after("tests/datasets/markdown.md", "tests/datasets/machmap/markdown.html")
+        get_hash_after(
+            "tests/datasets/markdown.md",
+            "tests/datasets/machmap/markdown.html"
+        )
     );
 }
 
@@ -179,7 +185,10 @@ fn md_to_html() {
 fn json_to_yaml() {
     assert_eq!(
         "a15505250ffdefc95cd6ec0bbb914b196e96e3e9",
-        get_hash_after("tests/datasets/example.json", "tests/datasets/machmap/example.yaml")
+        get_hash_after(
+            "tests/datasets/example.json",
+            "tests/datasets/machmap/example.yaml"
+        )
     );
 }
 
@@ -187,6 +196,9 @@ fn json_to_yaml() {
 fn yaml_to_json() {
     assert_eq!(
         "548dbfa8e473fc9453df1518c39d11f74fff6af1",
-        get_hash_after("tests/datasets/docker-compose.yaml", "tests/datasets/machmap/docker-compose.json")
+        get_hash_after(
+            "tests/datasets/docker-compose.yaml",
+            "tests/datasets/machmap/docker-compose.json"
+        )
     );
 }

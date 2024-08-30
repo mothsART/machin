@@ -48,7 +48,10 @@ fn create_zip() {
     }
 
     let path = env::current_dir().unwrap();
-    let output_path = path.join("tests/datasets/mapreduce/result.zip").display().to_string();
+    let output_path = path
+        .join("tests/datasets/mapreduce/result.zip")
+        .display()
+        .to_string();
 
     InputsFiles::new(&inputs_file, &output_path, Direction::Vertical)
         .reduce()

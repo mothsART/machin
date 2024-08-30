@@ -6,7 +6,7 @@ use machin::machconvert::{ConvertArgs, ConvertColor, ConvertFlip, InputsFiles};
 
 ///
 /// get hash of image after operation
-/// 
+///
 fn get_hash_after(
     input_path: &'static str,
     output_file: &'static str,

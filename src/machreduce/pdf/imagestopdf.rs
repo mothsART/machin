@@ -44,9 +44,8 @@ impl<'a> ImagesToPdf<'a> {
                 "Parent" => pages_id,
                 "Contents" => content_id,
             });
-            let new_path;
             let img = ImageReader::open(f)?.decode()?;
-            new_path = format!("{}-{}.jpg", tmp_dir.path().to_str().unwrap_or(""), i);
+            let new_path = format!("{}-{}.jpg", tmp_dir.path().to_str().unwrap_or(""), i);
             if img.color().has_alpha() {
                 colored_warn!(format!(
                     "Warning : input file \"{}\" have an alpha channel : is not supported for en jpeg file. The output file \"{}\" will no longer have an alpha channel.",

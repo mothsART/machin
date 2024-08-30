@@ -3,8 +3,8 @@ use std::fmt;
 use std::path::Path;
 
 use colored::*;
-use image::{DynamicImage, ImageFormat, ImageReader, RgbaImage};
 use image::{image_dimensions, GenericImage};
+use image::{DynamicImage, ImageFormat, ImageReader, RgbaImage};
 
 use crate::machreduce::{Direction, InputTo};
 
@@ -101,8 +101,7 @@ impl<'a> InputTo<'a> for ImageOutputFile<'a> {
                 ));
             }
             d_img.to_rgb8().save(self.output_file)?;
-        }
-        else {
+        } else {
             d_img.save(self.output_file)?;
         }
 

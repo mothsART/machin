@@ -1,7 +1,7 @@
 use std::error::Error;
 
-use image::{ImageFormat, ImageReader};
 use colored::Colorize;
+use image::{ImageFormat, ImageReader};
 use tempfile::tempdir;
 
 use crate::machmap::InputTo;
@@ -52,8 +52,7 @@ impl<'a> InputTo<'a> for SVGToJPG<'a> {
                 ));
             }
             img.to_rgb8().save(self.output_file)?;
-        }
-        else {
+        } else {
             img.save(self.output_file)?;
         }
 

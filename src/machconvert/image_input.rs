@@ -1,5 +1,5 @@
-use image::{imageops, ImageFormat, ImageReader};
 use image::DynamicImage::{ImageLuma8, ImageRgba8};
+use image::{imageops, ImageFormat, ImageReader};
 use std::error::Error;
 
 use colored::Colorize;
@@ -81,8 +81,7 @@ impl<'a> InputTo<'a> for ImageInputFile<'a> {
                 ));
             }
             img.to_rgb8().save(self.output_file)?;
-        }
-        else {
+        } else {
             img.save(self.output_file)?;
         }
         Ok(String::new())
