@@ -91,6 +91,19 @@ fn svg_to_jpg() {
 }
 
 #[test]
+fn svg_to_pdf() {
+    let hash = get_hash_after(
+        "tests/datasets/Rust_programming_language_black_logo.svg",
+        "tests/datasets/machmap/Rust_programming_language_black_logo.pdf"
+    );
+    if hash == "4efbfd4160b8c78f8a6ac72ff742f3a89b076d4c" || hash == "3a7f5098643f33ccbcd70b08da50adac8a69717c" {
+        assert!(true);
+    } else {
+        assert!(false);
+    }
+}
+
+#[test]
 fn webp_to_jpg() {
     assert_eq!(
         "50db5f0fcf0ff48ad2bf73f66d9aab48aff2438d",
