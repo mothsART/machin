@@ -144,6 +144,24 @@ fn png_to_jpg() {
 }
 
 #[test]
+fn png_to_avif() {
+    assert_eq!(
+        "5a57f1c897682401ae08869d43de00c8a3ccb097",
+        get_hash_after(
+            "tests/datasets/car-vintage-old-rusty__with_alpha.png",
+            "tests/datasets/machmap/car-vintage-old-rusty__with_alpha.avif"
+        )
+    );
+    assert_eq!(
+        "45acf0803334fb2d71b1a5086dc6af24c922ac10",
+        get_hash_after(
+            "tests/datasets/car-vintage-old-rusty__without_alpha.png",
+            "tests/datasets/machmap/car-vintage-old-rusty__without_alpha.avif"
+        )
+    );
+}
+
+#[test]
 fn png_to_pdf() {
     assert_eq!(
         "97852a8bdf45c4926e849c68ac1557b34aa49733",
