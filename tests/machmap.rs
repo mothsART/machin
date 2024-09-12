@@ -191,6 +191,17 @@ fn jpg_to_png() {
 }
 
 #[test]
+fn jpg_to_avif() {
+    assert_eq!(
+        "265f6e80f0caef933048b8ccf09bdd3cef3aa060",
+        get_hash_after(
+            "tests/datasets/rusted_chain.jpg",
+            "tests/datasets/machmap/rusted_chain.avif"
+        )
+    );
+}
+
+#[test]
 fn jpg_to_pdf() {
     assert_eq!(
         "53f5a3a3f2c8f673fceb3e120a80994ff474a262",
