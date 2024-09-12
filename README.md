@@ -60,10 +60,11 @@ ls *.png | machmap -e avif
 ls *.png | machmap -e pdf
 ```
 
-Convert jpg files to png, pdf, odt :
+Convert jpg files to png, avif, pdf, odt :
 
 ```zsh
 ls *.jpg | machmap -e png
+ls *.jpg | machmap -e avif
 ls *.jpg | machmap -e pdf
 ls *.jpg | machmap -e odt
 ```
