@@ -37,11 +37,12 @@ Give the list of supported conversion for an entry format :
 machmap -s svg
 ```
 
-Convert svg files to png, jpg or pdf :
+Convert svg files to png, jpg, avif or pdf :
 
 ```zsh
 ls *.svg | machmap -e png
 ls *.svg | machmap -e jpg
+ls *.svg | machmap -e avif
 ls *.svg | machmap -e pdf
 ```
 

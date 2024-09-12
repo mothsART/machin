@@ -91,6 +91,17 @@ fn svg_to_jpg() {
 }
 
 #[test]
+fn svg_to_avif() {
+    assert_eq!(
+        "06e2258e37b3f2a0852e701e0deda41f3a181a0f",
+        get_hash_after(
+            "tests/datasets/Rust_programming_language_black_logo.svg",
+            "tests/datasets/machmap/Rust_programming_language_black_logo.avif"
+        )
+    );
+}
+
+#[test]
 fn svg_to_pdf() {
     let hash = get_hash_after(
         "tests/datasets/Rust_programming_language_black_logo.svg",
