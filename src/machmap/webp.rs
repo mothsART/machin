@@ -11,8 +11,12 @@ impl<'a> WebpInputFile<'a> {
         convert_img!(WebpToJpg, "webp", "jpg");
         let jpg = WebpToJpg::new(input_file, output_file);
 
+        convert_img!(WebpToAvif, "webp", "avif");
+        let avif = WebpToAvif::new(input_file, output_file);
+
         let mut map: HashMap<&'a str, Box<dyn InputTo<'a> + 'a>> = HashMap::new();
         map.insert("image/png", Box::new(png));
+        map.insert("image/avif", Box::new(avif));
         map.insert("image/jpeg", Box::new(jpg));
         WebpInputFile {
             input_file,
