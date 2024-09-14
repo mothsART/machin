@@ -148,6 +148,17 @@ fn webp_to_avif() {
 }
 
 #[test]
+fn avif_to_png() {
+    assert_eq!(
+        "ded9ac7d150e74b53037a7c63e79e5dc11a71e3f",
+        get_hash_after(
+            "tests/datasets/house_source_avif.avif",
+            "tests/datasets/machmap/house_source_avif.png"
+        )
+    );
+}
+
+#[test]
 fn png_to_jpg() {
     assert_eq!(
         "e98cb15b9b71e4e43c017276d17b0df0bba3d2db",

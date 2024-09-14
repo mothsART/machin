@@ -46,6 +46,12 @@ ls *.svg | machmap -e avif
 ls *.svg | machmap -e pdf
 ```
 
+Convert avif files to png :
+
+```zsh
+ls *.avif | machmap -e png
+```
+
 Convert webp files to png, jpg and avif :
 
 ```zsh

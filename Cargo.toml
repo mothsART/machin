@@ -21,6 +21,7 @@ resvg="0.43"
 usvg="0.43"
 tiny-skia="0.11"
 image = { version="0.25" }
+avif-decode = "1.0"
 markdown = "0.3"
 colored = "2"
 zip = "2"

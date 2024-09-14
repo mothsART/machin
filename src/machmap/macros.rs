@@ -55,7 +55,29 @@ macro_rules! convert_img {
 
         impl<'a> InputTo<'a> for $struct_name<'a> {
             fn convert(&self) -> Result<String, Box<dyn Error + 'a>> {
-                let img = ImageReader::open(&self.input_file)?.decode()?;
+                println!("before open avif");
+                let dyn_img = ImageReader::open(&self.input_file)?;
+                let format = ImageFormat::from_path(&self.input_file);
+                if format == Some(Avif) {
+                    let data = std::fs::read(&self.input_file)?;
+                    let d = Decoder::from_avif(&data)?;
+                    let encoded = match d.to_image()? {
+                        Image::Rgb8(img) => {
+                            let (buf, width, height) = img.into_contiguous_buf();
+                            lodepng::encode_memory(&buf, width, height, lodepng::ColorType::RGB, 8)
+                        },
+                        _ => {}
+                    }?;
+                    std::fs::write(&eslf.output_file, encoded);
+                    Ok(format!(
+                        "convert {} to {} : {} -> {}",
+                        $input_name, $output_name, self.input_file, self.output_file,
+                    ))
+                }
+
+                println!("after open avif {:?}", ImageFormat::from_path(&self.input_file).ok());
+                let img = dyn_img.decode()?;
+                println!("after decode avif");
                 let format = ImageFormat::from_path(self.output_file)?;
                 if format == ImageFormat::Jpeg {
                     if img.color().has_alpha() {
