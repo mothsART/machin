@@ -1,10 +1,10 @@
-pub mod svg2jpg;
 pub mod svg2avif;
+pub mod svg2jpg;
 pub mod svg2pdf;
 pub mod svg2png;
 
-use crate::machmap::svg::svg2jpg::SVGToJPG;
 use crate::machmap::svg::svg2avif::SVGToAVIF;
+use crate::machmap::svg::svg2jpg::SVGToJPG;
 use crate::machmap::svg::svg2pdf::SVGToPDF;
 use crate::machmap::svg::svg2png::SVGToPNG;
 use crate::machmap::*;
