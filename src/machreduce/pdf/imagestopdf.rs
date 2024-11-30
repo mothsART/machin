@@ -12,7 +12,7 @@ pub struct ImagesToPdf<'a> {
     pub input_mime_type: Vec<&'a str>,
 }
 
-impl<'a> Default for ImagesToPdf<'a> {
+impl Default for ImagesToPdf<'_> {
     fn default() -> Self {
         Self::new()
     }

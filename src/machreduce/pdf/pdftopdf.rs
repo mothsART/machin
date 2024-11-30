@@ -7,7 +7,7 @@ pub struct PdfToPdf<'a> {
     pub input_mime_type: &'a str,
 }
 
-impl<'a> Default for PdfToPdf<'a> {
+impl Default for PdfToPdf<'_> {
     fn default() -> Self {
         Self::new()
     }

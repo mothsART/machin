@@ -6,7 +6,7 @@ pub struct OutputFileUnsupportedError<'a> {
     pub output_file: &'a str,
 }
 
-impl<'a> fmt::Display for OutputFileUnsupportedError<'a> {
+impl fmt::Display for OutputFileUnsupportedError<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
             f,
@@ -16,7 +16,7 @@ impl<'a> fmt::Display for OutputFileUnsupportedError<'a> {
     }
 }
 
-impl<'a> Error for OutputFileUnsupportedError<'a> {}
+impl Error for OutputFileUnsupportedError<'_> {}
 
 #[derive(Debug)]
 pub struct InputFilesToPdfUnsupportedError {}
