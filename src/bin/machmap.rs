@@ -48,7 +48,6 @@ fn main() {
             ));
             process::exit(exitcode::DATAERR);
         }
-
         for _l in readlines() {
             if !Path::new(&_l).exists() {
                 colored_err!(format!("Input file \"{_l}\" doesn't exist"));
