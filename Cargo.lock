@@ -795,6 +795,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea"
 
 [[package]]
+name = "hex-slice"
+version = "0.1.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5491a308e0214554f07a81d8944abe45f552871c12e3c3c6e7e5d354039a6c4c"
+
+[[package]]
 name = "hmac"
 version = "0.12.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2772,10 +2778,12 @@ dependencies = [
 [[package]]
 name = "xcf-rs"
 version = "0.5.0"
-source = "git+https://github.com/mothsART/xcf-rs?branch=master#eedf361e17380154cb9363c897836b3f760df703"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9b39cdb1a8141bc133b101c25f850f6731059e58077ccd7ca8fc7f49093e7d7c"
 dependencies = [
  "byteorder",
  "derive-error",
+ "hex-slice",
 ]
 
 [[package]]
