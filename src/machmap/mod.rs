@@ -64,10 +64,7 @@ impl<'a> InputsFiles<'a> {
         match &input_mime.first_raw() {
             Some(i_mime) => match self.map.get(i_mime) {
                 Some(val) => val.support(),
-                None => {
-                    println!("ppppp");
-                    Err(Box::new(e))
-                },
+                None => Err(Box::new(e)),
             },
             None => Err(Box::new(e)),
         }
@@ -82,10 +79,7 @@ impl<'a> InputsFiles<'a> {
         match &input_mime.first_raw() {
             Some(i_mime) => match self.map.get(i_mime) {
                 Some(val) => val.mime_map(),
-                None => {
-                    println!("yyyy");
-                    Err(Box::new(e))
-                },
+                None => Err(Box::new(e)),
             },
             None => Err(Box::new(e)),
         }
