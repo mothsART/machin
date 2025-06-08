@@ -60,6 +60,7 @@ Convert png files to jpg, avif and pdf :
 ls *.png | machmap -e jpg
 ls *.png | machmap -e avif
 ls *.png | machmap -e pdf
+ls *.png | machmap -e xcf
 ```
 
 Convert jpg files to png, avif, pdf, odt :
