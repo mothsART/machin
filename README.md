@@ -70,6 +70,7 @@ ls *.jpg | machmap -e png
 ls *.jpg | machmap -e avif
 ls *.jpg | machmap -e pdf
 ls *.jpg | machmap -e odt
+ls *.jpg | machmap -e xcf
 ```
 
 Convert markdown files to html :
