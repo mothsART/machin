@@ -54,7 +54,7 @@ ls *.webp | machmap -e avif
 ls *.webp | machmap -e jpg
 ```
 
-Convert png files to jpg, avif and pdf :
+Convert png files to jpg, avif, pdf and xcf :
 
 ```zsh
 ls *.png | machmap -e jpg
@@ -63,7 +63,7 @@ ls *.png | machmap -e pdf
 ls *.png | machmap -e xcf
 ```
 
-Convert jpg files to png, avif, pdf, odt :
+Convert jpg files to png, avif, pdf, odt and xcf :
 
 ```zsh
 ls *.jpg | machmap -e png
@@ -71,6 +71,12 @@ ls *.jpg | machmap -e avif
 ls *.jpg | machmap -e pdf
 ls *.jpg | machmap -e odt
 ls *.jpg | machmap -e xcf
+```
+
+Convert xcf files (native format othe the Gimp) to png :
+
+```zsh
+ls *.xcf | machmap -e png
 ```
 
 Convert markdown files to html :

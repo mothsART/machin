@@ -204,6 +204,24 @@ fn png_to_pdf() {
 }
 
 #[test]
+fn png_to_xcf() {
+    assert_eq!(
+        "ee1a819fe01abdfc75673803451fd20fd4e24a0c",
+        get_hash_after(
+            "tests/datasets/car-vintage-old-rusty__with_alpha.png",
+            "tests/datasets/machmap/car-vintage-old-rusty__with_alpha.xcf"
+        )
+    );
+    assert_eq!(
+        "b28e0a4772d498b69bac469a81046a22189320a2",
+        get_hash_after(
+            "tests/datasets/car-vintage-old-rusty__without_alpha.png",
+            "tests/datasets/machmap/car-vintage-old-rusty__without_alpha.xcf"
+        )
+    );
+}
+
+#[test]
 fn jpg_to_png() {
     assert_eq!(
         "6177356ecb2f23b6d8ce304b559bc56f5d82e188",
@@ -232,6 +250,17 @@ fn jpg_to_pdf() {
         get_hash_after(
             "tests/datasets/rusted_chain.jpg",
             "tests/datasets/machmap/rusted_chain.pdf"
+        )
+    );
+}
+
+#[test]
+fn jpg_to_xcf() {
+    assert_eq!(
+        "d2e7df4b93ae249bef97a012a22d715a969c3b88",
+        get_hash_after(
+            "tests/datasets/rusted_chain.jpg",
+            "tests/datasets/machmap/rusted_chain.xcf"
         )
     );
 }

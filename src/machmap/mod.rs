@@ -9,7 +9,7 @@ pub mod macros;
 pub mod jpg;
 pub mod png;
 pub mod webp;
-//pub mod xcf;
+pub mod xcf;
 
 pub mod markdown;
 pub mod svg;
@@ -35,7 +35,7 @@ impl<'a> InputsFiles<'a> {
         let jpg = JPGInputFile::new(input_file, output_file);
         let png = PNGInputFile::new(input_file, output_file);
         let webp = WebpInputFile::new(input_file, output_file);
-        //let xcf = XcfInputFile::new(input_file, output_file);
+        let xcf = XcfInputFile::new(input_file, output_file);
         let markdown = MarkdownInputFile::new(input_file, output_file);
         let yaml = YamlInputFile::new(input_file, output_file);
         let json = JsonInputFile::new(input_file, output_file);
@@ -44,7 +44,7 @@ impl<'a> InputsFiles<'a> {
         map.insert("image/jpeg", Box::new(jpg));
         map.insert("image/png", Box::new(png));
         map.insert("image/webp", Box::new(webp));
-        //map.insert("image/x-xcf", Box::new(xcf));
+        map.insert("image/x-xcf", Box::new(xcf));
         map.insert("text/markdown", Box::new(markdown));
         map.insert("text/x-yaml", Box::new(yaml));
         map.insert("application/json", Box::new(json));
@@ -94,7 +94,7 @@ create_input!(SVGInputFile, InputTo);
 create_input!(JPGInputFile, InputTo);
 create_input!(PNGInputFile, InputTo);
 create_input!(WebpInputFile, InputTo);
-//create_input!(XcfInputFile, InputTo);
+create_input!(XcfInputFile, InputTo);
 create_input!(MarkdownInputFile, InputTo);
 create_input!(YamlInputFile, InputTo);
 create_input!(JsonInputFile, InputTo);
